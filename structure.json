@@ -11,7 +11,7 @@
           "type": "fields",
           "fields": [
             {
-              "name": "Name",
+              "name": "Project",
               "type": "text"
             },
             {
@@ -23,7 +23,7 @@
               "type": "text"
             },
             {
-              "name": "Functional",
+              "name": "Development Environment",
               "type": "text"
             }
           ]
@@ -62,7 +62,7 @@
             },
             {
               "name": "Description",
-              "type": "text"
+              "type": "textarea"
             }
           ]
         },
@@ -76,7 +76,7 @@
             },
             {
               "name": "Description",
-              "type": "text"
+              "type": "textarea"
             }
           ]
         },
@@ -90,7 +90,7 @@
             },
             {
               "name": "Description",
-              "type": "text"
+              "type": "textarea"
             }
           ]
         }
@@ -216,7 +216,7 @@
             },
             {
               "name": "Description",
-              "type": "text"
+              "type": "textarea"
             },
             {
               "name": "File Name",
@@ -332,7 +332,7 @@
           "columns": [
             {
               "name": "Description",
-              "type": "text"
+              "type": "textarea"
             },
             {
               "name": "Result",
@@ -384,7 +384,7 @@
             },
             {
               "name": "Description",
-              "type": "text"
+              "type": "textarea"
             }
           ]
         },
@@ -453,7 +453,7 @@
             },
             {
               "name": "Description",
-              "type": "text"
+              "type": "textarea"
             }
           ]
         },
@@ -471,7 +471,7 @@
             },
             {
               "name": "Description",
-              "type": "text"
+              "type": "textarea"
             },
             {
               "name": "Criteria",
@@ -519,7 +519,7 @@
             },
             {
               "name": "Description",
-              "type": "text"
+              "type": "textarea"
             },
             {
               "name": "Result",

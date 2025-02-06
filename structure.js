@@ -23,7 +23,7 @@ const structureData = {
                 "type": "text"
               },
               {
-                "name": "Functional",
+                "name": "Development Environment",
                 "type": "text"
               }
             ]
@@ -62,7 +62,7 @@ const structureData = {
               },
               {
                 "name": "Description",
-                "type": "text"
+                "type": "textarea"
               }
             ]
           },
@@ -71,12 +71,12 @@ const structureData = {
             "type": "table",
             "columns": [
               {
-                "name": "ID",
+                "name": "Title",
                 "type": "text"
               },
               {
                 "name": "Description",
-                "type": "text"
+                "type": "textarea"
               }
             ]
           },
@@ -85,12 +85,12 @@ const structureData = {
             "type": "table",
             "columns": [
               {
-                "name": "ID",
+                "name": "Title",
                 "type": "text"
               },
               {
                 "name": "Description",
-                "type": "text"
+                "type": "textarea"
               }
             ]
           }
@@ -216,7 +216,7 @@ const structureData = {
               },
               {
                 "name": "Description",
-                "type": "text"
+                "type": "textarea"
               },
               {
                 "name": "File Name",
@@ -246,7 +246,7 @@ const structureData = {
               },
               {
                 "name": "Parameter Description",
-                "type": "text"
+                "type": "textarea"
               }
             ]
           },
@@ -332,11 +332,11 @@ const structureData = {
             "columns": [
               {
                 "name": "Description",
-                "type": "text"
+                "type": "textarea"
               },
               {
                 "name": "Result",
-                "type": "text"
+                "type": "textarea"
               }
             ]
           },
@@ -384,7 +384,7 @@ const structureData = {
               },
               {
                 "name": "Description",
-                "type": "text"
+                "type": "textarea"
               }
             ]
           },
@@ -453,7 +453,7 @@ const structureData = {
               },
               {
                 "name": "Description",
-                "type": "text"
+                "type": "textarea"
               }
             ]
           },
@@ -471,17 +471,15 @@ const structureData = {
               },
               {
                 "name": "Description",
-                "type": "text"
+                "type": "textarea"
               },
               {
                 "name": "Criteria",
-                "type": "text",
-                "fileType": "image"
+                "type": "textarea",
               },
               {
                 "name": "Results",
-                "type": "text",
-                "fileType": "image"
+                "type": "textarea",
               }
             ]
           }
@@ -497,15 +495,15 @@ const structureData = {
             "columns": [
               {
                 "name": "Error/Issue",
-                "type": "text"
+                "type": "textarea"
               },
               {
                 "name": "Cause",
-                "type": "text"
+                "type": "textarea"
               },
               {
                 "name": "Resolution",
-                "type": "text"
+                "type": "textarea"
               }
             ]
           },
@@ -519,7 +517,7 @@ const structureData = {
               },
               {
                 "name": "Description",
-                "type": "text"
+                "type": "textarea"
               },
               {
                 "name": "Result",
@@ -535,10 +533,10 @@ const structureData = {
       },
       {
         "id": "group9",
-        "name": "Deployment",
+        "name": "Deployment Checklist",
         "sections": [
           {
-            "name": "Deployment Checklist",
+            "name": "-",
             "type": "checkboxes",
             "fields": [
               {

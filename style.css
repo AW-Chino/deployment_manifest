@@ -316,3 +316,81 @@ input[type="file"] {
 .mb-2 { margin-bottom: 0.5rem; }
 .mb-3 { margin-bottom: 1rem; }
 .mb-4 { margin-bottom: 1.5rem; }
+/* Dark background specifically for Scripts and Custom Records pages */
+#step-5.wizard-step,
+#step-6.wizard-step {
+    background: #2f3542;
+    margin: -2rem;  /* To offset container padding */
+    padding: 2rem;
+    border-radius: 8px;
+}
+
+/* Section header for Scripts and Custom Records */
+#step-5 .section-header,
+#step-6 .section-header {
+    background: #ffffff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#step-5 .section-header h4,
+#step-6 .section-header h4 {
+    color: #2f3542;
+    margin: 0;
+}
+
+/* Script and Custom Record blocks */
+#step-5 .script-block,
+#step-6 .custom-record-block {
+    background: #ffffff;
+    border: none;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* Container spacing */
+#scripts-container,
+#records-container {
+    margin-top: 1rem;
+}
+
+/* Process styling to match Scripts and Custom Records */
+#step-3.wizard-step {
+    background: #2f3542;
+    margin: -2rem;
+    padding: 2rem;
+    border-radius: 8px;
+}
+
+#step-3 .section-header {
+    background: #ffffff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+#step-3 .process-block {
+    background: #ffffff;
+    border: none;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+#process-container {
+    margin-top: 1rem;
+}
+
+.process-block textarea.form-control {
+    min-height: 80px;
+    resize: vertical;
+}
