@@ -53,16 +53,23 @@ function initializeScriptSection() {
 }
 
 function addNewScript(container, template) {
+    // Clear any existing temporary elements
+    const existingTemp = document.getElementById('temp-script-container');
+    if (existingTemp) existingTemp.remove();
+
+    // Create a temporary container with a unique ID
     const tempDiv = document.createElement('div');
+    tempDiv.id = 'temp-script-container';
     tempDiv.innerHTML = template.innerHTML.trim();
+    
     const scriptBlock = tempDiv.firstElementChild;
     const uniqueId = `script-${Date.now()}`;
     scriptBlock.id = uniqueId;
     
     setupScriptBlock(scriptBlock);
     container.appendChild(scriptBlock);
+    tempDiv.remove();
 }
-
 function setupScriptBlock(block) {
     // Setup remove script button
     const removeScriptBtn = block.querySelector(".remove-script");
