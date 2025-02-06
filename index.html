@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AppWrap - Deployment Manifest Wizard</title>
+  
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="container my-5">
+    <!-- Navigation Sidebar -->
+    <div class="row">
+      <div class="col-md-3">
+        <ul class="nav nav-tabs flex-column">
+          <li class="nav-item"><a class="nav-link step-link active" href="#" data-step="1">Project Information</a></li>
+          <li class="nav-item"><a class="nav-link step-link" href="#" data-step="2">Project Scope</a></li>
+          <li class="nav-item"><a class="nav-link step-link" href="#" data-step="3">Configuration</a></li>
+          <li class="nav-item"><a class="nav-link step-link" href="#" data-step="4">ReadMe Doc</a></li>
+          <li class="nav-item"><a class="nav-link step-link" href="#" data-step="5">Scripts</a></li>
+          <li class="nav-item"><a class="nav-link step-link" href="#" data-step="6">Custom Records</a></li>
+          <li class="nav-item"><a class="nav-link step-link" href="#" data-step="7">Components</a></li>
+          <li class="nav-item"><a class="nav-link step-link" href="#" data-step="8">Documentation</a></li>
+          <li class="nav-item"><a class="nav-link step-link" href="#" data-step="9">Deployment</a></li>
+          <li class="nav-item"><a class="nav-link step-link" href="#" data-step="10">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="col-md-9">
+        <div class="card shadow-sm">
+          <div class="card-header bg-white">
+            <h2 class="mb-0">AppWrap - Deployment Manifest Wizard</h2>
+            <p class="text-muted">Create a comprehensive Deployment Manifest and README reference.</p>
+          </div>
+
+          <div class="card-body">
+            <div id="wizard">
+              <!-- Scripts Section -->
+              <section id="step-5" class="wizard-step" style="display: none;">
+                <h4>Scripts</h4>
+                <div id="scripts-container">
+                  <!-- Dynamically added script blocks will appear here -->
+                </div>
+                <button type="button" id="add-script-btn" class="btn btn-primary mt-3">Add Script</button>
+              </section>
+            </div>
+          </div>
+
+          <div class="card-footer d-flex justify-content-between">
+            <button id="prev-btn" class="btn btn-secondary">Previous</button>
+            <button id="next-btn" class="btn btn-primary">Next</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="card-footer mt-4">
+      <button id="saveBtn" class="btn btn-outline-primary">Save JSON</button>
+      <button id="loadBtn" class="btn btn-outline-secondary">Load JSON</button>
+      <input type="file" id="jsonLoadInput" style="display:none" accept=".json">
+    </div>
+  </div>
+
+  <template id="script-block-template">
+    <div class="script-block border p-3 mb-3">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <input type="text" class="form-control w-50" placeholder="Enter script name">
+        <button type="button" class="btn btn-danger remove-script">Remove Script</button>
+      </div>
+  
+      <div class="script-tabs">
+        <button class="tab-button active" data-tab="details">Details</button>
+        <button class="tab-button" data-tab="parameters">Parameters</button>
+        <button class="tab-button" data-tab="entrypoints">Entry Points</button>
+        <button class="tab-button" data-tab="deployment-records">Deployment Records</button>
+        <button class="tab-button" data-tab="version-history">Version History</button>
+        <button class="tab-button" data-tab="libraries">Libraries</button>
+        <button class="tab-button" data-tab="unit-tests">Unit Tests</button>
+        <button class="tab-button" data-tab="checklists">Checklists</button>
+      </div>
+  
+      <div class="tab-content mt-3">
+        <div id="details" class="tab-panel active">
+          <div class="form-group">
+            <label>Script Details</label>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <input type="text" class="form-control" placeholder="Script ID">
+              </div>
+              <div class="col-md-6 mb-3">
+                <input type="text" class="form-control" placeholder="Script Type">
+              </div>
+            </div>
+            <div class="mb-3">
+              <textarea class="form-control" rows="3" placeholder="Script Description"></textarea>
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <input type="text" class="form-control" placeholder="File Name">
+              </div>
+              <div class="col-md-6 mb-3">
+                <input type="text" class="form-control" placeholder="Location">
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <div id="parameters" class="tab-panel">
+          <button class="btn btn-secondary add-parameters mb-3">Add Parameter</button>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Parameter Name</th>
+                <th>ID</th>
+                <th>Parameter Type</th>
+                <th>Parameter Description</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody class="parameters-body"></tbody>
+          </table>
+        </div>
+  
+        <div id="entrypoints" class="tab-panel">
+          <button class="btn btn-secondary add-entrypoints mb-3">Add Entry Point</button>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Entry Point Name</th>
+                <th>Function Name</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody class="entrypoints-body"></tbody>
+          </table>
+        </div>
+  
+        <div id="deployment-records" class="tab-panel">
+          <button class="btn btn-secondary add-deployment-records mb-3">Add Deployment Record</button>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Applied To</th>
+                <th>ID</th>
+                <th>Deployment Notes</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody class="deployment-records-body"></tbody>
+          </table>
+        </div>
+  
+        <div id="version-history" class="tab-panel">
+          <button class="btn btn-secondary add-version-history mb-3">Add Version</button>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Version</th>
+                <th>Date</th>
+                <th>Change Summary</th>
+                <th>Commit ID</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody class="version-history-body"></tbody>
+          </table>
+        </div>
+  
+        <div id="libraries" class="tab-panel">
+          <button class="btn btn-secondary add-libraries mb-3">Add Library</button>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Library Name</th>
+                <th>File Name</th>
+                <th>Location</th>
+                <th>Purpose</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody class="libraries-body"></tbody>
+          </table>
+        </div>
+  
+        <div id="unit-tests" class="tab-panel">
+          <button class="btn btn-secondary add-unit-tests mb-3">Add Unit Test</button>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Description</th>
+                <th>Result</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody class="unit-tests-body"></tbody>
+          </table>
+        </div>
+  
+        <div id="checklists" class="tab-panel">
+          <div class="form-check mb-2">
+            <input type="checkbox" class="form-check-input" id="standards">
+            <label class="form-check-label" for="standards">Project upholds AppWrap's Deployment Standards and Best Practices</label>
+          </div>
+          <div class="form-check mb-2">
+            <input type="checkbox" class="form-check-input" id="disclaimer">
+            <label class="form-check-label" for="disclaimer">Scripts include AppWrap's Code Disclaimer and Header</label>
+          </div>
+          <div class="form-check mb-2">
+            <input type="checkbox" class="form-check-input" id="expectations">
+            <label class="form-check-label" for="expectations">Contributors adhere to AppWrap's Developer and Technical Resources Expectations</label>
+          </div>
+          <div class="form-check mb-2">
+            <input type="checkbox" class="form-check-input" id="eslint">
+            <label class="form-check-label" for="eslint">Eslint Checked</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+  
+  
+
+  <!-- Bootstrap JS, jQuery -->
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <!-- Custom Scripts -->
+  <script src="structure.js"></script>
+  <script src="structure_loader.js"></script>
+  <script src="json_handler.js"></script>
+  <script src="ui_interactions.js"></script>
+  <script src="form_validation.js"></script>
+  <script src="ui_tooltips.js"></script>
+  <script src="event_handlers.js"></script>
+</body>
+</html>
