@@ -1,0 +1,323 @@
+{
+  "step-1": {
+    "project_name": "test",
+    "client": "test",
+    "developer": "test",
+    "development_environment": "test",
+    "version": "test",
+    "date": "2025-02-18",
+    "change_summary": "testtesttesttesttesttest",
+    "version-history-body": [
+      {
+        "version": "test",
+        "date": "2025-02-11",
+        "change_summary": "testtesttest"
+      },
+      {
+        "version": "test",
+        "date": "2025-02-18",
+        "change_summary": "testtesttesttesttesttest"
+      }
+    ]
+  },
+  "step-2": {
+    "story_id": "test",
+    "story_description": "testtest",
+    "feature_title": "testtest",
+    "feature_description": "testtest",
+    "usage_title": "test",
+    "usage_description": "testtest",
+    "user-stories-body": [
+      {
+        "story_id": "test",
+        "story_description": "testtest"
+      },
+      {
+        "story_id": "test",
+        "story_description": "testtest"
+      }
+    ],
+    "features-body": [
+      {
+        "feature_title": "testtest",
+        "feature_description": "testtest"
+      }
+    ],
+    "usage-body": [
+      {
+        "usage_title": "test",
+        "usage_description": "testtest"
+      },
+      {
+        "usage_title": "test",
+        "usage_description": "testtest"
+      }
+    ]
+  },
+  "step-3": {
+    "env_name": "testete",
+    "env_notes": "testete",
+    "sandbox_value": "testete",
+    "production_value": "testete",
+    "environment-ids-body": [
+      {
+        "env_name": "testete",
+        "env_notes": "testete",
+        "sandbox_value": "testete",
+        "production_value": "testete"
+      }
+    ],
+    "processes": [
+      {
+        "name": "testete",
+        "steps": [
+          {
+            "step_number": "testete",
+            "step_description": "testete"
+          },
+          {
+            "step_number": "",
+            "step_description": ""
+          }
+        ]
+      }
+    ]
+  },
+  "step-4": {
+    "dependency_name": "",
+    "dependency_version": "",
+    "dependency_license": "",
+    "deployment-dependencies-body": [
+      {
+        "dependency_name": "test",
+        "dependency_version": "test",
+        "dependency_license": "testtest"
+      },
+      {
+        "dependency_name": "",
+        "dependency_version": "",
+        "dependency_license": ""
+      }
+    ],
+    "dev-dependencies-body": [
+      {
+        "dependency_name": "test",
+        "dependency_version": "testtest",
+        "dependency_license": "test"
+      },
+      {
+        "dependency_name": "",
+        "dependency_version": "",
+        "dependency_license": ""
+      }
+    ]
+  },
+  "step-5": {
+    "scripts": [
+      {
+        "name": "testete",
+        "details": {
+          "id": "testete",
+          "type": "testete",
+          "description": "testete",
+          "fileName": "testete",
+          "location": "testete"
+        },
+        "parameters": [
+          {
+            "parameter_name": "testete",
+            "parameter_id": "testete",
+            "parameter_type": "testete",
+            "parameter_description": "testete"
+          }
+        ],
+        "entryPoints": [
+          {
+            "entry_point_name": "testete",
+            "function_name": "testete"
+          }
+        ],
+        "deploymentRecords": [
+          {
+            "applied_to": "testete",
+            "deployment_id": "testete",
+            "deployment_notes": "testete"
+          }
+        ],
+        "versionHistory": [
+          {
+            "version": "testete",
+            "date": "2025-02-11",
+            "change_summary": "testete",
+            "commit_id": "testete"
+          }
+        ],
+        "libraries": [
+          {
+            "library_name": "testete",
+            "file_name": "testete",
+            "location": "testete",
+            "purpose": "testete"
+          }
+        ],
+        "unitTests": [
+          {
+            "test_description": "testete",
+            "test_result": "testete"
+          },
+          {
+            "test_description": "testete",
+            "test_result": "testete"
+          }
+        ],
+        "checklists": {
+          "standards": true,
+          "disclaimer": false,
+          "expectations": true,
+          "eslint": false
+        }
+      }
+    ]
+  },
+  "step-6": {
+    "customRecords": [
+      {
+        "name": "testete",
+        "id": "testete",
+        "type": "testete",
+        "description": "file:///C:/Users/cathe/Desktop/DepManifest%20Project/page/Input/Version%203/index.html#",
+        "fields": [
+          {
+            "field_name": "testete",
+            "field_id": "testete",
+            "field_type": "testete",
+            "field_description": "testete"
+          },
+          {
+            "field_name": "testete",
+            "field_id": "testete",
+            "field_type": "testete",
+            "field_description": "testete"
+          },
+          {
+            "field_name": "",
+            "field_id": "",
+            "field_type": "",
+            "field_description": ""
+          }
+        ]
+      }
+    ]
+  },
+  "step-7": {
+    "field_name": "testtest",
+    "field_id": "test",
+    "field_description": "test",
+    "template_name": "",
+    "template_id": "",
+    "template_type": "",
+    "template_description": "",
+    "search_name": "",
+    "search_id": "",
+    "search_description": "",
+    "search_criteria": "",
+    "search_results": "",
+    "custom-fields-body": [
+      {
+        "field_name": "test",
+        "field_id": "test",
+        "field_description": "testtest"
+      },
+      {
+        "field_name": "testtest",
+        "field_id": "test",
+        "field_description": "test"
+      }
+    ],
+    "templates-body": [
+      {
+        "template_name": "test",
+        "template_id": "test",
+        "template_type": "test",
+        "template_description": "testtest"
+      },
+      {
+        "template_name": "",
+        "template_id": "",
+        "template_type": "",
+        "template_description": ""
+      }
+    ],
+    "saved-searches-body": [
+      {
+        "search_name": "test",
+        "search_id": "test",
+        "search_description": "test",
+        "search_criteria": "test",
+        "search_results": "test"
+      },
+      {
+        "search_name": "",
+        "search_id": "",
+        "search_description": "",
+        "search_criteria": "",
+        "search_results": ""
+      }
+    ]
+  },
+  "step-8": {
+    "error_issue": "test",
+    "cause": "test",
+    "resolution": "test",
+    "troubleshooting-body": [
+      {
+        "error_issue": "test",
+        "cause": "test",
+        "resolution": "test"
+      }
+    ]
+  },
+  "step-9": {
+    "production_version_backed_up": true,
+    "code_changes_documented": false,
+    "fields_records_listed": true,
+    "rollback_steps_defined": false,
+    "deployment_reviewed": true,
+    "tested_by_functional": false,
+    "tested_by_client": true,
+    "deployment_plan_approved": true
+  },
+  "step-10": {
+    "developer_name": "",
+    "developer_email": "",
+    "developer_note": "",
+    "functional_name": "",
+    "functional_email": "",
+    "functional_note": "",
+    "license": "Copyright 2025 AppWrap, Inc. All Rights Reserved.",
+    "developers-body": [
+      {
+        "developer_name": "test",
+        "developer_email": "test",
+        "developer_note": "test"
+      },
+      {
+        "developer_name": "",
+        "developer_email": "",
+        "developer_note": ""
+      }
+    ],
+    "functional-body": [
+      {
+        "functional_name": "test",
+        "functional_email": "test",
+        "functional_note": "test"
+      },
+      {
+        "functional_name": "",
+        "functional_email": "",
+        "functional_note": ""
+      }
+    ]
+  }
+}
