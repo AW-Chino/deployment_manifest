@@ -55,7 +55,6 @@ function saveJSON() {
     alert("JSON saved successfully!");
 }
 
-
 function generateJSON() {
     const jsonData = {};
 
@@ -71,7 +70,7 @@ function generateJSON() {
             }
         });
 
-        // Handle checkboxes (again, only those outside dynamic blocks)
+        // Handle checkboxes (only those outside dynamic blocks)
         section.querySelectorAll("input[type='checkbox']").forEach(checkbox => {
             if (checkbox.name && !checkbox.closest('.script-block')) {
                 jsonData[sectionId][checkbox.name] = checkbox.checked;
@@ -100,17 +99,22 @@ function generateJSON() {
         });
 
         // Handle dynamic blocks:
-        // Scripts (Step 5)
-        if (sectionId === "step-5") {
+        // Scripts: now in Step 6
+        if (sectionId === "step-6") {
             jsonData[sectionId]["scripts"] = extractScriptBlocks(section);
         }
-        // Custom Records (Step 6)
-        if (sectionId === "step-6") {
+        // Custom Records: now in Step 7
+        if (sectionId === "step-7") {
             jsonData[sectionId]["customRecords"] = extractCustomRecordBlocks(section);
         }
-        // Processes (Step 3)
+        // Playbook (Step 3): extract both processes and rollbacks
         if (sectionId === "step-3") {
             jsonData[sectionId]["processes"] = extractProcessBlocks(section);
+            jsonData[sectionId]["rollbacks"] = extractRollbackBlocks(section);
+        }
+        // Workflow: now in Step 8
+        if (sectionId === "step-8") {
+            jsonData[sectionId]["workflows"] = extractWorkflowBlocks(section);
         }
     });
 
@@ -174,6 +178,29 @@ function extractProcessBlocks(section) {
     return processes;
 }
 
+function extractRollbackBlocks(section) {
+    const rollbacks = [];
+    section.querySelectorAll(".rollback-block").forEach(rollbackBlock => {
+        const rollbackData = {
+            description: rollbackBlock.querySelector("input[name='rollback_description']")?.value || ""
+        };
+        rollbacks.push(rollbackData);
+    });
+    return rollbacks;
+}
+
+function extractWorkflowBlocks(section) {
+    const workflows = [];
+    section.querySelectorAll(".workflow-block").forEach(workflowBlock => {
+        const workflowData = {
+            details: workflowBlock.querySelector("input[name='workflow_details']")?.value || "",
+            actions: extractTableData(workflowBlock, "actions")
+        };
+        workflows.push(workflowData);
+    });
+    return workflows;
+}
+
 function extractTableData(container, tableType) {
     const tableData = [];
     const tbody = container.querySelector(`.${tableType}-body`);
@@ -205,7 +232,7 @@ function loadJSON(jsonStr) {
 }
 
 function populateFormData(data) {
-    // Clear dynamic blocks (scripts, records, processes) before populating new data
+    // Clear dynamic blocks (scripts, records, processes, rollbacks, workflows) before populating new data
     clearDynamicBlocks();
 
     Object.entries(data).forEach(([sectionId, sectionData]) => {
@@ -214,7 +241,7 @@ function populateFormData(data) {
 
         // Populate basic inputs (ignoring dynamic block keys and table arrays)
         Object.entries(sectionData).forEach(([key, value]) => {
-            if (key !== 'scripts' && key !== 'customRecords' && key !== 'processes' && !key.endsWith('-body')) {
+            if (key !== 'scripts' && key !== 'customRecords' && key !== 'processes' && key !== 'rollbacks' && key !== 'workflows' && !key.endsWith('-body')) {
                 const input = section.querySelector(`[name="${key}"]`);
                 if (input) {
                     if (input.type === 'checkbox') {
@@ -227,8 +254,8 @@ function populateFormData(data) {
         });
 
         // Populate dynamic blocks:
-        // --- Scripts (Step 5) ---
-        if (sectionId === 'step-5' && sectionData.scripts && Array.isArray(sectionData.scripts)) {
+        // --- Scripts (Step 6) ---
+        if (sectionId === 'step-6' && sectionData.scripts && Array.isArray(sectionData.scripts)) {
             const container = section.querySelector('#scripts-container');
             const template = document.getElementById('script-block-template');
             sectionData.scripts.forEach(scriptData => {
@@ -243,8 +270,8 @@ function populateFormData(data) {
             });
         }
 
-        // --- Custom Records (Step 6) ---
-        if (sectionId === 'step-6' && sectionData.customRecords && Array.isArray(sectionData.customRecords)) {
+        // --- Custom Records (Step 7) ---
+        if (sectionId === 'step-7' && sectionData.customRecords && Array.isArray(sectionData.customRecords)) {
             const container = section.querySelector('#records-container');
             const template = document.getElementById('custom-record-template');
             sectionData.customRecords.forEach(recordData => {
@@ -259,7 +286,7 @@ function populateFormData(data) {
             });
         }
 
-        // --- Processes (Step 3) ---
+        // --- Processes (from Playbook, Step 3) ---
         if (sectionId === 'step-3' && sectionData.processes && Array.isArray(sectionData.processes)) {
             const container = section.querySelector('#process-container');
             const template = document.getElementById('process-block-template');
@@ -271,6 +298,36 @@ function populateFormData(data) {
                         setupProcessBlock(processBlock);
                     }
                     populateProcessBlock(processBlock, processData);
+                }
+            });
+        }
+        // --- Rollbacks (from Playbook, Step 3) ---
+        if (sectionId === 'step-3' && sectionData.rollbacks && Array.isArray(sectionData.rollbacks)) {
+            const container = section.querySelector('#rollback-container');
+            const template = document.getElementById('rollback-block-template');
+            sectionData.rollbacks.forEach(rollbackData => {
+                if (rollbackData && rollbackData.description) {
+                    const rollbackBlock = template.content.cloneNode(true).firstElementChild;
+                    container.appendChild(rollbackBlock);
+                    if (typeof setupRollbackBlock === 'function') {
+                        setupRollbackBlock(rollbackBlock);
+                    }
+                    populateRollbackBlock(rollbackBlock, rollbackData);
+                }
+            });
+        }
+        // --- Workflows (Step 8) ---
+        if (sectionId === 'step-8' && sectionData.workflows && Array.isArray(sectionData.workflows)) {
+            const container = section.querySelector('#workflow-container');
+            const template = document.getElementById('workflow-block-template');
+            sectionData.workflows.forEach(workflowData => {
+                if (workflowData && workflowData.details) {
+                    const workflowBlock = template.content.cloneNode(true).firstElementChild;
+                    container.appendChild(workflowBlock);
+                    if (typeof setupWorkflowBlock === 'function') {
+                        setupWorkflowBlock(workflowBlock);
+                    }
+                    populateWorkflowBlock(workflowBlock, workflowData);
                 }
             });
         }
@@ -303,6 +360,17 @@ function populateRecordBlock(block, data) {
     const descTextarea = block.querySelector("textarea[name='record_description']");
     if (descTextarea) descTextarea.value = data.description || '';
     populateScript_setupTable(block, 'fields', data.fields);
+}
+
+function populateRollbackBlock(block, data) {
+    const input = block.querySelector("input[name='rollback_description']");
+    if (input) input.value = data.description || '';
+}
+
+function populateWorkflowBlock(block, data) {
+    const detailsInput = block.querySelector("input[name='workflow_details']");
+    if (detailsInput) detailsInput.value = data.details || '';
+    populateScript_setupTable(block, 'actions', data.actions);
 }
 
 function populateRegularTable(tbody, data) {
@@ -340,12 +408,6 @@ function populateRegularTable(tbody, data) {
             tbody.appendChild(row);
         }
     });
-}
-
-function isEmptyRow(rowData) {
-    return Object.values(rowData).every(value =>
-        value === "" || value === null || value === undefined
-    );
 }
 
 function populateScriptBlock(block, data) {
@@ -423,6 +485,12 @@ function populateScript_setupTable(block, tableType, data) {
     });
 }
 
+function isEmptyRow(rowData) {
+    return Object.values(rowData).every(value =>
+        value === "" || value === null || value === undefined
+    );
+}
+
 function cleanData(data) {
     // Recursively remove empty values and empty arrays/objects
     if (Array.isArray(data)) {
@@ -456,7 +524,7 @@ function cleanData(data) {
 }
 
 /* ----------------- Utility: Clear Dynamic Blocks ----------------- */
-// Clears any dynamically added blocks (scripts, custom records, processes)
+// Clears any dynamically added blocks (scripts, custom records, processes, rollbacks, workflows)
 function clearDynamicBlocks() {
     const processContainer = document.getElementById('process-container');
     if (processContainer) processContainer.innerHTML = '';
@@ -464,4 +532,6 @@ function clearDynamicBlocks() {
     if (scriptsContainer) scriptsContainer.innerHTML = '';
     const recordsContainer = document.getElementById('records-container');
     if (recordsContainer) recordsContainer.innerHTML = '';
+    const workflowContainer = document.getElementById('workflow-container');
+    if (workflowContainer) workflowContainer.innerHTML = '';
 }

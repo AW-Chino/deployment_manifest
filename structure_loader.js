@@ -13,6 +13,7 @@ function initializeWizard(structure) {
         return;
     }
 
+    // Attach navigation handlers for sidebar links and next/prev buttons.
     attachNavigationHandlers();
     showStep(1);
 }
@@ -25,78 +26,80 @@ function validateStructure(structure) {
     return true;
 }
 
-function attachTableHandlers() {
-    // Project Information (Step 1)
-    attachAddButtonHandler('add-version', 'version-history-body', [
-        { name: 'Version', type: 'text', key: 'version' },
-        { name: 'Date', type: 'date', key: 'date' },
-        { name: 'Change Summary', type: 'textarea', key: 'change_summary' }
-    ]);
+/* ======================================================
+   Table Handlers
+   ====================================================== */
 
-    // Project Scope (Step 2)
-    attachAddButtonHandler('add-user-story', 'user-stories-body', [
-        { name: 'ID', type: 'text', key: 'story_id' },
-        { name: 'Description', type: 'textarea', key: 'story_description' }
-    ]);
+// Step 1: Project Information
+attachAddButtonHandler('add-version', 'version-history-body', [
+    { name: 'Version', type: 'text', key: 'version' },
+    { name: 'Date', type: 'date', key: 'date' },
+    { name: 'Change Summary', type: 'textarea', key: 'change_summary' }
+]);
 
-    attachAddButtonHandler('add-feature', 'features-body', [
-        { name: 'Title', type: 'text', key: 'feature_title' },
-        { name: 'Description', type: 'textarea', key: 'feature_description' }
-    ]);
+// Step 2: Project Scope
+attachAddButtonHandler('add-user-story', 'user-stories-body', [
+    { name: 'ID', type: 'text', key: 'story_id' },
+    { name: 'Description', type: 'textarea', key: 'story_description' }
+]);
 
-    attachAddButtonHandler('add-usage', 'usage-body', [
-        { name: 'Title', type: 'text', key: 'usage_title' },
-        { name: 'Description', type: 'textarea', key: 'usage_description' }
-    ]);
+attachAddButtonHandler('add-feature', 'features-body', [
+    { name: 'Title', type: 'text', key: 'feature_title' },
+    { name: 'Description', type: 'textarea', key: 'feature_description' }
+]);
 
-    // ReadMe Doc (Step 4)
-    attachAddButtonHandler('add-deployment-dependency', 'deployment-dependencies-body', [
-        { name: 'Dependency Name', type: 'text', key: 'dependency_name' },
-        { name: 'Dependency Version', type: 'text', key: 'dependency_version' },
-        { name: 'Dependency License', type: 'text', key: 'dependency_license' }
-    ]);
+attachAddButtonHandler('add-usage', 'usage-body', [
+    { name: 'Title', type: 'text', key: 'usage_title' },
+    { name: 'Description', type: 'textarea', key: 'usage_description' }
+]);
 
-    attachAddButtonHandler('add-dev-dependency', 'dev-dependencies-body', [
-        { name: 'Dependency Name', type: 'text', key: 'dependency_name' },
-        { name: 'Dependency Version', type: 'text', key: 'dependency_version' },
-        { name: 'Dependency License', type: 'text', key: 'dependency_license' }
-    ]);
+// Step 5: ReadMe Doc (updated page ordering)
+attachAddButtonHandler('add-deployment-dependency', 'deployment-dependencies-body', [
+    { name: 'Dependency Name', type: 'text', key: 'dependency_name' },
+    { name: 'Dependency Version', type: 'text', key: 'dependency_version' },
+    { name: 'Dependency License', type: 'text', key: 'dependency_license' }
+]);
 
-    // Components (Step 7)
-    attachAddButtonHandler('add-custom-field', 'custom-fields-body', [
-        { name: 'Field Name', type: 'text', key: 'field_name' },
-        { name: 'ID', type: 'text', key: 'field_id' },
-        { name: 'Description', type: 'textarea', key: 'field_description' }
-    ]);
+attachAddButtonHandler('add-dev-dependency', 'dev-dependencies-body', [
+    { name: 'Dependency Name', type: 'text', key: 'dependency_name' },
+    { name: 'Dependency Version', type: 'text', key: 'dependency_version' },
+    { name: 'Dependency License', type: 'text', key: 'dependency_license' }
+]);
 
-    attachAddButtonHandler('add-template', 'templates-body', [
-        { name: 'Template Name', type: 'text', key: 'template_name' },
-        { name: 'ID', type: 'text', key: 'template_id' },
-        { name: 'Type', type: 'text', key: 'template_type' },
-        { name: 'Description', type: 'textarea', key: 'template_description' }
-    ]);
+// Step 9: Components
+attachAddButtonHandler('add-custom-field', 'custom-fields-body', [
+    { name: 'Field Name', type: 'text', key: 'field_name' },
+    { name: 'ID', type: 'text', key: 'field_id' },
+    { name: 'Description', type: 'textarea', key: 'field_description' }
+]);
 
-    attachAddButtonHandler('add-saved-search', 'saved-searches-body', [
-        { name: 'Search Name', type: 'text', key: 'search_name' },
-        { name: 'ID', type: 'text', key: 'search_id' },
-        { name: 'Description', type: 'textarea', key: 'search_description' },
-        { name: 'Criteria', type: 'textarea', key: 'search_criteria' },
-        { name: 'Results', type: 'textarea', key: 'search_results' }
-    ]);
+attachAddButtonHandler('add-template', 'templates-body', [
+    { name: 'Template Name', type: 'text', key: 'template_name' },
+    { name: 'ID', type: 'text', key: 'template_id' },
+    { name: 'Type', type: 'text', key: 'template_type' },
+    { name: 'Description', type: 'textarea', key: 'template_description' }
+]);
 
-    // Contact (Step 10)
-    attachAddButtonHandler('add-developer', 'developers-body', [
-        { name: 'Name', type: 'text', key: 'developer_name' },
-        { name: 'Email', type: 'email', key: 'developer_email' },
-        { name: 'Note', type: 'text', key: 'developer_note' }
-    ]);
+attachAddButtonHandler('add-saved-search', 'saved-searches-body', [
+    { name: 'Search Name', type: 'text', key: 'search_name' },
+    { name: 'ID', type: 'text', key: 'search_id' },
+    { name: 'Description', type: 'textarea', key: 'search_description' },
+    { name: 'Criteria', type: 'textarea', key: 'search_criteria' },
+    { name: 'Results', type: 'textarea', key: 'search_results' }
+]);
 
-    attachAddButtonHandler('add-functional', 'functional-body', [
-        { name: 'Name', type: 'text', key: 'functional_name' },
-        { name: 'Email', type: 'email', key: 'functional_email' },
-        { name: 'Note', type: 'text', key: 'functional_note' }
-    ]);
-}
+// Step 12: Contact
+attachAddButtonHandler('add-developer', 'developers-body', [
+    { name: 'Name', type: 'text', key: 'developer_name' },
+    { name: 'Email', type: 'email', key: 'developer_email' },
+    { name: 'Note', type: 'text', key: 'developer_note' }
+]);
+
+attachAddButtonHandler('add-functional', 'functional-body', [
+    { name: 'Name', type: 'text', key: 'functional_name' },
+    { name: 'Email', type: 'email', key: 'functional_email' },
+    { name: 'Note', type: 'text', key: 'functional_note' }
+]);
 
 function attachAddButtonHandler(buttonClass, tbodyId, columns) {
     const addButton = document.querySelector(`.${buttonClass}`);
@@ -114,10 +117,7 @@ function addTableRow(tbody, columns) {
     
     columns.forEach(col => {
         const td = document.createElement('td');
-        const input = col.type === 'textarea' ? 
-            document.createElement('textarea') : 
-            document.createElement('input');
-        
+        const input = col.type === 'textarea' ? document.createElement('textarea') : document.createElement('input');
         input.className = 'form-control';
         if (input.tagName === 'INPUT') {
             input.type = col.type;
@@ -125,11 +125,9 @@ function addTableRow(tbody, columns) {
         input.name = col.key;
         input.placeholder = col.name;
         input.setAttribute('data-field', col.key);
-        
         if (input.tagName === 'TEXTAREA') {
             input.rows = 2;
         }
-        
         td.appendChild(input);
         row.appendChild(td);
     });
@@ -145,6 +143,10 @@ function addTableRow(tbody, columns) {
 
     tbody.appendChild(row);
 }
+
+/* ======================================================
+   Navigation Handlers
+   ====================================================== */
 
 function attachNavigationHandlers() {
     document.querySelectorAll('.step-link').forEach((link, index) => {
@@ -215,3 +217,7 @@ function updateNavigationButtons(step) {
         nextButton.disabled = step === totalSteps;
     }
 }
+
+/* ======================================================
+   End of Updated Structure Loader Code
+   ====================================================== */

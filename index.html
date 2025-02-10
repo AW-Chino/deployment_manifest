@@ -1,527 +1,560 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AppWrap - Deployment Manifest Wizard</title>
-    
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AppWrap - Deployment Manifest Wizard</title>
+  
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body class="bg-light">
-    <div class="wrapper">
-        <!-- Sidebar -->
-        <nav class="sidebar">
-            <div class="sidebar-header">
-                <h3><i class="fas fa-cloud me-2"></i> appwrap</h3>
-                <p class="mb-0">Deployment Wizard</p>
-            </div>
-            <ul class="nav nav-tabs flex-column">
-                <li class="nav-item">
-                    <a class="nav-link step-link active" href="#" data-step="1">
-                        <i class="fas fa-info-circle"></i> Project Information
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link step-link" href="#" data-step="2">
-                        <i class="fas fa-search"></i> Project Scope
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link step-link" href="#" data-step="3">
-                        <i class="fas fa-cogs"></i> Configuration
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link step-link" href="#" data-step="4">
-                        <i class="fas fa-file-alt"></i> ReadMe Doc
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link step-link" href="#" data-step="5">
-                        <i class="fas fa-code"></i> Scripts
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link step-link" href="#" data-step="6">
-                        <i class="fas fa-database"></i> Custom Records
-                    </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link step-link" href="#" data-step="6">
-                      <i class="fas fa-project-diagram"></i> Workflow
-                  </a>
-              </li>
-                <li class="nav-item">
-                    <a class="nav-link step-link" href="#" data-step="7">
-                        <i class="fas fa-puzzle-piece"></i> Components
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link step-link" href="#" data-step="8">
-                        <i class="fas fa-book"></i> Documentation
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link step-link" href="#" data-step="9">
-                        <i class="fas fa-rocket"></i> Deployment
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link step-link" href="#" data-step="10">
-                        <i class="fas fa-address-card"></i> Contact
-                    </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="https://gitlab.com/appwrap/appwrap-2.0/tech-task-tracker/-/blob/code-guide/CODE%20GUIDE/documentation-and-quality-standards.md" target="_blank">
-                      <i class="fas fa-code"></i> 
-                     Code Guide
-                  </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="https://gitlab.com/appwrap/appwrap-2.0/tech-task-tracker/-/blob/code-guide/CODE%20GUIDE/complete-eslint-guide.md" target="_blank">
-                    <i class="fas fa-book"></i>
-                   Eslint
-                </a>
-            </li> 
-            </ul>
-        </nav>
+  <div class="wrapper">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <h3><i class="fas fa-cloud me-2"></i> appwrap</h3>
+        <p class="mb-0">Deployment Wizard</p>
+      </div>
+      <ul class="nav nav-tabs flex-column">
+        <!-- Step 1: Project Information -->
+        <li class="nav-item">
+          <a class="nav-link step-link active" href="#" data-step="1">
+            <i class="fas fa-info-circle"></i> Project Information
+          </a>
+        </li>
+        <!-- Step 2: Project Scope -->
+        <li class="nav-item">
+          <a class="nav-link step-link" href="#" data-step="2">
+            <i class="fas fa-search"></i> Project Scope
+          </a>
+        </li>
+        <!-- Step 3: Playbook (Process & Rollback) -->
+        <li class="nav-item">
+          <a class="nav-link step-link" href="#" data-step="3">
+            <i class="fas fa-book-open"></i> Playbook
+          </a>
+        </li>
+        <!-- Step 4: Configuration (Env. Specific IDs) -->
+        <li class="nav-item">
+          <a class="nav-link step-link" href="#" data-step="4">
+            <i class="fas fa-cogs"></i> Configuration
+          </a>
+        </li>
+        <!-- Step 5: ReadMe Doc -->
+        <li class="nav-item">
+          <a class="nav-link step-link" href="#" data-step="5">
+            <i class="fas fa-file-alt"></i> ReadMe Doc
+          </a>
+        </li>
+        <!-- Step 6: Scripts -->
+        <li class="nav-item">
+          <a class="nav-link step-link" href="#" data-step="6">
+            <i class="fas fa-code"></i> Scripts
+          </a>
+        </li>
+        <!-- Step 7: Custom Records -->
+        <li class="nav-item">
+          <a class="nav-link step-link" href="#" data-step="7">
+            <i class="fas fa-database"></i> Custom Records
+          </a>
+        </li>
+        <!-- Step 8: Workflow -->
+        <li class="nav-item">
+          <a class="nav-link step-link" href="#" data-step="8">
+            <i class="fas fa-project-diagram"></i> Workflow
+          </a>
+        </li>
+        <!-- Step 9: Components -->
+        <li class="nav-item">
+          <a class="nav-link step-link" href="#" data-step="9">
+            <i class="fas fa-puzzle-piece"></i> Components
+          </a>
+        </li>
+        <!-- Step 10: Documentation -->
+        <li class="nav-item">
+          <a class="nav-link step-link" href="#" data-step="10">
+            <i class="fas fa-book"></i> Documentation
+          </a>
+        </li>
+        <!-- Step 11: Deployment -->
+        <li class="nav-item">
+          <a class="nav-link step-link" href="#" data-step="11">
+            <i class="fas fa-rocket"></i> Deployment
+          </a>
+        </li>
+        <!-- Step 12: Contact -->
+        <li class="nav-item">
+          <a class="nav-link step-link" href="#" data-step="12">
+            <i class="fas fa-address-card"></i> Contact
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://htmlpreview.github.io/?https://github.com/AW-Chino/deployment_manifest/blob/main/preview.html" target="_blank">
+            <i class="fas fa-eye"></i> Preview
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://htmlpreview.github.io/?https://github.com/AW-Chino/deployment_manifest/blob/main/readme.html" target="_blank">
+            <i class="fas fa-book"></i>ReadMe
+          </a>
+        </li>
+        <!-- Additional Links -->
+        <li class="nav-item">
+          <a class="nav-link" href="https://gitlab.com/appwrap/appwrap-2.0/tech-task-tracker/-/blob/code-guide/CODE%20GUIDE/documentation-and-quality-standards.md" target="_blank">
+            <i class="fas fa-code"></i> Code Guide
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://gitlab.com/appwrap/appwrap-2.0/tech-task-tracker/-/blob/code-guide/CODE%20GUIDE/complete-eslint-guide.md" target="_blank">
+            <i class="fas fa-cog"></i>
+            Eslint
+          </a>
+        </li>
+      </ul>
+    </nav>
 
-        <!-- Main Content -->
-        <div class="main-content">
-            <div class="top-header">
-                <div class="container-fluid">
-                    <div class="header-content">
-                        <h2>Deployment Manifest Wizard</h2>
-                        <div class="header-actions">
-                            <button id="saveBtn" class="btn btn-outline-primary">
-                                <i class="fas fa-save"></i> Save JSON
-                            </button>
-                            <button id="loadBtn" class="btn btn-outline-secondary">
-                                <i class="fas fa-folder-open"></i> Load JSON
-                            </button>
-                            <input type="file" id="jsonLoadInput" style="display:none" accept=".json">
-                        </div>
-                    </div>
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="top-header">
+        <div class="container-fluid">
+          <div class="header-content">
+            <h2>Deployment Manifest Wizard</h2>
+            <div class="header-actions">
+              <button id="saveBtn" class="btn btn-outline-primary">
+                <i class="fas fa-save"></i> Save JSON
+              </button>
+              <button id="loadBtn" class="btn btn-outline-secondary">
+                <i class="fas fa-folder-open"></i> Load JSON
+              </button>
+              <input type="file" id="jsonLoadInput" style="display:none" accept=".json">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-wrapper">
+        <div class="container-fluid">
+          <div id="wizard">
+            <!-- Step 1: Project Information -->
+            <section id="step-1" class="wizard-step">
+              <div class="section-header">
+                <h4><i class="fas fa-info-circle"></i> Project Information</h4>
+              </div>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label>Project Name</label>
+                    <input type="text" class="form-control" name="project_name" data-field="project_name" placeholder="Enter project name">
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label>Client</label>
+                    <input type="text" class="form-control" name="client" data-field="client" placeholder="Enter client name">
+                  </div>
                 </div>
-            </div>
-
-            <div class="content-wrapper">
-                <div class="container-fluid">
-                    <div id="wizard">
-                        <!-- Step 1: Project Information -->
-                        <section id="step-1" class="wizard-step">
-                            <div class="section-header">
-                                <h4><i class="fas fa-info-circle"></i> Project Information</h4>
-                            </div>
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label>Project Name</label>
-                                        <input type="text" class="form-control" name="project_name" data-field="project_name" placeholder="Enter project name">
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label>Client</label>
-                                        <input type="text" class="form-control" name="client" data-field="client" placeholder="Enter client name">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label>Developer</label>
-                                        <input type="text" class="form-control" name="developer" data-field="developer" placeholder="Enter developer name">
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label>Development Environment</label>
-                                        <input type="text" class="form-control" name="development_environment" data-field="development_environment" placeholder="Enter development environment">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="mt-4">
-                                <h5>Production Version History</h5>
-                                <button class="btn btn-secondary add-version mb-3">Add Version</button>
-                                <table class="table" id="version-history-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Version</th>
-                                            <th>Date</th>
-                                            <th>Change Summary</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="version-history-body" id="version-history-body"></tbody>
-                                </table>
-                            </div>
-                        </section>
-                        <!-- Step 2: Project Scope -->
-                        <section id="step-2" class="wizard-step" style="display: none;">
-                          <div class="section-header">
-                              <h4><i class="fas fa-search"></i> Project Scope</h4>
-                          </div>
-                          
-                          <!-- User Stories -->
-                          <div class="mt-4">
-                              <h5>User Stories</h5>
-                              <button class="btn btn-secondary add-user-story mb-3">Add User Story</button>
-                              <table class="table" id="user-stories-table">
-                                  <thead>
-                                      <tr>
-                                          <th>ID</th>
-                                          <th>Description</th>
-                                          <th>Actions</th>
-                                      </tr>
-                                  </thead>
-                                  <tbody class="user-stories-body" id="user-stories-body"></tbody>
-                              </table>
-                          </div>
-
-                          <!-- Features -->
-                          <div class="mt-4">
-                              <h5>Features</h5>
-                              <button class="btn btn-secondary add-feature mb-3">Add Feature</button>
-                              <table class="table" id="features-table">
-                                  <thead>
-                                      <tr>
-                                          <th>Title</th>
-                                          <th>Description</th>
-                                          <th>Actions</th>
-                                      </tr>
-                                  </thead>
-                                  <tbody class="features-body" id="features-body"></tbody>
-                              </table>
-                          </div>
-
-                          <!-- Usage -->
-                          <div class="mt-4">
-                              <h5>Usage</h5>
-                              <button class="btn btn-secondary add-usage mb-3">Add Usage</button>
-                              <table class="table" id="usage-table">
-                                  <thead>
-                                      <tr>
-                                          <th>Title</th>
-                                          <th>Description</th>
-                                          <th>Actions</th>
-                                      </tr>
-                                  </thead>
-                                  <tbody class="usage-body" id="usage-body"></tbody>
-                              </table>
-                          </div>
-                      </section>
-
-                      <!-- Step 3: Configuration/Process -->
-                      <section id="step-3" class="wizard-step" style="display: none;">
-                          <div class="section-header">
-                              <h4><i class="fas fa-tasks"></i> Process</h4>
-                              <button type="button" id="add-process-btn" class="btn btn-primary">
-                                  <i class="fas fa-plus"></i> Add Process
-                              </button>
-                          </div>
-                          <div id="process-container">
-                              <!-- Dynamically added process blocks will appear here -->
-                          </div>
-  <!-- New Rollback Section -->
-   <hr>
-  <div class="mt-4">
-    <div class="section-header">
-      <h4><i class="fas fa-tasks"></i> Rollback</h4>
-      <button type="button" id="add-rollback-btn" class="btn btn-primary">
-        <i class="fas fa-plus"></i> Add Rollback
-      </button>
-  </div>
-
-    <div id="rollback-container">
-      <!-- Dynamically added rollback blocks will appear here -->
-    </div>
-  </div>
-
-                          <!-- Environment Specific IDs -->
-                          <div class="mt-4">
-                              <h5>Environment Specific IDs</h5>
-                              <button class="btn btn-secondary add-environment-id mb-3">Add Environment ID</button>
-                              <table class="table" id="environment-ids-table">
-                                  <thead>
-                                      <tr>
-                                          <th>Name</th>
-                                          <th>Notes</th>
-                                          <th>Sandbox Value</th>
-                                          <th>Production Value</th>
-                                          <th>Actions</th>
-                                      </tr>
-                                  </thead>
-                                  <tbody class="environment-ids-body" id="environment-ids-body"></tbody>
-                              </table>
-                          </div>
-                      </section>
-                      <!-- Step 4: ReadMe Doc -->
-                      <section id="step-4" class="wizard-step" style="display: none;">
-                        <div class="section-header">
-                            <h4><i class="fas fa-file-alt"></i> ReadMe Doc</h4>
-                        </div>
-
-                        <!-- Deployment Dependencies -->
-                        <div class="mt-4">
-                            <h5>Deployment Dependencies</h5>
-                            <button class="btn btn-secondary add-deployment-dependency mb-3">Add Dependency</button>
-                            <table class="table" id="deployment-dependencies-table">
-                                <thead>
-                                    <tr>
-                                        <th>Dependency Name</th>
-                                        <th>Dependency Version</th>
-                                        <th>Dependency License</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="deployment-dependencies-body" id="deployment-dependencies-body"></tbody>
-                            </table>
-                        </div>
-
-                        <!-- Dev Dependencies -->
-                        <div class="mt-4">
-                            <h5>Dev Dependencies</h5>
-                            <button class="btn btn-secondary add-dev-dependency mb-3">Add Dev Dependency</button>
-                            <table class="table" id="dev-dependencies-table">
-                                <thead>
-                                    <tr>
-                                        <th>Dependency Name</th>
-                                        <th>Dependency Version</th>
-                                        <th>Dependency License</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="dev-dependencies-body" id="dev-dependencies-body"></tbody>
-                            </table>
-                        </div>
-                    </section>
-
-                    <!-- Step 5: Scripts -->
-                    <section id="step-5" class="wizard-step" style="display: none;">
-                        <div class="section-header">
-                            <h4><i class="fas fa-code"></i> Scripts</h4>
-                            <button type="button" id="add-script-btn" class="btn btn-primary">
-                                <i class="fas fa-plus"></i> Add Script
-                            </button>
-                        </div>
-                        <div id="scripts-container">
-                            <!-- Dynamically added script blocks will appear here -->
-                        </div>
-                    </section>
-                    <!-- Step 6: Custom Records -->
-                    <section id="step-6" class="wizard-step" style="display: none;">
-                      <div class="section-header">
-                          <h4><i class="fas fa-project-diagram"></i> Custom Records</h4>
-                          <button type="button" id="add-record-btn" class="btn btn-primary">
-                              <i class="fas fa-plus"></i> Add Custom Record
-                          </button>
-                      </div>
-                      <div id="records-container">
-                          <!-- Dynamically added custom record blocks will appear here -->
-                      </div>
-<hr>
-                       <!-- New Workflow Section -->
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label>Developer</label>
+                    <input type="text" class="form-control" name="developer" data-field="developer" placeholder="Enter developer name">
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label>Development Environment</label>
+                    <input type="text" class="form-control" name="development_environment" data-field="development_environment" placeholder="Enter development environment">
+                  </div>
+                </div>
+              </div>
               <div class="mt-4">
-                <div class="section-header">
-                  <h4><i class="fas fa-database"></i> Workflow</h4>
+                <h5>Production Version History</h5>
+                <button class="btn btn-secondary add-version mb-3">Add Version</button>
+                <table class="table" id="version-history-table">
+                  <thead>
+                    <tr>
+                      <th>Version</th>
+                      <th>Date</th>
+                      <th>Change Summary</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody class="version-history-body" id="version-history-body"></tbody>
+                </table>
+              </div>
+            </section>
+
+            <!-- Step 2: Project Scope -->
+            <section id="step-2" class="wizard-step" style="display: none;">
+              <div class="section-header">
+                <h4><i class="fas fa-search"></i> Project Scope</h4>
+              </div>
+              <!-- User Stories -->
+              <div class="mt-4">
+                <h5>User Stories</h5>
+                <button class="btn btn-secondary add-user-story mb-3">Add User Story</button>
+                <table class="table" id="user-stories-table">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Description</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody class="user-stories-body" id="user-stories-body"></tbody>
+                </table>
+              </div>
+              <!-- Features -->
+              <div class="mt-4">
+                <h5>Features</h5>
+                <button class="btn btn-secondary add-feature mb-3">Add Feature</button>
+                <table class="table" id="features-table">
+                  <thead>
+                    <tr>
+                      <th>Title</th>
+                      <th>Description</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody class="features-body" id="features-body"></tbody>
+                </table>
+              </div>
+              <!-- Usage -->
+              <div class="mt-4">
+                <h5>Usage</h5>
+                <button class="btn btn-secondary add-usage mb-3">Add Usage</button>
+                <table class="table" id="usage-table">
+                  <thead>
+                    <tr>
+                      <th>Title</th>
+                      <th>Description</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody class="usage-body" id="usage-body"></tbody>
+                </table>
+              </div>
+            </section>
+
+            <!-- Step 3: Playbook (Process and Rollback) -->
+            <section id="step-3" class="wizard-step" style="display: none;">
+              <div class="section-header">
+                <h4><i class="fas fa-book-open"></i> Playbook</h4>
+              </div>
+              <!-- Process Section -->
+              <div class="mb-4">
+                <h5>Process</h5>
+                <button type="button" id="add-process-btn" class="btn btn-primary">
+                  <i class="fas fa-plus"></i> Add Process
+                </button>
+                <br>
+                <br>
+                <div id="process-container">
+                  <!-- Dynamically added process blocks will appear here -->
+                </div>
+              </div>
+              <!-- Rollback Section -->
+              <div class="mb-4">
+                <h5>Rollback</h5>
+                <button type="button" id="add-rollback-btn" class="btn btn-primary">
+                  <i class="fas fa-plus"></i> Add Rollback
+                </button>
+                <br>
+                <br>
+
+                <div id="rollback-container">
+                  <!-- Dynamically added rollback blocks will appear here -->
+                </div>
+              </div>
+            </section>
+
+            <!-- Step 4: Configuration (Environment Specific IDs only) -->
+            <section id="step-4" class="wizard-step" style="display: none;">
+              <div class="section-header">
+                <h4><i class="fas fa-cogs"></i> Configuration</h4>
+              </div>
+              <div class="mt-4">
+                <h5>Environment Specific IDs</h5>
+                <button class="btn btn-secondary add-environment-id mb-3">Add Environment ID</button>
+                <table class="table" id="environment-ids-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Notes</th>
+                      <th>Sandbox Value</th>
+                      <th>Production Value</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody class="environment-ids-body" id="environment-ids-body"></tbody>
+                </table>
+              </div>
+            </section>
+
+            <!-- Step 5: ReadMe Doc -->
+            <section id="step-5" class="wizard-step" style="display: none;">
+              <div class="section-header">
+                <h4><i class="fas fa-file-alt"></i> ReadMe Doc</h4>
+              </div>
+              <!-- Deployment Dependencies -->
+              <div class="mt-4">
+                <h5>Deployment Dependencies</h5>
+                <button class="btn btn-secondary add-deployment-dependency mb-3">Add Dependency</button>
+                <table class="table" id="deployment-dependencies-table">
+                  <thead>
+                    <tr>
+                      <th>Dependency Name</th>
+                      <th>Dependency Version</th>
+                      <th>Dependency License</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody class="deployment-dependencies-body" id="deployment-dependencies-body"></tbody>
+                </table>
+              </div>
+              <!-- Dev Dependencies -->
+              <div class="mt-4">
+                <h5>Dev Dependencies</h5>
+                <button class="btn btn-secondary add-dev-dependency mb-3">Add Dev Dependency</button>
+                <table class="table" id="dev-dependencies-table">
+                  <thead>
+                    <tr>
+                      <th>Dependency Name</th>
+                      <th>Dependency Version</th>
+                      <th>Dependency License</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody class="dev-dependencies-body" id="dev-dependencies-body"></tbody>
+                </table>
+              </div>
+            </section>
+
+            <!-- Step 6: Scripts -->
+            <section id="step-6" class="wizard-step" style="display: none;">
+              <div class="section-header">
+                <h4><i class="fas fa-code"></i> Scripts</h4>
+                <button type="button" id="add-script-btn" class="btn btn-primary">
+                  <i class="fas fa-plus"></i> Add Script
+                </button>
+              </div>
+              <div id="scripts-container">
+                <!-- Dynamically added script blocks will appear here -->
+              </div>
+            </section>
+
+            <!-- Step 7: Custom Records -->
+            <section id="step-7" class="wizard-step" style="display: none;">
+              <div class="section-header">
+                <h4><i class="fas fa-database"></i> Custom Records</h4>
+                <button type="button" id="add-record-btn" class="btn btn-primary">
+                  <i class="fas fa-plus"></i> Add Custom Record
+                </button>
+              </div>
+              <div id="records-container">
+                <!-- Dynamically added custom record blocks will appear here -->
+              </div>
+            </section>
+
+            <!-- Step 8: Workflow -->
+            <section id="step-8" class="wizard-step" style="display: none;">
+              <div class="section-header">
+                <h4><i class="fas fa-project-diagram"></i> Workflow</h4>
                 <button type="button" id="add-workflow-btn" class="btn btn-primary">
                   <i class="fas fa-plus"></i> Add Workflow
                 </button>
               </div>
-                <div id="workflow-container">
-                  <!-- Dynamically added workflow blocks will appear here -->
+              <div id="workflow-container">
+                <!-- Dynamically added workflow blocks will appear here -->
+              </div>
+            </section>
+
+            <!-- Step 9: Components -->
+            <section id="step-9" class="wizard-step" style="display: none;">
+              <div class="section-header">
+                <h4><i class="fas fa-puzzle-piece"></i> Components</h4>
+              </div>
+              <!-- Custom Fields -->
+              <div class="mt-4">
+                <h5>Custom Fields</h5>
+                <button class="btn btn-secondary add-custom-field mb-3">Add Custom Field</button>
+                <table class="table" id="custom-fields-table">
+                  <thead>
+                    <tr>
+                      <th>Field Name</th>
+                      <th>ID</th>
+                      <th>Description</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody class="custom-fields-body" id="custom-fields-body"></tbody>
+                </table>
+              </div>
+              <!-- Templates -->
+              <div class="mt-4">
+                <h5>Templates</h5>
+                <button class="btn btn-secondary add-template mb-3">Add Template</button>
+                <table class="table" id="templates-table">
+                  <thead>
+                    <tr>
+                      <th>Template Name</th>
+                      <th>ID</th>
+                      <th>Type</th>
+                      <th>Description</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody class="templates-body" id="templates-body"></tbody>
+                </table>
+              </div>
+              <!-- Saved Searches -->
+              <div class="mt-4">
+                <h5>Saved Searches</h5>
+                <button class="btn btn-secondary add-saved-search mb-3">Add Saved Search</button>
+                <table class="table" id="saved-searches-table">
+                  <thead>
+                    <tr>
+                      <th>Search Name</th>
+                      <th>ID</th>
+                      <th>Description</th>
+                      <th>Criteria</th>
+                      <th>Results</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody class="saved-searches-body" id="saved-searches-body"></tbody>
+                </table>
+              </div>
+            </section>
+
+            <!-- Step 10: Documentation -->
+            <section id="step-10" class="wizard-step" style="display: none;">
+              <div class="section-header">
+                <h4><i class="fas fa-book"></i> Documentation</h4>
+              </div>
+              <!-- Troubleshooting table -->
+              <h5 class="mt-4">Troubleshooting</h5>
+              <button class="btn btn-secondary add-troubleshooting mb-3">Add Issue</button>
+              <table class="table" id="troubleshooting-table">
+                <thead>
+                  <tr>
+                    <th>Error/Issue</th>
+                    <th>Cause</th>
+                    <th>Resolution</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody class="troubleshooting-body" id="troubleshooting-body"></tbody>
+              </table>
+            </section>
+
+            <!-- Step 11: Deployment -->
+            <section id="step-11" class="wizard-step" style="display: none;">
+              <div class="section-header">
+                <h4><i class="fas fa-rocket"></i> Deployment Checklist</h4>
+              </div>
+              <div class="form-group">
+                <div class="form-check mb-2">
+                  <input type="checkbox" class="form-check-input" id="production_backup" name="production_version_backed_up" data-field="production_version_backed_up">
+                  <label class="form-check-label" for="production_backup">Production Version Backed Up and in Git</label>
+                </div>
+                <div class="form-check mb-2">
+                  <input type="checkbox" class="form-check-input" id="code_documented" name="code_changes_documented" data-field="code_changes_documented">
+                  <label class="form-check-label" for="code_documented">Code Changes Fully Documented [Readme Doc]</label>
+                </div>
+                <div class="form-check mb-2">
+                  <input type="checkbox" class="form-check-input" id="fields_listed" name="fields_records_listed" data-field="fields_records_listed">
+                  <label class="form-check-label" for="fields_listed">All Fields and Records Listed</label>
+                </div>
+                <div class="form-check mb-2">
+                  <input type="checkbox" class="form-check-input" id="rollback_defined" name="rollback_steps_defined" data-field="rollback_steps_defined">
+                  <label class="form-check-label" for="rollback_defined">Rollback Steps Defined</label>
+                </div>
+                <div class="form-check mb-2">
+                  <input type="checkbox" class="form-check-input" id="deployment_reviewed" name="deployment_reviewed" data-field="deployment_reviewed">
+                  <label class="form-check-label" for="deployment_reviewed">Deployment Reviewed</label>
+                </div>
+                <div class="form-check mb-2">
+                  <input type="checkbox" class="form-check-input" id="functional_tested" name="tested_by_functional" data-field="tested_by_functional">
+                  <label class="form-check-label" for="functional_tested">Tested Completely by Functional Team</label>
+                </div>
+                <div class="form-check mb-2">
+                  <input type="checkbox" class="form-check-input" id="client_tested" name="tested_by_client" data-field="tested_by_client">
+                  <label class="form-check-label" for="client_tested">Tested Completely by Client</label>
+                </div>
+                <div class="form-check mb-2">
+                  <input type="checkbox" class="form-check-input" id="plan_approved" name="deployment_plan_approved" data-field="deployment_plan_approved">
+                  <label class="form-check-label" for="plan_approved">Deployment Plan Approved by Client</label>
                 </div>
               </div>
-                  </section>
+            </section>
 
-                  <!-- Step 7: Components -->
-                  <section id="step-7" class="wizard-step" style="display: none;">
-                      <div class="section-header">
-                          <h4><i class="fas fa-puzzle-piece"></i> Components</h4>
-                      </div>
-
-                      <!-- Custom Fields -->
-                      <div class="mt-4">
-                          <h5>Custom Fields</h5>
-                          <button class="btn btn-secondary add-custom-field mb-3">Add Custom Field</button>
-                          <table class="table" id="custom-fields-table">
-                              <thead>
-                                  <tr>
-                                      <th>Field Name</th>
-                                      <th>ID</th>
-                                      <th>Description</th>
-                                      <th>Actions</th>
-                                  </tr>
-                              </thead>
-                              <tbody class="custom-fields-body" id="custom-fields-body"></tbody>
-                          </table>
-                      </div>
-
-                      <!-- Templates -->
-                      <div class="mt-4">
-                          <h5>Templates</h5>
-                          <button class="btn btn-secondary add-template mb-3">Add Template</button>
-                          <table class="table" id="templates-table">
-                              <thead>
-                                  <tr>
-                                      <th>Template Name</th>
-                                      <th>ID</th>
-                                      <th>Type</th>
-                                      <th>Description</th>
-                                      <th>Actions</th>
-                                  </tr>
-                              </thead>
-                              <tbody class="templates-body" id="templates-body"></tbody>
-                          </table>
-                      </div>
-
-                      <!-- Saved Searches -->
-                      <div class="mt-4">
-                          <h5>Saved Searches</h5>
-                          <button class="btn btn-secondary add-saved-search mb-3">Add Saved Search</button>
-                          <table class="table" id="saved-searches-table">
-                              <thead>
-                                  <tr>
-                                      <th>Search Name</th>
-                                      <th>ID</th>
-                                      <th>Description</th>
-                                      <th>Criteria</th>
-                                      <th>Results</th>
-                                      <th>Actions</th>
-                                  </tr>
-                              </thead>
-                              <tbody class="saved-searches-body" id="saved-searches-body"></tbody>
-                          </table>
-                      </div>
-                  </section>
-                  <!-- Step 8: Documentation -->
-                  <section id="step-8" class="wizard-step" style="display: none;">
-                    <div class="section-header">
-                        <h4><i class="fas fa-book"></i> Documentation</h4>
-                    </div>
-                    
-                    <!-- Troubleshooting table -->
-                    <h5 class="mt-4">Troubleshooting</h5>
-                    <button class="btn btn-secondary add-troubleshooting mb-3">Add Issue</button>
-                    <table class="table" id="troubleshooting-table">
-                        <thead>
-                            <tr>
-                                <th>Error/Issue</th>
-                                <th>Cause</th>
-                                <th>Resolution</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody class="troubleshooting-body" id="troubleshooting-body"></tbody>
-                    </table>
-                </section>
-
-                <!-- Step 9: Deployment -->
-                <section id="step-9" class="wizard-step" style="display: none;">
-                    <div class="section-header">
-                        <h4><i class="fas fa-rocket"></i> Deployment Checklist</h4>
-                    </div>
-                    <div class="form-group">
-                        <div class="form-check mb-2">
-                            <input type="checkbox" class="form-check-input" id="production_backup" name="production_version_backed_up" data-field="production_version_backed_up">
-                            <label class="form-check-label" for="production_backup">Production Version Backed Up and in Git</label>
-                        </div>
-                        <div class="form-check mb-2">
-                            <input type="checkbox" class="form-check-input" id="code_documented" name="code_changes_documented" data-field="code_changes_documented">
-                            <label class="form-check-label" for="code_documented">Code Changes Fully Documented [Readme Doc]</label>
-                        </div>
-                        <div class="form-check mb-2">
-                            <input type="checkbox" class="form-check-input" id="fields_listed" name="fields_records_listed" data-field="fields_records_listed">
-                            <label class="form-check-label" for="fields_listed">All Fields and Records Listed</label>
-                        </div>
-                        <div class="form-check mb-2">
-                            <input type="checkbox" class="form-check-input" id="rollback_defined" name="rollback_steps_defined" data-field="rollback_steps_defined">
-                            <label class="form-check-label" for="rollback_defined">Rollback Steps Defined</label>
-                        </div>
-                        <div class="form-check mb-2">
-                            <input type="checkbox" class="form-check-input" id="deployment_reviewed" name="deployment_reviewed" data-field="deployment_reviewed">
-                            <label class="form-check-label" for="deployment_reviewed">Deployment Reviewed</label>
-                        </div>
-                        <div class="form-check mb-2">
-                            <input type="checkbox" class="form-check-input" id="functional_tested" name="tested_by_functional" data-field="tested_by_functional">
-                            <label class="form-check-label" for="functional_tested">Tested Completely by Functional Team</label>
-                        </div>
-                        <div class="form-check mb-2">
-                            <input type="checkbox" class="form-check-input" id="client_tested" name="tested_by_client" data-field="tested_by_client">
-                            <label class="form-check-label" for="client_tested">Tested Completely by Client</label>
-                        </div>
-                        <div class="form-check mb-2">
-                            <input type="checkbox" class="form-check-input" id="plan_approved" name="deployment_plan_approved" data-field="deployment_plan_approved">
-                            <label class="form-check-label" for="plan_approved">Deployment Plan Approved by Client</label>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Step 10: Contact -->
-                <section id="step-10" class="wizard-step" style="display: none;">
-                    <div class="section-header">
-                        <h4><i class="fas fa-address-card"></i> Contact</h4>
-                    </div>
-
-                    <!-- Developers -->
-                    <div class="mt-4">
-                        <h5>Developers</h5>
-                        <button class="btn btn-secondary add-developer mb-3">Add Developer</button>
-                        <table class="table" id="developers-table">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Note</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody class="developers-body" id="developers-body"></tbody>
-                        </table>
-                    </div>
-
-                    <!-- Functional -->
-                    <div class="mt-4">
-                        <h5>Functional</h5>
-                        <button class="btn btn-secondary add-functional mb-3">Add Functional Contact</button>
-                        <table class="table" id="functional-table">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Note</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody class="functional-body" id="functional-body"></tbody>
-                        </table>
-                    </div>
-
-                    <!-- License -->
-                    <div class="mt-4">
-                        <h5>License</h5>
-                        <div class="form-group">
-                            <textarea class="form-control" rows="3" name="license" data-field="license" readonly>Copyright 2025 AppWrap, Inc. All Rights Reserved.</textarea>
-                        </div>
-                    </div>
-                </section>
-            </div>
+            <!-- Step 12: Contact -->
+            <section id="step-12" class="wizard-step" style="display: none;">
+              <div class="section-header">
+                <h4><i class="fas fa-address-card"></i> Contact</h4>
+              </div>
+              <!-- Developers -->
+              <div class="mt-4">
+                <h5>Developers</h5>
+                <button class="btn btn-secondary add-developer mb-3">Add Developer</button>
+                <table class="table" id="developers-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Note</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody class="developers-body" id="developers-body"></tbody>
+                </table>
+              </div>
+              <!-- Functional -->
+              <div class="mt-4">
+                <h5>Functional</h5>
+                <button class="btn btn-secondary add-functional mb-3">Add Functional Contact</button>
+                <table class="table" id="functional-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Note</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody class="functional-body" id="functional-body"></tbody>
+                </table>
+              </div>
+              <!-- License -->
+              <div class="mt-4">
+                <h5>License</h5>
+                <div class="form-group">
+                  <textarea class="form-control" rows="3" name="license" data-field="license" readonly>
+Copyright 2025 AppWrap, Inc. All Rights Reserved.
+                  </textarea>
+                </div>
+              </div>
+            </section>
+          </div>
         </div>
+      </div>
     </div>
 
-    <div class="bottom-navigation">
-        <div class="container-fluid">
-            <div class="navigation-content">
-                <button id="prev-btn" class="btn btn-secondary">
-                    <i class="fas fa-arrow-left"></i> Previous
-                </button>
-                <button id="next-btn" class="btn btn-primary">
-                    Next <i class="fas fa-arrow-right"></i>
-                </button>
-            </div>
+  <!--  <div class="bottom-navigation">
+      <div class="container-fluid">
+        <div class="navigation-content">
+          <button id="prev-btn" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Previous
+          </button>
+          <button id="next-btn" class="btn btn-primary">
+            Next <i class="fas fa-arrow-right"></i>
+          </button>
         </div>
+      </div>
     </div>
+  </div>-->
 </div>
-</div>
+
+<!-- Templates -->
 
 <!-- Script Block Template -->
 <template id="script-block-template">
@@ -688,7 +721,6 @@
       <input type="text" class="form-control w-50" name="record_name" data-field="record_name" placeholder="Enter record name">
       <button type="button" class="btn btn-danger remove-record">Remove Record</button>
     </div>
-
     <div class="form-group">
       <div class="row">
         <div class="col-md-6 mb-3">
@@ -702,11 +734,9 @@
         <textarea class="form-control" rows="3" name="record_description" data-field="record_description" placeholder="Record Description"></textarea>
       </div>
     </div>
-
     <div class="record-tabs">
       <button class="tab-button active" data-tab="fields">Fields</button>
     </div>
-
     <div class="tab-content mt-3">
       <div id="fields" class="tab-panel active">
         <button class="btn btn-secondary add-field mb-3">Add Field</button>
@@ -734,7 +764,6 @@
       <input type="text" class="form-control w-50" name="process_name" data-field="process_name" placeholder="Enter process name">
       <button type="button" class="btn btn-danger remove-process">Remove Process</button>
     </div>
-
     <div class="tab-content mt-3">
       <div class="table-responsive">
         <button class="btn btn-secondary add-step mb-3">Add Step</button>
@@ -751,6 +780,7 @@
     </div>
   </div>
 </template>
+
 <!-- New Template: Rollback Block -->
 <template id="rollback-block-template">
   <div class="rollback-block border p-3 mb-3" data-block-type="rollback">

@@ -25,10 +25,11 @@ function initializeSections() {
     });
 
     document.getElementById("step-1").style.display = "block"; // Show only step 1 on load
-
 }
+
 // ===================
 // New: Rollback Section
+// (Code differences functionality removed)
 // ===================
 
 function initializeRollbackSection() {
@@ -59,60 +60,13 @@ function setupRollbackBlock(block) {
         removeRollbackBtn.addEventListener("click", () => block.remove());
     }
 
-    // Set up Code Differences table add button
-    const addCodeDiffBtn = block.querySelector(".add-code-difference");
-    const codeDiffsBody = block.querySelector(".code-differences-body");
-
-    if (addCodeDiffBtn && codeDiffsBody) {
-        addCodeDiffBtn.addEventListener("click", () => {
-            addCodeDiffRow(codeDiffsBody);
-        });
-    }
-
+    // NOTE: The "code differences" functionality has been removed.
     // Add data attributes for JSON handling
     addDataAttributes(block, 'rollback');
 }
 
-function addCodeDiffRow(tbody) {
-    const row = document.createElement("tr");
-    const columns = [
-        { name: 'Script', type: 'text', key: 'script' },
-        { name: 'Description', type: 'textarea', key: 'description' },
-        { name: 'Code', type: 'textarea', key: 'code' }
-    ];
-
-    columns.forEach(col => {
-        const td = document.createElement("td");
-        let input;
-        if (col.type === 'textarea') {
-            input = document.createElement("textarea");
-            input.rows = 2;
-        } else {
-            input = document.createElement("input");
-            input.type = col.type;
-        }
-        input.className = "form-control";
-        input.name = col.key;
-        input.placeholder = col.name;
-        input.setAttribute('data-field', col.key);
-        td.appendChild(input);
-        row.appendChild(td);
-    });
-
-    // Add remove button cell
-    const actionTd = document.createElement("td");
-    const removeBtn = document.createElement("button");
-    removeBtn.textContent = "Remove";
-    removeBtn.className = "btn btn-danger btn-sm";
-    removeBtn.onclick = () => row.remove();
-    actionTd.appendChild(removeBtn);
-    row.appendChild(actionTd);
-
-    tbody.appendChild(row);
-}
-
 // ===================
-// New: Workflow Section (Custom Records)
+// New: Workflow Section (Separate Page)
 // ===================
 
 function initializeWorkflowSection() {
@@ -194,6 +148,11 @@ function addActionRow(tbody) {
     tbody.appendChild(row);
 }
 
+// ===================
+// Regular Tables, Navigation, and Other Sections
+// (Functions below remain unchanged.)
+// ===================
+
 function initializeRegularTables() {
     // Project Information (Step 1)
     attachAddHandler('add-version', 'version-history-body', [
@@ -218,7 +177,7 @@ function initializeRegularTables() {
         { name: 'Description', type: 'textarea', key: 'usage_description' }
     ]);
 
-    // ReadMe Doc (Step 4)
+    // ReadMe Doc (Step 5)
     attachAddHandler('add-deployment-dependency', 'deployment-dependencies-body', [
         { name: 'Dependency Name', type: 'text', key: 'dependency_name' },
         { name: 'Dependency Version', type: 'text', key: 'dependency_version' },
@@ -231,7 +190,7 @@ function initializeRegularTables() {
         { name: 'Dependency License', type: 'text', key: 'dependency_license' }
     ]);
 
-    // Components (Step 7)
+    // Components (Step 9)
     attachAddHandler('add-custom-field', 'custom-fields-body', [
         { name: 'Field Name', type: 'text', key: 'field_name' },
         { name: 'ID', type: 'text', key: 'field_id' },
@@ -253,7 +212,7 @@ function initializeRegularTables() {
         { name: 'Results', type: 'textarea', key: 'search_results' }
     ]);
 
-    // Contact (Step 10)
+    // Contact (Step 12)
     attachAddHandler('add-developer', 'developers-body', [
         { name: 'Name', type: 'text', key: 'developer_name' },
         { name: 'Email', type: 'email', key: 'developer_email' },
@@ -277,7 +236,6 @@ function attachAddHandler(buttonClass, tbodyId, columns) {
         });
     }
 }
-
 
 function attachEventListeners() {
     // Navigation event listeners
@@ -353,7 +311,6 @@ function setupTabNavigation(block) {
         });
     });
 }
-
 
 function addNewScript(container, template) {
     const scriptBlock = template.content.cloneNode(true).firstElementChild;
@@ -728,18 +685,6 @@ function addFieldRow(tbody) {
 
 function addStepRow(tbody) {
     const row = document.createElement("tr");
-    /*
-    // Step Number cell
-    const numberCell = document.createElement("td");
-    const numberInput = document.createElement("input");
-    numberInput.type = "text";
-    numberInput.className = "form-control";
-    numberInput.placeholder = "Step Number";
-    numberInput.name = "step_number";
-    numberInput.setAttribute('data-field', 'step_number');
-    numberCell.appendChild(numberInput);
-    row.appendChild(numberCell);*/
-    
     // Description cell
     const descCell = document.createElement("td");
     const descTextarea = document.createElement("textarea");
@@ -802,7 +747,6 @@ function addDataAttributes(block, type) {
     // Add type identifier to the block
     block.setAttribute('data-block-type', type);
 }
-
 
 function clearDynamicBlocks() {
     // Clear all dynamic block containers
