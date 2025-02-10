@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Markdown README Generator</title>
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <link
+    href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css"
+    rel="stylesheet"
+  />
+  <style>
+    /* Basic styling */
+    body {
+      background: #fff;
+      color: #01395A;
+      font-family: "Times New Roman", Times, serif;
+      line-height: 1.6;
+      padding: 20px;
+    }
+    h1, h2 {
+      color: #16A089;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    /* File input area */
+    #initial-screen {
+      min-height: 300px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      margin: 50px auto;
+      border: 2px dashed #ccc;
+      border-radius: 8px;
+      padding: 40px;
+      background: #f8f9fa;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    #initial-screen:hover {
+      border-color: #0d6efd;
+      background: #f0f7ff;
+    }
+    /* Markdown display */
+    #docContainer {
+      display: none;
+      margin-top: 30px;
+    }
+    pre {
+      background: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 4px;
+      padding: 15px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+    }
+    #copyButton {
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- File Input Section -->
+    <div id="initial-screen" onclick="document.getElementById('jsonFileInput').click()">
+      <h1 class="mb-4">Markdown README Generator</h1>
+      <p class="h5 mb-3">Click or drag and drop to load your deployment manifest (JSON file)</p>
+      <p class="text-muted mb-3">Select a JSON file to generate the Markdown README</p>
+      <input type="file" class="d-none" id="jsonFileInput" accept="application/json" />
+      <button class="btn btn-primary">Select File</button>
+    </div>
+
+    <!-- Generated Markdown Output -->
+    <div id="docContainer">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Generated Markdown README</h2>
+        <button id="copyButton" class="btn btn-secondary">
+          <i class="fas fa-copy"></i> Copy All
+        </button>
+      </div>
+      <pre><code id="docCode"></code></pre>
+    </div>
+  </div>
+
+  <script>
+    // FILE & JSON LOADING
+    const dropZone = document.querySelector("#initial-screen");
+    const initialScreen = document.getElementById("initial-screen");
+    const docContainer = document.getElementById("docContainer");
+    const docCode = document.getElementById("docCode");
+    const copyButton = document.getElementById("copyButton");
+
+    ["dragenter", "dragover", "dragleave", "drop"].forEach(eventName => {
+      dropZone.addEventListener(eventName, preventDefaults, false);
+      document.body.addEventListener(eventName, preventDefaults, false);
+    });
+    function preventDefaults(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    ["dragenter", "dragover"].forEach(eventName => {
+      dropZone.addEventListener(eventName, () => dropZone.classList.add("border-primary", "bg-light"), false);
+    });
+    ["dragleave", "drop"].forEach(eventName => {
+      dropZone.addEventListener(eventName, () => dropZone.classList.remove("border-primary", "bg-light"), false);
+    });
+    function handleDrop(e) {
+      const dt = e.dataTransfer;
+      const file = dt.files[0];
+      if (file) {
+        handleFile(file);
+      }
+    }
+    dropZone.addEventListener("drop", handleDrop, false);
+    document.getElementById("jsonFileInput").addEventListener("change", function (e) {
+      const file = e.target.files[0];
+      if (file) handleFile(file);
+    });
+    function handleFile(file) {
+      const reader = new FileReader();
+      reader.onload = function (event) {
+        try {
+          // Remove BOM if present
+          const fileContent = event.target.result.replace(/^\uFEFF/, "");
+          const data = JSON.parse(fileContent);
+          console.log("Parsed JSON data:", data);
+          displayDocument(data);
+          initialScreen.style.display = "none";
+          docContainer.style.display = "block";
+        } catch (err) {
+          console.error("Error parsing JSON:", err);
+          alert("Error parsing JSON file. Please check the file format and try again.");
+        }
+      };
+      reader.onerror = function () {
+        console.error("File reading error");
+        alert("Error reading file. Please try again.");
+      };
+      reader.readAsText(file);
+    }
+
+    // MARKDOWN DOCUMENT GENERATION
+    function displayDocument(data) {
+      try {
+        const markdown = generateMarkdownDocument(data);
+        docCode.textContent = markdown;
+      } catch (e) {
+        console.error("Error generating document:", e);
+        alert("An error occurred while generating the document. Please check the console for details.");
+      }
+    }
+
+    function getCurrentDateString() {
+      const d = new Date();
+      return d.toISOString().slice(0, 10);
+    }
+
+    function generateMarkdownDocument(data) {
+      let md = "";
+      
+      // --- Header & Introduction (Step-1) ---
+      const step1 = data["step-1"] || {};
+      md += `# ${step1.project_name || "[Project Name]"}\n`;
+      md += `___\n`;
+      md += `${step1.introduction || "Start with a brief introduction of your project and its purpose."}\n\n`;
+      md += `- The audience of this README is our internal developers\n`;
+      md += `- A developer is likely reading this README either to maintain, enhance, or adapt the project for another client\n`;
+      md += `  - Keep your audience's motivation in mind when deciding what you include\n`;
+      md += `- This README is in addition to the Deployment Manifest and User Stories\n\n`;
+      
+      // --- Checklist ---
+      md += `## Checklist\n\n`;
+      md += `---\n`;
+      md += `- The checklist provides quick links to AppWrap's core development standards and best practices\n\n`;
+      md += `- [ ] Project upholds [AppWrap's Deployment Standards and Best Practices](https://drive.google.com/file/d/1bYRw2rDC2-eFiLa3FVQVpDciEolIRBbs/view?usp=drive_link)\n`;
+      md += `- [ ] Scripts include [AppWrap's Code Disclaimer and Header](https://placeholder-link.com)\n`;
+      md += `- [ ] Contributors adhere to [AppWrap's Developer and Technical Resources Expectations](https://docs.google.com/document/d/1fEv4BEYmUTOiqKibxuMdngFqAKNljBnC4XhAMHbnwZA/edit)\n\n`;
+      
+      // --- Table of Contents ---
+      md += `## Table of Contents\n\n`;
+      md += `- [${step1.project_name || "[Project Name]"}](#project-name)\n`;
+      md += `  - [Checklist](#checklist)\n`;
+      md += `  - [Table of Contents](#table-of-contents)\n`;
+      md += `  - [1. User Stories and Features](#1-user-stories-and-features)\n`;
+      md += `  - [2. Dependencies](#2-dependencies)\n`;
+      md += `  - [3. Installation](#3-installation)\n`;
+      md += `  - [4. File Structure](#4-file-structure)\n`;
+      md += `    - [Primary Scripts](#primary-scripts)\n`;
+      md += `    - [Library Scripts](#library-scripts)\n`;
+      md += `  - [5. Configuration](#5-configuration)\n`;
+      md += `  - [6. Script Details](#6-script-details)\n`;
+      md += `  - [7. Additional Components - Custom Records](#7-additional-components---custom-records)\n`;
+      md += `  - [8. Templates, Saved Searches & Custom Fields](#8-templates-saved-searches--custom-fields)\n`;
+      md += `  - [9. Troubleshooting](#9-troubleshooting)\n`;
+      md += `  - [10. Deployment Checklist](#10-deployment-checklist)\n`;
+      md += `  - [11. Contact Information](#11-contact-information)\n`;
+      md += `  - [12. License](#12-license)\n\n`;
+      
+      // --- 1. User Stories and Features (Step-2) ---
+      const step2 = data["step-2"] || {};
+      md += `## 1. User Stories and Features\n\n`;
+      // User Stories
+      md += `### User Stories\n\n`;
+      if (step2["user-stories-body"] && step2["user-stories-body"].length) {
+        step2["user-stories-body"].forEach(story => {
+          md += `- **${story.story_id || ""}**: ${story.story_description || ""}\n`;
+        });
+      } else if (step2.story_id || step2.story_description) {
+        md += `- **${step2.story_id || ""}**: ${step2.story_description || ""}\n`;
+      } else {
+        md += "*No user stories specified.*\n";
+      }
+      md += `\n### Features\n\n`;
+      if (step2["features-body"] && step2["features-body"].length) {
+        step2["features-body"].forEach(feature => {
+          md += `- **${feature.feature_title || ""}**: ${feature.feature_description || ""}\n`;
+        });
+      } else if (step2.feature_title || step2.feature_description) {
+        md += `- **${step2.feature_title || ""}**: ${step2.feature_description || ""}\n`;
+      } else {
+        md += "*No features specified.*\n";
+      }
+      md += `\n### Usage\n\n`;
+      if (step2["usage-body"] && step2["usage-body"].length) {
+        step2["usage-body"].forEach(usage => {
+          md += `- **${usage.usage_title || ""}**: ${usage.usage_description || ""}\n`;
+        });
+      } else if (step2.usage_title || step2.usage_description) {
+        md += `- **${step2.usage_title || ""}**: ${step2.usage_description || ""}\n`;
+      } else {
+        md += "*No usage details specified.*\n";
+      }
+      md += "\n";
+      
+      // --- 2. Dependencies (Step-4) ---
+      const step4 = data["step-4"] || {};
+      md += `## 2. Dependencies\n\n`;
+      if (step4["deployment-dependencies-body"] && step4["deployment-dependencies-body"].length) {
+        md += `### Deployment Dependencies\n\n`;
+        md += `| Dependency | Version | License |\n`;
+        md += `|------------|---------|---------|\n`;
+        step4["deployment-dependencies-body"].forEach(dep => {
+          md += `| ${dep.dependency_name || ""} | ${dep.dependency_version || ""} | ${dep.dependency_license || ""} |\n`;
+        });
+        md += "\n";
+      } else {
+        md += `*No deployment dependencies specified.*\n\n`;
+      }
+      if (step4["dev-dependencies-body"] && step4["dev-dependencies-body"].length) {
+        md += `### Dev Dependencies\n\n`;
+        md += `| Dependency | Version | License |\n`;
+        md += `|------------|---------|---------|\n`;
+        step4["dev-dependencies-body"].forEach(dep => {
+          md += `| ${dep.dependency_name || ""} | ${dep.dependency_version || ""} | ${dep.dependency_license || ""} |\n`;
+        });
+        md += "\n";
+      } else {
+        md += `*No dev dependencies specified.*\n\n`;
+      }
+      
+      // --- 3. Installation ---
+      md += `## 3. Installation\n\n`;
+      md += "Run `npm install` with the included `package.json` to install all required dependencies.\n\n";
+      
+      // --- 4. File Structure (from Step-5) ---
+      // Primary Scripts come from step-5.scripts
+      // Library Scripts are extracted from each script’s libraries array
+      const step5 = data["step-5"] || {};
+      md += `## 4. File Structure\n\n`;
+      md += `### Primary Scripts\n\n`;
+      if (step5.scripts && step5.scripts.length) {
+        step5.scripts.forEach(script => {
+          md += `- **${script.name || "Unnamed Script"}**: ${script.details && script.details.description ? script.details.description : "No description provided."}\n`;
+          md += `  - **File Name:** ${script.details && script.details.fileName ? script.details.fileName : "N/A"}\n`;
+          md += `  - **Location:** ${script.details && script.details.location ? script.details.location : "N/A"}\n\n`;
+        });
+      } else {
+        md += "*No primary scripts specified.*\n\n";
+      }
+      // Library Scripts: collate libraries from all scripts
+      md += `### Library Scripts\n\n`;
+      let libraries = [];
+      if (step5.scripts && step5.scripts.length) {
+        step5.scripts.forEach(script => {
+          if (script.libraries && script.libraries.length) {
+            libraries = libraries.concat(script.libraries);
+          }
+        });
+      }
+      if (libraries.length) {
+        libraries.forEach(lib => {
+          md += `- **${lib.library_name || "Unnamed Library"}**: ${lib.purpose || "No purpose provided."}\n`;
+          md += `  - **File Name:** ${lib.fileName || "N/A"}\n`;
+          md += `  - **Location:** ${lib.location || "N/A"}\n\n`;
+        });
+      } else {
+        md += "*No library scripts specified.*\n\n";
+      }
+      
+      // --- 5. Configuration (Step-3) ---
+      const step3 = data["step-3"] || {};
+      md += `## 5. Configuration\n\n`;
+      md += `### 1. Configuration\n\n`;
+      md += step3.config1 || "*Describe the primary configuration settings here.*\n\n";
+      md += `### 2. Configuration\n\n`;
+      md += step3.config2 || "*Describe any additional configuration steps here.*\n\n";
+      
+      // --- 6. Script Details (Step-5) ---
+      md += `## 6. Script Details\n\n`;
+      if (step5.scripts && step5.scripts.length) {
+        step5.scripts.forEach(script => {
+          md += `### ${script.name || "Unnamed Script"}\n\n`;
+          if (script.details) {
+            md += `- **Script ID:** ${script.details.id || ""}\n`;
+            md += `- **Type:** ${script.details.type || ""}\n`;
+            md += `- **File Name:** ${script.details.fileName || ""}\n`;
+            md += `- **Location:** ${script.details.location || ""}\n`;
+            md += `- **Description:** ${script.details.description || ""}\n\n`;
+          }
+          if (script.parameters && script.parameters.length) {
+            md += `#### Parameters\n\n`;
+            md += `| Name | ID | Type | Description |\n`;
+            md += `|------|----|------|-------------|\n`;
+            script.parameters.forEach(p => {
+              md += `| ${p.parameter_name || ""} | ${p.parameter_id || ""} | ${p.parameter_type || ""} | ${p.parameter_description || ""} |\n`;
+            });
+            md += "\n";
+          }
+          if (script.entryPoints && script.entryPoints.length) {
+            md += `#### Entry Points\n\n`;
+            md += `| Entry Point Name | Function Name |\n`;
+            md += `|------------------|---------------|\n`;
+            script.entryPoints.forEach(ep => {
+              md += `| ${ep.entry_point_name || ""} | ${ep.function_name || ""} |\n`;
+            });
+            md += "\n";
+          }
+          if (script.deploymentRecords && script.deploymentRecords.length) {
+            md += `#### Deployment Records\n\n`;
+            md += `| Applied To | Deployment ID | Notes |\n`;
+            md += `|------------|---------------|-------|\n`;
+            script.deploymentRecords.forEach(rec => {
+              md += `| ${rec.applied_to || ""} | ${rec.deployment_id || ""} | ${rec.deployment_notes || ""} |\n`;
+            });
+            md += "\n";
+          }
+          if (script.versionHistory && script.versionHistory.length) {
+            md += `#### Version History\n\n`;
+            md += `| Version | Date | Change Summary | Commit ID |\n`;
+            md += `|---------|------|----------------|-----------|\n`;
+            script.versionHistory.forEach(v => {
+              md += `| ${v.version || ""} | ${v.date || ""} | ${v.change_summary || ""} | ${v.commit_id || ""} |\n`;
+            });
+            md += "\n";
+          }
+          if (script.unitTests && script.unitTests.length) {
+            md += `#### Unit Tests\n\n`;
+            md += `| Test Description | Test Result |\n`;
+            md += `|------------------|-------------|\n`;
+            script.unitTests.forEach(test => {
+              md += `| ${test.test_description || ""} | ${test.test_result || ""} |\n`;
+            });
+            md += "\n";
+          }
+          if (script.checklists) {
+            md += `#### Checklists\n\n`;
+            md += `- Standards: ${script.checklists.standards ? "Yes" : "No"}\n`;
+            md += `- Disclaimer: ${script.checklists.disclaimer ? "Yes" : "No"}\n`;
+            md += `- Expectations: ${script.checklists.expectations ? "Yes" : "No"}\n`;
+            md += `- ESLint: ${script.checklists.eslint ? "Yes" : "No"}\n\n`;
+          }
+        });
+      } else {
+        md += "*No script details specified.*\n\n";
+      }
+      
+      // --- 7. Additional Components - Custom Records (Step-6) ---
+      const step6 = data["step-6"] || {};
+      md += `## 7. Additional Components - Custom Records\n\n`;
+      if (step6.customRecords && step6.customRecords.length) {
+        step6.customRecords.forEach(record => {
+          md += `### ${record.name || "Custom Record"}\n\n`;
+          md += `- **Record ID:** ${record.id || ""}\n`;
+          md += `- **Type:** ${record.type || ""}\n`;
+          md += `- **Description:** ${record.description || ""}\n\n`;
+          if (record.fields && record.fields.length) {
+            md += `#### Fields\n\n`;
+            md += `| Field Name | Field ID | Field Type | Description |\n`;
+            md += `|------------|----------|------------|-------------|\n`;
+            record.fields.forEach(field => {
+              md += `| ${field.field_name || ""} | ${field.field_id || ""} | ${field.field_type || ""} | ${field.field_description || ""} |\n`;
+            });
+            md += "\n";
+          }
+        });
+      } else {
+        md += "*No custom records specified.*\n\n";
+      }
+      
+      // --- 8. Templates, Saved Searches & Custom Fields (Step-7) ---
+      const step7 = data["step-7"] || {};
+      md += `## 8. Templates, Saved Searches & Custom Fields\n\n`;
+      // Custom Fields
+      if (step7["custom-fields-body"] && step7["custom-fields-body"].length) {
+        md += `### Custom Fields\n\n`;
+        md += `| Field Name | Field ID | Description |\n`;
+        md += `|------------|----------|-------------|\n`;
+        step7["custom-fields-body"].forEach(field => {
+          md += `| ${field.field_name || ""} | ${field.field_id || ""} | ${field.field_description || ""} |\n`;
+        });
+        md += "\n";
+      } else {
+        md += "*No custom fields specified.*\n\n";
+      }
+      // Templates
+      if (step7["templates-body"] && step7["templates-body"].length) {
+        md += `### Templates\n\n`;
+        md += `| Template Name | Template ID | Template Type | Description |\n`;
+        md += `|---------------|-------------|---------------|-------------|\n`;
+        step7["templates-body"].forEach(template => {
+          md += `| ${template.template_name || ""} | ${template.template_id || ""} | ${template.template_type || ""} | ${template.template_description || ""} |\n`;
+        });
+        md += "\n";
+      } else {
+        md += "*No templates specified.*\n\n";
+      }
+      // Saved Searches
+      if (step7["saved-searches-body"] && step7["saved-searches-body"].length) {
+        md += `### Saved Searches\n\n`;
+        md += `| Search Name | Search ID | Description | Criteria | Results |\n`;
+        md += `|-------------|-----------|-------------|----------|---------|\n`;
+        step7["saved-searches-body"].forEach(search => {
+          md += `| ${search.search_name || ""} | ${search.search_id || ""} | ${search.search_description || ""} | ${search.search_criteria || ""} | ${search.search_results || ""} |\n`;
+        });
+        md += "\n";
+      } else {
+        md += "*No saved searches specified.*\n\n";
+      }
+      
+      // --- 9. Troubleshooting (Step-8) ---
+      const step8 = data["step-8"] || {};
+      md += `## 9. Troubleshooting\n\n`;
+      if (step8["troubleshooting-body"] && step8["troubleshooting-body"].length) {
+        md += `| Error/Issue | Cause | Resolution |\n`;
+        md += `|-------------|-------|------------|\n`;
+        step8["troubleshooting-body"].forEach(item => {
+          md += `| ${item.error_issue || ""} | ${item.cause || ""} | ${item.resolution || ""} |\n`;
+        });
+        md += "\n";
+      } else {
+        md += "*No troubleshooting information available.*\n\n";
+      }
+      
+      // --- 10. Deployment Checklist (Step-9) ---
+      const step9 = data["step-9"] || {};
+      md += `## 10. Deployment Checklist\n\n`;
+      md += `| Checklist Item              | Status |\n`;
+      md += `|-----------------------------|--------|\n`;
+      md += `| Production Version Backed Up| ${step9.production_version_backed_up ? "Yes" : "No"} |\n`;
+      md += `| Code Changes Documented     | ${step9.code_changes_documented ? "Yes" : "No"} |\n`;
+      md += `| Fields/Records Listed       | ${step9.fields_records_listed ? "Yes" : "No"} |\n`;
+      md += `| Rollback Steps Defined      | ${step9.rollback_steps_defined ? "Yes" : "No"} |\n`;
+      md += `| Deployment Reviewed         | ${step9.deployment_reviewed ? "Yes" : "No"} |\n`;
+      md += `| Tested by Functional        | ${step9.tested_by_functional ? "Yes" : "No"} |\n`;
+      md += `| Tested by Client            | ${step9.tested_by_client ? "Yes" : "No"} |\n`;
+      md += `| Deployment Plan Approved    | ${step9.deployment_plan_approved ? "Yes" : "No"} |\n\n`;
+      
+      // --- 11. Contact Information (Step-10) ---
+      const step10 = data["step-10"] || {};
+      md += `## 11. Contact Information\n\n`;
+      if (step10["developers-body"] && step10["developers-body"].length) {
+        md += `### Developers\n\n`;
+        md += `| Developer Name | Email | Note |\n`;
+        md += `|----------------|-------|------|\n`;
+        step10["developers-body"].forEach(dev => {
+          md += `| ${dev.developer_name || ""} | ${dev.developer_email || ""} | ${dev.developer_note || ""} |\n`;
+        });
+        md += "\n";
+      } else {
+        md += "*No developer information available.*\n\n";
+      }
+      if (step10["functional-body"] && step10["functional-body"].length) {
+        md += `### Functional Contacts\n\n`;
+        md += `| Functional Name | Email | Note |\n`;
+        md += `|-----------------|-------|------|\n`;
+        step10["functional-body"].forEach(func => {
+          md += `| ${func.functional_name || ""} | ${func.functional_email || ""} | ${func.functional_note || ""} |\n`;
+        });
+        md += "\n";
+      } else {
+        md += "*No functional contact information available.*\n\n";
+      }
+      
+      // --- 12. License ---
+      md += `## 12. License\n\n`;
+      md += step10.license || "&copy; 2025 AppWrap, Inc. All Rights Reserved.\n";
+      
+      return md;
+    }
+
+    // COPY ALL FUNCTIONALITY
+    copyButton.addEventListener("click", function () {
+      navigator.clipboard.writeText(docCode.textContent)
+        .then(() => {
+          copyButton.innerHTML = '<i class="fas fa-check"></i> Copied!';
+          setTimeout(() => {
+            copyButton.innerHTML = '<i class="fas fa-copy"></i> Copy All';
+          }, 2000);
+        })
+        .catch(err => {
+          console.error("Error copying text: ", err);
+        });
+    });
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

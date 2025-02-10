@@ -1,0 +1,560 @@
+{
+  "step-1": {
+    "project_name": "CSV File Retrieval and Import Automation",
+    "client": "Parafin",
+    "developer": "C. Dela Cruz",
+    "development_environment": "NetSuite SuiteScript (Sandbox & Production)",
+    "version": "1.0.0",
+    "date": "2025-02-18",
+    "change_summary": "Initial implementation of CSV retrieval, processing, and import automation for NetSuite.",
+    "version-history-body": [
+      {
+        "version": "0.9.0",
+        "date": "2025-02-10",
+        "change_summary": "Beta release for internal testing."
+      },
+      {
+        "version": "1.0.0",
+        "date": "2025-02-18",
+        "change_summary": "Initial production release with full functionality."
+      }
+    ]
+  },
+  "step-2": {
+    "story_id": "CSV_IMPORT_001",
+    "story_description": "As a system administrator, I want the system to automatically retrieve CSV attachments from emails so that manual processing is minimized.",
+    "feature_title": "Automated CSV Attachment Processing",
+    "feature_description": "The system automatically processes CSV attachments received via email, validating sender, extracting data, and importing records into NetSuite.",
+    "usage_title": "Setup and Execution",
+    "usage_description": "Configure the email plugin, deploy the scripts, and monitor logs for successful CSV imports.",
+    "user-stories-body": [
+      {
+        "story_id": "CSV_IMPORT_001",
+        "story_description": "Automatically retrieve and process CSV attachments from authorized emails."
+      },
+      {
+        "story_id": "CSV_IMPORT_002",
+        "story_description": "Log errors and processing details for troubleshooting and auditing purposes."
+      }
+    ],
+    "features-body": [
+      {
+        "feature_title": "Email Attachment Processing",
+        "feature_description": "Automatically processes CSV attachments received via email."
+      },
+      {
+        "feature_title": "Sender Validation",
+        "feature_description": "Ensures only emails from authorized senders are processed."
+      },
+      {
+        "feature_title": "Rule-Based Attachment Handling",
+        "feature_description": "Uses predefined rules to determine file handling and storage."
+      },
+      {
+        "feature_title": "Automated Import to NetSuite",
+        "feature_description": "Imports CSV files into NetSuite records automatically."
+      },
+      {
+        "feature_title": "Logging and Error Handling",
+        "feature_description": "Maintains detailed logs for tracking, debugging, and error reporting."
+      }
+    ],
+    "usage-body": [
+      {
+        "usage_title": "Configure Email Plugin",
+        "usage_description": "Set allowed senders and folder mappings in the configuration record."
+      },
+      {
+        "usage_title": "Deploy Scripts",
+        "usage_description": "Deploy Email Attachment Processor and CSV Import scripts to NetSuite."
+      },
+      {
+        "usage_title": "Monitor Logs",
+        "usage_description": "Review attachment logs for processing status and errors."
+      }
+    ]
+  },
+  "step-3": {
+    "env_name": "NetSuite Environment",
+    "env_notes": "Separate configurations for Sandbox and Production environments.",
+    "sandbox_value": "Sandbox",
+    "production_value": "Production",
+    "environment-ids-body": [
+      {
+        "env_name": "Sandbox",
+        "env_notes": "Testing environment for initial deployment",
+        "sandbox_value": "Sandbox",
+        "production_value": "Production"
+      }
+    ],
+    "processes": [
+      {
+        "name": "CSV Import Process",
+        "steps": [
+          {
+            "step_number": "1",
+            "step_description": "Retrieve email attachments from designated mailbox."
+          },
+          {
+            "step_number": "2",
+            "step_description": "Validate sender against allowed list."
+          },
+          {
+            "step_number": "3",
+            "step_description": "Extract CSV attachment from email."
+          },
+          {
+            "step_number": "4",
+            "step_description": "Process and validate CSV file format."
+          },
+          {
+            "step_number": "5",
+            "step_description": "Import CSV data into NetSuite records."
+          },
+          {
+            "step_number": "6",
+            "step_description": "Log processing results and errors."
+          }
+        ]
+      }
+    ]
+  },
+  "step-4": {
+    "dependency_name": "NetSuite SuiteScript",
+    "dependency_version": "2.0",
+    "dependency_license": "Provided by NetSuite",
+    "deployment-dependencies-body": [
+      {
+        "dependency_name": "NetSuite SuiteScript API",
+        "dependency_version": "2.0",
+        "dependency_license": "NetSuite"
+      },
+      {
+        "dependency_name": "",
+        "dependency_version": "",
+        "dependency_license": ""
+      }
+    ],
+    "dev-dependencies-body": [
+      {
+        "dependency_name": "VS Code SuiteCloud IDE",
+        "dependency_version": "1.0",
+        "dependency_license": "Free"
+      },
+      {
+        "dependency_name": "",
+        "dependency_version": "",
+        "dependency_license": ""
+      }
+    ]
+  },
+  "step-5": {
+    "scripts": [
+      {
+        "name": "AppWrap - Email Attachment Processor",
+        "details": {
+          "id": "customscript_aw_email_attachment_process",
+          "type": "Server-side Script",
+          "description": "Processes incoming emails, validates senders, extracts CSV attachments, applies processing rules, and logs results.",
+          "fileName": "aw_email_attachment_processor.js",
+          "location": "SuiteScripts/EmailAttachmentProcessor/"
+        },
+        "parameters": [
+          {
+            "parameter_name": "allowedSenders",
+            "parameter_id": "custscript_allowed_senders",
+            "parameter_type": "String",
+            "parameter_description": "Comma-separated list of allowed sender emails"
+          }
+        ],
+        "entryPoints": [
+          {
+            "entry_point_name": "handleEmailAttachment",
+            "function_name": "processEmailAttachment"
+          }
+        ],
+        "deploymentRecords": [
+          {
+            "applied_to": "Email Attachment Configuration",
+            "deployment_id": "deploy_1",
+            "deployment_notes": "Initial deployment for processing email attachments."
+          }
+        ],
+        "versionHistory": [
+          {
+            "version": "1.0.0",
+            "date": "2025-02-18",
+            "change_summary": "Initial release of Email Attachment Processor",
+            "commit_id": "abc123"
+          }
+        ],
+        "libraries": [
+          {
+            "library_name": "N/util",
+            "file_name": "N/util.js",
+            "location": "SuiteScripts/Libraries/",
+            "purpose": "Utility functions"
+          }
+        ],
+        "unitTests": [
+          {
+            "test_description": "Test valid email with CSV attachment",
+            "test_result": "Passed"
+          },
+          {
+            "test_description": "Test email from unauthorized sender",
+            "test_result": "Passed"
+          }
+        ],
+        "checklists": {
+          "standards": true,
+          "disclaimer": false,
+          "expectations": true,
+          "eslint": true
+        }
+      },
+      {
+        "name": "AppWrap | SS | Automated CSV Import PRFN",
+        "details": {
+          "id": "customscript_aw_csv_import_ss_prfn",
+          "type": "Server-side Script",
+          "description": "Processes CSV files attached to emails and imports them into NetSuite using a predefined CSV template.",
+          "fileName": "aw_csv_import_ss_prfn.js",
+          "location": "SuiteScripts/CSVImport/"
+        },
+        "parameters": [
+          {
+            "parameter_name": "csvTemplateId",
+            "parameter_id": "custscript_csv_template_id",
+            "parameter_type": "String",
+            "parameter_description": "Identifier for the CSV template to use for import"
+          }
+        ],
+        "entryPoints": [
+          {
+            "entry_point_name": "importCSVData",
+            "function_name": "executeCSVImport"
+          }
+        ],
+        "deploymentRecords": [
+          {
+            "applied_to": "CSV Import",
+            "deployment_id": "deploy_2",
+            "deployment_notes": "Deployment for automated CSV import process."
+          }
+        ],
+        "versionHistory": [
+          {
+            "version": "1.0.0",
+            "date": "2025-02-18",
+            "change_summary": "Initial release of Automated CSV Import PRFN",
+            "commit_id": "def456"
+          }
+        ],
+        "libraries": [
+          {
+            "library_name": "N/csv",
+            "file_name": "N/csv.js",
+            "location": "SuiteScripts/Libraries/",
+            "purpose": "CSV parsing"
+          }
+        ],
+        "unitTests": [
+          {
+            "test_description": "Test CSV file with correct format",
+            "test_result": "Passed"
+          },
+          {
+            "test_description": "Test CSV file with missing columns",
+            "test_result": "Failed - Logged error as expected"
+          }
+        ],
+        "checklists": {
+          "standards": true,
+          "disclaimer": false,
+          "expectations": true,
+          "eslint": true
+        }
+      }
+    ]
+  },
+  "step-6": {
+    "customRecords": [
+      {
+        "name": "Email Plugin Attachment Configuration",
+        "id": "customrecord_aw_email_attachment_config",
+        "type": "Configuration Record",
+        "description": "Central configuration for handling email attachments processed by the AppWrap Email Plugin.",
+        "fields": [
+          {
+            "field_name": "Plugin Email",
+            "field_id": "custrecord_aw_eac_plugin_email",
+            "field_type": "Email Address",
+            "field_description": "Email address used for receiving attachments"
+          },
+          {
+            "field_name": "Allowed Email Senders",
+            "field_id": "custrecord_aw_eac_allowed_senders",
+            "field_type": "Text Area",
+            "field_description": "Comma-separated list of authorized sender emails"
+          },
+          {
+            "field_name": "Unmatched Rule",
+            "field_id": "custrecord_aw_eac_unmatched_rule",
+            "field_type": "Integer Number",
+            "field_description": "Folder ID for attachments that do not match any rule"
+          },
+          {
+            "field_name": "Unmatched Incorrect Sender",
+            "field_id": "custrecord_aw_eac_unmatched_sender",
+            "field_type": "Integer Number",
+            "field_description": "Folder ID for attachments from unauthorized senders"
+          },
+          {
+            "field_name": "Error Receiver",
+            "field_id": "custrecord_aw_eac_error_reviewer",
+            "field_type": "Free-Form Text",
+            "field_description": "Email address for receiving error notifications"
+          },
+          {
+            "field_name": "Error Email Author",
+            "field_id": "custrecord_aw_eac_error_author",
+            "field_type": "List/Record",
+            "field_description": "Employee record for sending error emails"
+          }
+        ]
+      },
+      {
+        "name": "Email Plugin Attachment Logs",
+        "id": "customrecord_aw_email_attachment_logs",
+        "type": "Log Record",
+        "description": "Logs processing status, dates, and error messages for each processed email attachment.",
+        "fields": [
+          {
+            "field_name": "Email Sender",
+            "field_id": "custrecord_aw_eal_email_sender",
+            "field_type": "Email Address",
+            "field_description": "Sender email address"
+          },
+          {
+            "field_name": "File",
+            "field_id": "custrecord_aw_eal_file",
+            "field_type": "Document",
+            "field_description": "Attached file"
+          },
+          {
+            "field_name": "Subject",
+            "field_id": "custrecord_aw_eal_subject",
+            "field_type": "Free-Form Text",
+            "field_description": "Email subject line"
+          },
+          {
+            "field_name": "Date Received",
+            "field_id": "custrecord_aw_eal_date_received",
+            "field_type": "Date/Time",
+            "field_description": "Timestamp when the email was received"
+          },
+          {
+            "field_name": "Date Processed",
+            "field_id": "custrecord_aw_eal_date_processed",
+            "field_type": "Date/Time",
+            "field_description": "Timestamp when the email was processed"
+          },
+          {
+            "field_name": "Processing Status",
+            "field_id": "custrecord_aw_eal_processing_status",
+            "field_type": "List/Record",
+            "field_description": "Current processing status of the attachment"
+          },
+          {
+            "field_name": "Status/Error Message",
+            "field_id": "custrecord_aw_eal_status_message",
+            "field_type": "Text Area",
+            "field_description": "Detailed status or error message"
+          }
+        ]
+      },
+      {
+        "name": "Email Plugin Attachment Rules",
+        "id": "customrecord_aw_email_attachment_rules",
+        "type": "Rules Record",
+        "description": "Defines rules for processing email attachments based on keywords and transaction types.",
+        "fields": [
+          {
+            "field_name": "Name",
+            "field_id": "name",
+            "field_type": "Free-Form Text",
+            "field_description": "Rule name"
+          },
+          {
+            "field_name": "Keywords",
+            "field_id": "custrecord_aw_ear_keywords",
+            "field_type": "Free-Form Text",
+            "field_description": "Keywords for matching email attachments"
+          },
+          {
+            "field_name": "CSV Template",
+            "field_id": "custrecord_aw_ear_ss_csv_tpl",
+            "field_type": "Free-Form Text",
+            "field_description": "Identifier for the CSV template"
+          },
+          {
+            "field_name": "Main Folder (To be Processed)",
+            "field_id": "custrecord_aw_ear_main_folder",
+            "field_type": "Integer Number",
+            "field_description": "Folder ID for attachments to be processed"
+          },
+          {
+            "field_name": "Processed Folder",
+            "field_id": "custrecord_aw_ear_processed_folder",
+            "field_type": "Integer Number",
+            "field_description": "Folder ID for processed attachments"
+          },
+          {
+            "field_name": "Error Folder",
+            "field_id": "custrecord_aw_ear_error_folder",
+            "field_type": "Integer Number",
+            "field_description": "Folder ID for attachments with errors"
+          },
+          {
+            "field_name": "To Be Processed (Saved Search)",
+            "field_id": "custrecord_aw_ear_ss_tbp",
+            "field_type": "List/Record",
+            "field_description": "Saved search for attachments to be processed"
+          },
+          {
+            "field_name": "Processed (Saved Search)",
+            "field_id": "custrecord_aw_ear_ss_pro",
+            "field_type": "List/Record",
+            "field_description": "Saved search for processed attachments"
+          },
+          {
+            "field_name": "Failed (Saved Search)",
+            "field_id": "custrecord_aw_ear_ss_err",
+            "field_type": "List/Record",
+            "field_description": "Saved search for failed attachments"
+          },
+          {
+            "field_name": "Parent Record",
+            "field_id": "custrecord_aw_ear_parent",
+            "field_type": "List/Record",
+            "field_description": "Reference to the configuration record"
+          }
+        ]
+      }
+    ]
+  },
+  "step-7": {
+    "field_name": "CSV Import Custom Fields",
+    "field_id": "csv_import_fields",
+    "field_description": "Custom fields related to CSV import processing and status tracking.",
+    "template_name": "CSV Import Template",
+    "template_id": "csv_import_tpl",
+    "template_type": "CSV",
+    "template_description": "Template defining the CSV file structure for import",
+    "search_name": "CSV Attachment Searches",
+    "search_id": "csv_attachment_searches",
+    "search_description": "Saved searches for tracking CSV attachment processing",
+    "custom-fields-body": [
+      {
+        "field_name": "CSV Import Status",
+        "field_id": "custfield_csv_import_status",
+        "field_description": "Status of the CSV file import process"
+      },
+      {
+        "field_name": "Email Attachment ID",
+        "field_id": "custfield_email_attachment_id",
+        "field_description": "Unique identifier for the email attachment"
+      }
+    ],
+    "templates-body": [
+      {
+        "template_name": "CSV Import Template",
+        "template_id": "csv_import_tpl",
+        "template_type": "CSV",
+        "template_description": "Defines the CSV file structure for data import"
+      }
+    ],
+    "saved-searches-body": [
+      {
+        "search_name": "Unprocessed CSV Attachments",
+        "search_id": "csv_unprocessed",
+        "search_description": "Search for CSV attachments that have not been processed",
+        "search_criteria": "status = 'unprocessed'",
+        "search_results": "List of unprocessed CSV attachments"
+      },
+      {
+        "search_name": "Processed CSV Attachments",
+        "search_id": "csv_processed",
+        "search_description": "Search for CSV attachments that have been processed",
+        "search_criteria": "status = 'processed'",
+        "search_results": "List of processed CSV attachments"
+      }
+    ]
+  },
+  "step-8": {
+    "error_issue": "General CSV Import Error",
+    "cause": "Multiple possible issues including missing attachments, invalid format, or processing failures.",
+    "resolution": "Review troubleshooting logs and apply specific resolution steps per error type.",
+    "troubleshooting-body": [
+      {
+        "error_issue": "Missing CSV file in main folder",
+        "cause": "Email failed to attach or sender error",
+        "resolution": "Notify error recipients and log the issue."
+      },
+      {
+        "error_issue": "CSV file exists but does not match rules",
+        "cause": "Incorrect keyword matching in the email subject or body",
+        "resolution": "Move file to unmatched rule folder and log error."
+      },
+      {
+        "error_issue": "Invalid CSV format",
+        "cause": "Missing columns or incorrect CSV structure",
+        "resolution": "Log error and send notification to the system administrator."
+      }
+    ]
+  },
+  "step-9": {
+    "production_version_backed_up": true,
+    "code_changes_documented": true,
+    "fields_records_listed": true,
+    "rollback_steps_defined": true,
+    "deployment_reviewed": true,
+    "tested_by_functional": false,
+    "tested_by_client": false,
+    "deployment_plan_approved": false
+  },
+  "step-10": {
+    "developer_name": "C. Dela Cruz",
+    "developer_email": "cdelacruz@appwrap.com",
+    "developer_note": "Lead Developer for CSV Import Automation project.",
+    "functional_name": "N/A",
+    "functional_email": "",
+    "functional_note": "",
+    "license": "Copyright 2025 AppWrap, Inc. All Rights Reserved.",
+    "developers-body": [
+      {
+        "developer_name": "C. Dela Cruz",
+        "developer_email": "cdelacruz@appwrap.com",
+        "developer_note": "Lead Developer responsible for implementation and maintenance."
+      },
+      {
+        "developer_name": "",
+        "developer_email": "",
+        "developer_note": ""
+      }
+    ],
+    "functional-body": [
+      {
+        "functional_name": "",
+        "functional_email": "",
+        "functional_note": ""
+      },
+      {
+        "functional_name": "",
+        "functional_email": "",
+        "functional_note": ""
+      }
+    ]
+  }
+}

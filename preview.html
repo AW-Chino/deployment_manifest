@@ -23,10 +23,7 @@
       .no-print {
         display: none !important;
       }
-      body {
-        padding: 0;
-        margin: 0;
-      }
+    
       .container {
         max-width: 100%;
         width: 100%;
@@ -63,7 +60,7 @@
       color: #16A089; /* Secondary color */
     }
     h3, h4, h5, .subsection-title {
-      color: #EDA205; /* Tertiary color */
+      color: #01395A; /* Tertiary color #EDA205 */
     }
 
     /* Existing styles */
@@ -180,6 +177,12 @@
       padding-bottom: 0.5rem;
       margin-bottom: 1rem;
     }
+    .script-section h5 {
+      color: #01395A;
+      border-bottom: 2px solid #16A089;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1rem;
+    }
     
     .table {
       background: #ffffff;
@@ -263,6 +266,7 @@
     const file = e.target.files[0];
     if (file) handleFile(file);
   });
+  
   function handleFile(file) {
     const reader = new FileReader();
     reader.onload = function (event) {
@@ -306,7 +310,7 @@
     return `
       ${generateHeaderSection(data)}
       <div class="page-break"></div>
-      ${generateTOC()}
+      ${generateTOC(data)}
       <div class="page-break"></div>
       ${generateUserStoriesFeaturesSection(data)}
       <div class="page-break"></div>
@@ -351,7 +355,7 @@
             <img src="./cover.jpg" alt="Cover Image" />
         </div><br>
         <h1 class="text-start mb-4" style="font-size:42px;color:black">Script Deployment Document</h1>
-        <h2 class="text-start mb-5" style="font-size:30px;">${step1.client || "Client Not Provided"}</h2>
+        <h2 class="text-start mb-5" style="font-size:30px; color: #01395A;">${step1.client || "Client Not Provided"}</h2>
 <center>
         <h1>${step1.project_name || "Project Name Not Provided"}</h1></center>      <br />
         <div class="mx-auto mb-5" style="width:40%; height:3px; background-color:#01395A;"></div>
@@ -424,25 +428,102 @@
     /*=================================
       TABLE OF CONTENTS
     =================================*/
-    function generateTOC() {
-      return `
-        <div class="toc no-break">
-          <br>
-          <h2 class="section-title">Table of Contents</h2>
+    function generateTOC(data) {
+  let tocHTML = `
+    <div class="toc no-break">
+      <br>
+      <h2 class="section-title">Table of Contents</h2>
+      <ul>
+        <!-- Section 1: User Stories and Features -->
+        <li>
+          1. User Stories and Features
           <ul>
-            <li>1. User Stories and Features</li>
-            <li>2. Configuration</li>
-            <li>3. Dependencies</li>
-            <li>4. Script Details</li>
-            <li>5. Additional Components - Custom Records</li>
-            <li>6. Templates, Saved Searches & Custom Fields</li>
-            <li>7. Troubleshooting</li>
-            <li>8. Deployment Checklist</li>
-            <li>9. Contact and License</li>
+            <li>User Stories</li>
+            <li>Features</li>
+            <li>Usage</li>
           </ul>
-        </div>
-      `;
-    }
+        </li>
+        <!-- Section 2: Configuration -->
+        <li>
+          2. Configuration
+          <ul>
+            <li>Deployment Processes</li>
+            <li>Environment IDs</li>
+          </ul>
+        </li>
+        <!-- Section 3: Dependencies -->
+        <li>
+          3. Dependencies
+          <ul>
+            <li>Deployment Dependencies</li>
+            <li>Development Dependencies</li>
+          </ul>
+        </li>
+  `;
+
+  // Section 4: Script Details (dynamic)
+  if (data['step-5'] && data['step-5'].scripts && data['step-5'].scripts.length > 0) {
+    tocHTML += `
+      <li>
+        4. Script Details
+        <ul>
+    `;
+    data['step-5'].scripts.forEach((script, index) => {
+      tocHTML += `<li>${index + 1}. ${script.name}</li>`;
+    });
+    tocHTML += `
+        </ul>
+      </li>
+    `;
+  } else {
+    tocHTML += `<li>4. Script Details</li>`;
+  }
+
+  // Section 5: Additional Components - Custom Records (dynamic)
+  if (data['step-6'] && data['step-6'].customRecords && data['step-6'].customRecords.length > 0) {
+    tocHTML += `
+      <li>
+        5. Additional Components - Custom Records
+        <ul>
+    `;
+    data['step-6'].customRecords.forEach((record, index) => {
+      tocHTML += `<li>${index + 1}. ${record.name}</li>`;
+    });
+    tocHTML += `
+        </ul>
+      </li>
+    `;
+  } else {
+    tocHTML += `<li>5. Additional Components - Custom Records</li>`;
+  }
+
+  // Section 6: Templates, Saved Searches & Custom Fields (static sub-sections)
+  tocHTML += `
+        <li>
+          6. Templates, Saved Searches & Custom Fields
+          <ul>
+            <li>Custom Fields</li>
+            <li>Templates</li>
+            <li>Saved Searches</li>
+          </ul>
+        </li>
+        <!-- Section 7: Troubleshooting -->
+        <li>7. Troubleshooting</li>
+        <!-- Section 8: Deployment Checklist -->
+        <li>8. Deployment Checklist</li>
+        <!-- Section 9: Contact and License -->
+        <li>
+          9. Contact and License
+          <ul>
+            <li>Developers</li>
+            <li>Functional Contacts</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  `;
+  return tocHTML;
+}
 
     /*=================================
       USER STORIES & FEATURES SECTION (Step-2)
@@ -450,13 +531,16 @@
     function generateUserStoriesFeaturesSection(data) {
       const step2 = data["step-2"];
       return `
-        <section class="no-break">
-          <br>
           <h2 class="section-title">1. User Stories and Features</h2>
+        <section class="no-break">
           <h3 class="subsection-title">User Stories</h3>
           ${generateUserStoriesTable(step2["user-stories-body"])}
+        </section>
+        <section class="no-break">
           <h3 class="subsection-title">Features</h3>
           ${generateFeaturesTable(step2["features-body"])}
+        </section>
+        <section class="no-break">
           <h3 class="subsection-title">Usage</h3>
           ${generateUsageTable(step2["usage-body"])}
         </section>
@@ -571,7 +655,7 @@
                 ? proc.steps
                     .map(
                       (step) =>
-                        `<li>${step.step_number}: ${step.step_description}</li>`
+                        `<li> ${step.step_description}</li>`//${step.step_number}:
                     )
                     .join("")
                 : "<li>No steps defined.</li>"
@@ -740,34 +824,38 @@
               <strong class="d-block mb-2">Description</strong>
               <p class="mb-0">${details.description || ""}</p>
             </div>
+            <div class="row">
+              <div class="col-md-6">
+                <ul class="list-unstyled">
+                  <li>Standards: ${sc.checklists.standards ? '<i class="fas fa-check-circle text-success"></i>' : '<i class="fas fa-times-circle text-danger"></i>'}</li>
+                  <li>Disclaimer: ${sc.checklists.disclaimer ? '<i class="fas fa-check-circle text-success"></i>' : '<i class="fas fa-times-circle text-danger"></i>'}</li>
+                </ul>
+              </div>
+              <div class="col-md-6">
+                <ul class="list-unstyled">
+                  <li>Expectations: ${sc.checklists.expectations ? '<i class="fas fa-check-circle text-success"></i>' : '<i class="fas fa-times-circle text-danger"></i>'}</li>
+                  <li>ESLint: ${sc.checklists.eslint ? '<i class="fas fa-check-circle text-success"></i>' : '<i class="fas fa-times-circle text-danger"></i>'}</li>
+                </ul>
+              </div>
+            </div>
           </div>
-          
           <div class="script-section mb-5">
             ${generateParameters(sc.parameters)}
           </div>
-          
           <div class="script-section mb-5">
             ${generateEntryPoints(sc.entryPoints)}
           </div>
-          
           <div class="script-section mb-5">
             ${generateDeploymentRecords(sc.deploymentRecords)}
           </div>
-          
           <div class="script-section mb-5">
             ${generateLibraries(sc.libraries)}
           </div>
-          
           <div class="script-section mb-5">
             ${generateVersionHistory(sc.versionHistory)}
           </div>
-          
           <div class="script-section mb-5">
             ${generateUnitTests(sc.unitTests)}
-          </div>
-          
-          <div class="script-section mb-5">
-            ${generateChecklists(sc.checklists)}
           </div>
         </div>
       `;
@@ -933,7 +1021,7 @@
     function generateCustomRecordsSectionNew(data) {
       const step6 = data["step-6"];
       if (!step6.customRecords || !step6.customRecords.length)
-        return "<section class='no-break'><h2 class='section-title'>5. Additional Components - Custom Records</h2><p>No custom records specified.</p></section>";
+        return "<section class='no-break'><h2 class='section-title'>5. Custom Records</h2><p>No custom records specified.</p></section>";
       return `
         <section class="no-break"><br>
           <h2 class="section-title">5. Additional Components - Custom Records</h2>
@@ -941,12 +1029,10 @@
             .map(
               (record) => `
             <div class="script-details mb-4">
-              <h4>${record.name || ""}</h4>
+                <h4 class="mb-3 p-2 bg-primary text-white">${record.name || ""}</h4>
               <dl>
                 <dt>Record ID</dt>
                 <dd>${record.id || ""}</dd>
-                <dt>Type</dt>
-                <dd>${record.type || ""}</dd>
                 <dt>Description</dt>
                 <dd>${record.description || ""}</dd>
               </dl>
@@ -1154,35 +1240,35 @@
             <tbody>
               <tr>
                 <td>Production Version Backed Up</td>
-                <td>${step9.production_version_backed_up ? "Yes" : "No"}</td>
+                <td>${step9.production_version_backed_up ? '<i class="fas fa-check-circle text-success"></i>' : '<i class="fas fa-times-circle text-danger"></i>'}</td>
               </tr>
               <tr>
                 <td>Code Changes Documented</td>
-                <td>${step9.code_changes_documented ? "Yes" : "No"}</td>
+                <td>${step9.code_changes_documented ? '<i class="fas fa-check-circle text-success"></i>' : '<i class="fas fa-times-circle text-danger"></i>'}</td>
               </tr>
               <tr>
                 <td>Fields/Records Listed</td>
-                <td>${step9.fields_records_listed ? "Yes" : "No"}</td>
+                <td>${step9.fields_records_listed ? '<i class="fas fa-check-circle text-success"></i>' : '<i class="fas fa-times-circle text-danger"></i>'}</td>
               </tr>
               <tr>
                 <td>Rollback Steps Defined</td>
-                <td>${step9.rollback_steps_defined ? "Yes" : "No"}</td>
+                <td>${step9.rollback_steps_defined ? '<i class="fas fa-check-circle text-success"></i>' : '<i class="fas fa-times-circle text-danger"></i>'}</td>
               </tr>
               <tr>
                 <td>Deployment Reviewed</td>
-                <td>${step9.deployment_reviewed ? "Yes" : "No"}</td>
+                <td>${step9.deployment_reviewed ? '<i class="fas fa-check-circle text-success"></i>' : '<i class="fas fa-times-circle text-danger"></i>'}</td>
               </tr>
               <tr>
                 <td>Tested by Functional</td>
-                <td>${step9.tested_by_functional ? "Yes" : "No"}</td>
+                <td>${step9.tested_by_functional ? '<i class="fas fa-check-circle text-success"></i>' : '<i class="fas fa-times-circle text-danger"></i>'}</td>
               </tr>
               <tr>
                 <td>Tested by Client</td>
-                <td>${step9.tested_by_client ? "Yes" : "No"}</td>
+                <td>${step9.tested_by_client ? '<i class="fas fa-check-circle text-success"></i>' : '<i class="fas fa-times-circle text-danger"></i>'}</td>
               </tr>
               <tr>
                 <td>Deployment Plan Approved</td>
-                <td>${step9.deployment_plan_approved ? "Yes" : "No"}</td>
+                <td>${step9.deployment_plan_approved ? '<i class="fas fa-check-circle text-success"></i>' : '<i class="fas fa-times-circle text-danger"></i>'}</td>
               </tr>
             </tbody>
           </table>

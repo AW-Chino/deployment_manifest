@@ -26,18 +26,35 @@ function attachJSONHandlers() {
 
 function saveJSON() {
     const jsonData = generateJSON();
+
+    // Extract client and project names from the JSON data (from step-1)
+    const clientName = jsonData["step-1"]?.client || "Client";
+    const projectName = jsonData["step-1"]?.project_name || "Project";
+    
+    // Clean up names: trim spaces and replace spaces with underscores
+    const safeClientName = clientName.trim().replace(/\s+/g, '_');
+    const safeProjectName = projectName.trim().replace(/\s+/g, '_');
+    
+    // Construct the file name
+    const fileName = `${safeClientName}_${safeProjectName}_Deployment_Manifest.json`;
+    
+    // Generate the JSON string
     const jsonStr = JSON.stringify(jsonData, null, 2);
     const blob = new Blob([jsonStr], { type: "application/json" });
     const url = URL.createObjectURL(blob);
+    
+    // Create a temporary anchor element and trigger the download
     const a = document.createElement("a");
     a.href = url;
-    a.download = "deployment_manifest.json";
+    a.download = fileName;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+    
     alert("JSON saved successfully!");
 }
+
 
 function generateJSON() {
     const jsonData = {};

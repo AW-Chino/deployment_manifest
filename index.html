@@ -50,6 +50,11 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                  <a class="nav-link step-link" href="#" data-step="6">
+                      <i class="fas fa-project-diagram"></i> Workflow
+                  </a>
+              </li>
+                <li class="nav-item">
                     <a class="nav-link step-link" href="#" data-step="7">
                         <i class="fas fa-puzzle-piece"></i> Components
                     </a>
@@ -69,6 +74,18 @@
                         <i class="fas fa-address-card"></i> Contact
                     </a>
                 </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="https://gitlab.com/appwrap/appwrap-2.0/tech-task-tracker/-/blob/code-guide/CODE%20GUIDE/documentation-and-quality-standards.md" target="_blank">
+                      <i class="fas fa-code"></i> 
+                     Code Guide
+                  </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="https://gitlab.com/appwrap/appwrap-2.0/tech-task-tracker/-/blob/code-guide/CODE%20GUIDE/complete-eslint-guide.md" target="_blank">
+                    <i class="fas fa-book"></i>
+                   Eslint
+                </a>
+            </li> 
             </ul>
         </nav>
 
@@ -204,6 +221,20 @@
                           <div id="process-container">
                               <!-- Dynamically added process blocks will appear here -->
                           </div>
+  <!-- New Rollback Section -->
+   <hr>
+  <div class="mt-4">
+    <div class="section-header">
+      <h4><i class="fas fa-tasks"></i> Rollback</h4>
+      <button type="button" id="add-rollback-btn" class="btn btn-primary">
+        <i class="fas fa-plus"></i> Add Rollback
+      </button>
+  </div>
+
+    <div id="rollback-container">
+      <!-- Dynamically added rollback blocks will appear here -->
+    </div>
+  </div>
 
                           <!-- Environment Specific IDs -->
                           <div class="mt-4">
@@ -279,7 +310,7 @@
                     <!-- Step 6: Custom Records -->
                     <section id="step-6" class="wizard-step" style="display: none;">
                       <div class="section-header">
-                          <h4><i class="fas fa-database"></i> Custom Records</h4>
+                          <h4><i class="fas fa-project-diagram"></i> Custom Records</h4>
                           <button type="button" id="add-record-btn" class="btn btn-primary">
                               <i class="fas fa-plus"></i> Add Custom Record
                           </button>
@@ -287,6 +318,19 @@
                       <div id="records-container">
                           <!-- Dynamically added custom record blocks will appear here -->
                       </div>
+<hr>
+                       <!-- New Workflow Section -->
+              <div class="mt-4">
+                <div class="section-header">
+                  <h4><i class="fas fa-database"></i> Workflow</h4>
+                <button type="button" id="add-workflow-btn" class="btn btn-primary">
+                  <i class="fas fa-plus"></i> Add Workflow
+                </button>
+              </div>
+                <div id="workflow-container">
+                  <!-- Dynamically added workflow blocks will appear here -->
+                </div>
+              </div>
                   </section>
 
                   <!-- Step 7: Components -->
@@ -697,7 +741,6 @@
         <table class="table">
           <thead>
             <tr>
-              <th>Step Number</th>
               <th>Description</th>
               <th>Actions</th>
             </tr>
@@ -705,6 +748,40 @@
           <tbody class="steps-body"></tbody>
         </table>
       </div>
+    </div>
+  </div>
+</template>
+<!-- New Template: Rollback Block -->
+<template id="rollback-block-template">
+  <div class="rollback-block border p-3 mb-3" data-block-type="rollback">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <input type="text" class="form-control w-50" name="rollback_description" data-field="rollback_description" placeholder="Enter rollback description">
+      <button type="button" class="btn btn-danger remove-rollback">Remove Rollback</button>
+    </div>
+  </div>
+</template>
+
+<!-- New Template: Workflow Block -->
+<template id="workflow-block-template">
+  <div class="workflow-block border p-3 mb-3" data-block-type="workflow">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <input type="text" class="form-control w-50" name="workflow_details" data-field="workflow_details" placeholder="Enter workflow details">
+      <button type="button" class="btn btn-danger remove-workflow">Remove Workflow</button>
+    </div>
+    <div class="mb-3">
+      <h5>Actions</h5>
+      <button class="btn btn-secondary add-action mb-3">Add Action</button>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Action</th>
+            <th>State</th>
+            <th>Details</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody class="actions-body"></tbody>
+      </table>
     </div>
   </div>
 </template>

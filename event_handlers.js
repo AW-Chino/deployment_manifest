@@ -10,6 +10,10 @@ function initializeSections() {
     initializeCustomRecordSection();
     initializeProcessSection();
 
+    // NEW: Initialize Rollback and Workflow sections
+    initializeRollbackSection();
+    initializeWorkflowSection();
+
     // Initialize documentation tables
     setupDocumentationTables();
 
@@ -23,7 +27,172 @@ function initializeSections() {
     document.getElementById("step-1").style.display = "block"; // Show only step 1 on load
 
 }
+// ===================
+// New: Rollback Section
+// ===================
 
+function initializeRollbackSection() {
+    const addRollbackBtn = document.getElementById("add-rollback-btn");
+    const rollbackContainer = document.getElementById("rollback-container");
+    const rollbackTemplate = document.getElementById("rollback-block-template");
+
+    if (addRollbackBtn && rollbackContainer && rollbackTemplate) {
+        addRollbackBtn.addEventListener("click", () => {
+            addNewRollback(rollbackContainer, rollbackTemplate);
+        });
+    }
+}
+
+function addNewRollback(container, template) {
+    const rollbackBlock = template.content.cloneNode(true).firstElementChild;
+    const uniqueId = `rollback-${Date.now()}`;
+    rollbackBlock.id = uniqueId;
+
+    setupRollbackBlock(rollbackBlock);
+    container.appendChild(rollbackBlock);
+}
+
+function setupRollbackBlock(block) {
+    // Set up remove button
+    const removeRollbackBtn = block.querySelector(".remove-rollback");
+    if (removeRollbackBtn) {
+        removeRollbackBtn.addEventListener("click", () => block.remove());
+    }
+
+    // Set up Code Differences table add button
+    const addCodeDiffBtn = block.querySelector(".add-code-difference");
+    const codeDiffsBody = block.querySelector(".code-differences-body");
+
+    if (addCodeDiffBtn && codeDiffsBody) {
+        addCodeDiffBtn.addEventListener("click", () => {
+            addCodeDiffRow(codeDiffsBody);
+        });
+    }
+
+    // Add data attributes for JSON handling
+    addDataAttributes(block, 'rollback');
+}
+
+function addCodeDiffRow(tbody) {
+    const row = document.createElement("tr");
+    const columns = [
+        { name: 'Script', type: 'text', key: 'script' },
+        { name: 'Description', type: 'textarea', key: 'description' },
+        { name: 'Code', type: 'textarea', key: 'code' }
+    ];
+
+    columns.forEach(col => {
+        const td = document.createElement("td");
+        let input;
+        if (col.type === 'textarea') {
+            input = document.createElement("textarea");
+            input.rows = 2;
+        } else {
+            input = document.createElement("input");
+            input.type = col.type;
+        }
+        input.className = "form-control";
+        input.name = col.key;
+        input.placeholder = col.name;
+        input.setAttribute('data-field', col.key);
+        td.appendChild(input);
+        row.appendChild(td);
+    });
+
+    // Add remove button cell
+    const actionTd = document.createElement("td");
+    const removeBtn = document.createElement("button");
+    removeBtn.textContent = "Remove";
+    removeBtn.className = "btn btn-danger btn-sm";
+    removeBtn.onclick = () => row.remove();
+    actionTd.appendChild(removeBtn);
+    row.appendChild(actionTd);
+
+    tbody.appendChild(row);
+}
+
+// ===================
+// New: Workflow Section (Custom Records)
+// ===================
+
+function initializeWorkflowSection() {
+    const addWorkflowBtn = document.getElementById("add-workflow-btn");
+    const workflowContainer = document.getElementById("workflow-container");
+    const workflowTemplate = document.getElementById("workflow-block-template");
+
+    if (addWorkflowBtn && workflowContainer && workflowTemplate) {
+        addWorkflowBtn.addEventListener("click", () => {
+            addNewWorkflow(workflowContainer, workflowTemplate);
+        });
+    }
+}
+
+function addNewWorkflow(container, template) {
+    const workflowBlock = template.content.cloneNode(true).firstElementChild;
+    const uniqueId = `workflow-${Date.now()}`;
+    workflowBlock.id = uniqueId;
+
+    setupWorkflowBlock(workflowBlock);
+    container.appendChild(workflowBlock);
+}
+
+function setupWorkflowBlock(block) {
+    // Set up remove workflow button
+    const removeWorkflowBtn = block.querySelector(".remove-workflow");
+    if (removeWorkflowBtn) {
+        removeWorkflowBtn.addEventListener("click", () => block.remove());
+    }
+
+    // Set up Add Action button in the workflow block
+    const addActionBtn = block.querySelector(".add-action");
+    const actionsBody = block.querySelector(".actions-body");
+    if (addActionBtn && actionsBody) {
+        addActionBtn.addEventListener("click", () => {
+            addActionRow(actionsBody);
+        });
+    }
+
+    // Add data attributes for JSON handling
+    addDataAttributes(block, 'workflow');
+}
+
+function addActionRow(tbody) {
+    const row = document.createElement("tr");
+    const columns = [
+        { name: 'Action', type: 'text', key: 'action' },
+        { name: 'State', type: 'text', key: 'state' },
+        { name: 'Details', type: 'textarea', key: 'details' }
+    ];
+
+    columns.forEach(col => {
+        const td = document.createElement("td");
+        let input;
+        if (col.type === 'textarea') {
+            input = document.createElement("textarea");
+            input.rows = 2;
+        } else {
+            input = document.createElement("input");
+            input.type = col.type;
+        }
+        input.className = "form-control";
+        input.name = col.key;
+        input.placeholder = col.name;
+        input.setAttribute('data-field', col.key);
+        td.appendChild(input);
+        row.appendChild(td);
+    });
+
+    // Add remove button cell
+    const actionTd = document.createElement("td");
+    const removeBtn = document.createElement("button");
+    removeBtn.textContent = "Remove";
+    removeBtn.className = "btn btn-danger btn-sm";
+    removeBtn.onclick = () => row.remove();
+    actionTd.appendChild(removeBtn);
+    row.appendChild(actionTd);
+
+    tbody.appendChild(row);
+}
 
 function initializeRegularTables() {
     // Project Information (Step 1)
@@ -437,8 +606,8 @@ function addEnvironmentIdRow(tbody) {
     const columns = [
         { name: 'Name', type: 'text', key: 'env_name' },
         { name: 'Notes', type: 'textarea', key: 'env_notes' },
-        { name: 'Sandbox Value', type: 'text', key: 'sandbox_value' },
-        { name: 'Production Value', type: 'text', key: 'production_value' }
+        { name: 'Sandbox Value', type: 'textarea', key: 'sandbox_value' },
+        { name: 'Production Value', type: 'textarea', key: 'production_value' }
     ];
 
     columns.forEach(col => {
@@ -559,7 +728,7 @@ function addFieldRow(tbody) {
 
 function addStepRow(tbody) {
     const row = document.createElement("tr");
-    
+    /*
     // Step Number cell
     const numberCell = document.createElement("td");
     const numberInput = document.createElement("input");
@@ -569,7 +738,7 @@ function addStepRow(tbody) {
     numberInput.name = "step_number";
     numberInput.setAttribute('data-field', 'step_number');
     numberCell.appendChild(numberInput);
-    row.appendChild(numberCell);
+    row.appendChild(numberCell);*/
     
     // Description cell
     const descCell = document.createElement("td");
@@ -658,3 +827,7 @@ window.addNewProcess = addNewProcess;
 window.setupScriptBlock = setupScriptBlock;
 window.setupRecordBlock = setupRecordBlock;
 window.setupProcessBlock = setupProcessBlock;
+window.addNewRollback = addNewRollback;
+window.setupRollbackBlock = setupRollbackBlock;
+window.addNewWorkflow = addNewWorkflow;
+window.setupWorkflowBlock = setupWorkflowBlock;
