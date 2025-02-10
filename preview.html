@@ -32,8 +32,25 @@
         width: 100%;
         padding: 20px 40px;
       }
+      .script-section {
+        break-inside: avoid;
+      }
+      .script-header {
+        break-inside: avoid;
+      }
+      .script-details {
+        break-inside: auto;
+      }
+      h4, h5 {
+        break-after: avoid;
+      }
+      table {
+        break-inside: avoid;
+      }
+      dl {
+        break-inside: avoid;
+      }
     }
-
     /* Updated color scheme */
     body {
       background: #fff;
@@ -142,10 +159,37 @@
     }
     .script-details {
       margin-bottom: 2rem;
-      padding: 1rem;
-      background: #f8f9fa;
+    }
+    
+   
+    
+    .info-box {
+      background: #ffffff;
       border: 1px solid #dee2e6;
       border-radius: 4px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    
+    .bg-primary {
+      background-color: #01395A !important;
+    }
+    
+    .script-section h5 {
+      color: #01395A;
+      border-bottom: 2px solid #16A089;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .table {
+      background: #ffffff;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    
+    .table thead th {
+      background-color: #16A089;
+      color: #ffffff;
+      border-bottom: 2px solid #0D695F;
     }
   </style>
 </head>
@@ -281,7 +325,6 @@
       ${generateChecklistSection(data)}
       <div class="page-break"></div>
       ${generateContactsSection(data)}
-      <div class="page-break"></div>
       <div class="mt-5 text-center">
         <p>
           <strong>AppWrap, Inc.</strong> &emsp; (${getCurrentDateString()})<br>
@@ -308,7 +351,9 @@
             <img src="./cover.jpg" alt="Cover Image" />
         </div><br>
         <h1 class="text-start mb-4" style="font-size:42px;color:black">Script Deployment Document</h1>
-        <h2 class="text-start mb-5" style="font-size:30px;">${step1.client || "Client Not Provided"} - ${step1.project_name || "Project Name Not Provided"}</h2>
+        <h2 class="text-start mb-5" style="font-size:30px;">${step1.client || "Client Not Provided"}</h2>
+<center>
+        <h1>${step1.project_name || "Project Name Not Provided"}</h1></center>      <br />
         <div class="mx-auto mb-5" style="width:40%; height:3px; background-color:#01395A;"></div>
         <div class="confidential-notice">
           <p>
@@ -319,6 +364,7 @@
           </p>
         </div>
         <div class="version-history no-break">
+          <br>
           <h2 class="section-title">Document Version History</h2>
           ${generateVersionHeader(step1)}
           ${generateVersionHistory(step1["version-history-body"])}
@@ -349,6 +395,7 @@
   function generateVersionHistory(versions) {
     if (!versions || !versions.length) return "";
     return `
+    <h5>Version History</h5>
       <table class="table table-bordered mt-4">
         <thead>
           <tr>
@@ -380,6 +427,7 @@
     function generateTOC() {
       return `
         <div class="toc no-break">
+          <br>
           <h2 class="section-title">Table of Contents</h2>
           <ul>
             <li>1. User Stories and Features</li>
@@ -403,6 +451,7 @@
       const step2 = data["step-2"];
       return `
         <section class="no-break">
+          <br>
           <h2 class="section-title">1. User Stories and Features</h2>
           <h3 class="subsection-title">User Stories</h3>
           ${generateUserStoriesTable(step2["user-stories-body"])}
@@ -499,6 +548,7 @@
       const step3 = data["step-3"];
       return `
         <section class="no-break">
+          <br>
           <h2 class="section-title">2. Configuration</h2>
           <h3 class="subsection-title">Deployment Processes</h3>
           ${generateProcesses(step3.processes)}
@@ -570,6 +620,7 @@
       const step4 = data["step-4"];
       return `
         <section class="no-break">
+          <br>
           <h2 class="section-title">3. Dependencies</h2>
           <h3 class="subsection-title">Deployment Dependencies</h3>
           ${generateDeploymentDependencies(step4["deployment-dependencies-body"])}
@@ -641,39 +692,88 @@
     function generateScriptDetailsSection(data) {
       const step5 = data["step-5"];
       if (!step5.scripts || !step5.scripts.length)
-        return "<section class='no-break'><h2 class='section-title'>4. Script Details</h2><p>No scripts specified.</p></section>";
+        return "<section><br><h2 class='section-title'>4. Script Details</h2><p>No scripts specified.</p></section>";
       return `
-        <section class="no-break">
-          <h2 class="section-title">4. Script Details</h2>
-          ${step5.scripts.map((script) => generateScriptDetail(script)).join("")}
+        <section><br>
+          <h2 class='section-title'>4. Script Details</h2>
+          ${step5.scripts.map((script, index) => `
+            ${index > 0 ? '<div class="page-break"></div>' : ''}
+            ${generateScriptDetail(script)}
+          `).join("")}
         </section>
       `;
     }
+
     function generateScriptDetail(sc) {
       const details = sc.details || {};
       return `
-        <div class="script-details mb-4">
-          <h4>${sc.name || ""}</h4>
-          <dl>
-            <dt>Script ID</dt>
-            <dd>${details.id || ""}</dd>
-            <dt>Type</dt>
-            <dd>${details.type || ""}</dd>
-            <dt>Description</dt>
-            <dd>${details.description || ""}</dd>
-            <dt>File Location</dt>
-            <dd>${details.location || ""} ${details.fileName || ""}</dd>
-          </dl>
-          ${generateParameters(sc.parameters)}
-          ${generateEntryPoints(sc.entryPoints)}
-          ${generateDeploymentRecords(sc.deploymentRecords)}
-          ${generateLibraries(sc.libraries)}
-          ${generateVersionHistory(sc.versionHistory)}
-          ${generateUnitTests(sc.unitTests)}
-          ${generateChecklists(sc.checklists)}
+        <div class="script-details mb-5">
+          <div class="script-header mb-4">
+            <h4 class="mb-3 p-2 bg-primary text-white">${sc.name || ""}</h4>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="info-box p-3 mb-3">
+                  <div class="d-flex mb-2">
+                    <strong class="me-2">Script ID:</strong>
+                    <span>${details.id || ""}</span>
+                  </div>
+                  <div class="d-flex mb-2">
+                    <strong class="me-2">Type:</strong>
+                    <span>${details.type || ""}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="info-box p-3 mb-3">
+                  <div class="d-flex mb-2">
+                    <strong class="me-2">File Name:</strong>
+                    <span>${details.fileName || ""}</span>
+                  </div>
+                  <div class="d-flex mb-2">
+                    <strong class="me-2">Location:</strong>
+                    <span>${details.location || ""}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="info-box p-3 mb-3">
+              <strong class="d-block mb-2">Description</strong>
+              <p class="mb-0">${details.description || ""}</p>
+            </div>
+          </div>
+          
+          <div class="script-section mb-5">
+            ${generateParameters(sc.parameters)}
+          </div>
+          
+          <div class="script-section mb-5">
+            ${generateEntryPoints(sc.entryPoints)}
+          </div>
+          
+          <div class="script-section mb-5">
+            ${generateDeploymentRecords(sc.deploymentRecords)}
+          </div>
+          
+          <div class="script-section mb-5">
+            ${generateLibraries(sc.libraries)}
+          </div>
+          
+          <div class="script-section mb-5">
+            ${generateVersionHistory(sc.versionHistory)}
+          </div>
+          
+          <div class="script-section mb-5">
+            ${generateUnitTests(sc.unitTests)}
+          </div>
+          
+          <div class="script-section mb-5">
+            ${generateChecklists(sc.checklists)}
+          </div>
         </div>
       `;
     }
+
+    
     function generateParameters(parameters) {
       if (!parameters || !parameters.length) return "";
       return `
@@ -835,7 +935,7 @@
       if (!step6.customRecords || !step6.customRecords.length)
         return "<section class='no-break'><h2 class='section-title'>5. Additional Components - Custom Records</h2><p>No custom records specified.</p></section>";
       return `
-        <section class="no-break">
+        <section class="no-break"><br>
           <h2 class="section-title">5. Additional Components - Custom Records</h2>
           ${step6.customRecords
             .map(
@@ -895,7 +995,7 @@
     function generateTemplatesSection(data) {
       const step7 = data["step-7"];
       return `
-        <section class="no-break">
+        <section class="no-break"><br>
           <h2 class="section-title">6. Templates, Saved Searches & Custom Fields</h2>
           <h3 class="subsection-title">Custom Fields</h3>
           ${generateCustomFieldsTable(step7["custom-fields-body"])}
@@ -1006,9 +1106,9 @@
         !step8["troubleshooting-body"] ||
         !step8["troubleshooting-body"].length
       )
-        return "<section class='no-break'><h2 class='section-title'>7. Troubleshooting</h2><p>No troubleshooting information available.</p></section>";
+        return "<section class='no-break'><br><h2 class='section-title'>7. Troubleshooting</h2><p>No troubleshooting information available.</p></section>";
       return `
-        <section class="no-break">
+        <section class="no-break"><br>
           <h2 class="section-title">7. Troubleshooting</h2>
           <table class="table table-bordered">
             <thead>
@@ -1042,7 +1142,7 @@
     function generateChecklistSection(data) {
       const step9 = data["step-9"];
       return `
-        <section class="no-break">
+        <section class="no-break"><br>
           <h2 class="section-title">8. Deployment Checklist</h2>
           <table class="table table-bordered">
             <thead>
@@ -1096,7 +1196,7 @@
     function generateContactsSection(data) {
       const step10 = data["step-10"];
       return `
-        <section class="no-break">
+        <section class="no-break"><br>
           <h2 class="section-title">9. Contact and License</h2>
           <h3 class="subsection-title">Developers</h3>
           ${generateDevelopersTable(step10["developers-body"])}
