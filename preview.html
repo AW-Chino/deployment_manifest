@@ -10,7 +10,8 @@
   />
   <link
     href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css"
-    rel="stylesheet" />
+    rel="stylesheet"
+  />
   <style>
     /* Print-specific styles */
     @media print {
@@ -311,6 +312,8 @@
       <div class="page-break"></div>
       ${generateWorkflowsSection(data)}
       <div class="page-break"></div>
+      ${generateTroubleshootingSection(data)}
+      <div class="page-break"></div>
       ${generateChecklistSection(data)}
       <div class="page-break"></div>
       ${generateContactsSection(data)}
@@ -332,7 +335,9 @@
       <div class="document-header">
         <div class="header-container">
           <div class="logo-section">
-            <img src="https://appwrap.com/wp-content/uploads/2024/12/appwrap-logo.svg" />
+            <h1 style="color:#01395A">
+              <i class="fas fa-cloud"></i> appwrap
+            </h1>
           </div>
         </div>
         <div class="cover-image">
@@ -416,11 +421,11 @@
     TABLE OF CONTENTS
   ----------------------------*/
   function generateTOC(data) {
-  let tocHTML = `<div class="toc no-break">
+    let tocHTML = `<div class="toc no-break">
     <br>
     <h2 class="section-title">Table of Contents</h2>
     <ul>
-      <!-- Section 1: User Stories and Features (static sub-items) -->
+      <!-- Section 1: User Stories and Features -->
       <li>
         1. User Stories and Features
         <ul>
@@ -434,89 +439,76 @@
       <li>
         2. Playbook
         <ul>`;
-  
-  // Processes from Step 3 (Playbook)
-  const step3 = data["step-3"] || {};
-  if (step3.processes && step3.processes.length > 0) {
-    tocHTML += `<li>Processes
+    const step3 = data["step-3"] || {};
+    if (step3.processes && step3.processes.length > 0) {
+      tocHTML += `<li>Processes
                   <ul>`;
-    step3.processes.forEach((proc, i) => {
-      tocHTML += `<li>${proc.name || "Process " + (i + 1)}</li>`;
-    });
-    tocHTML += `</ul>
+      step3.processes.forEach((proc, i) => {
+        tocHTML += `<li>${proc.name || "Process " + (i + 1)}</li>`;
+      });
+      tocHTML += `</ul>
                 </li>`;
-  } else {
-    tocHTML += `<li>Processes: None</li>`;
-  }
-  
-  // Rollbacks from Step 3 (Playbook)
-  if (step3.rollbacks && step3.rollbacks.length > 0) {
-    tocHTML += `<li>Rollbacks
+    } else {
+      tocHTML += `<li>Processes: None</li>`;
+    }
+    if (step3.rollbacks && step3.rollbacks.length > 0) {
+      tocHTML += `<li>Rollbacks
                   <ul>`;
-    step3.rollbacks.forEach((rb, i) => {
-      tocHTML += `<li>Rollback ${i + 1}: ${rb.description || "No description"}</li>`;
-    });
-    tocHTML += `</ul>
+      step3.rollbacks.forEach((rb, i) => {
+        tocHTML += `<li>Rollback ${i + 1}: ${rb.description || "No description"}</li>`;
+      });
+      tocHTML += `</ul>
                 </li>`;
-  } else {
-    tocHTML += `<li>Rollbacks: None</li>`;
+    } else {
+      tocHTML += `<li>Rollbacks: None</li>`;
+    }
+    tocHTML += `</ul>
+      </li>
+      
+      <!-- Section 3: Configuration (Environment IDs) -->
+      <li>3. Configuration (Environment IDs)</li>
+      
+      <!-- Section 4: Dependencies -->
+      <li>4. Dependencies</li>
+      
+      <!-- Section 5: Script Details -->
+      <li>5. Script Details`;
+    const step6 = data["step-6"] || {};
+    if (step6.scripts && step6.scripts.length > 0) {
+      tocHTML += `<ul>`;
+      step6.scripts.forEach((script, i) => {
+        tocHTML += `<li>${script.name || "Script " + (i + 1)}</li>`;
+      });
+      tocHTML += `</ul>`;
+    }
+    tocHTML += `</li>
+      
+      <!-- Section 6: Custom Records -->
+      <li>6. Custom Records`;
+    const step7 = data["step-7"] || {};
+    if (step7.customRecords && step7.customRecords.length > 0) {
+      tocHTML += `<ul>`;
+      step7.customRecords.forEach((record, i) => {
+        tocHTML += `<li>${record.name || "Record " + (i + 1)}</li>`;
+      });
+      tocHTML += `</ul>`;
+    }
+    tocHTML += `</li>
+      
+      <!-- Section 7: Workflow -->
+      <li>7. Workflow</li>
+      
+      <!-- Section 8: Troubleshooting -->
+      <li>8. Troubleshooting</li>
+      
+      <!-- Section 9: Deployment Checklist -->
+      <li>9. Deployment Checklist</li>
+      
+      <!-- Section 10: Contact and License -->
+      <li>10. Contact and License</li>
+    </ul></div>`;
+    return tocHTML;
   }
-  
-  tocHTML += `</ul>
-      </li>`;
-  
-  // Section 3: Configuration (Environment IDs) – static title
-  tocHTML += `<li>3. Configuration (Environment IDs)</li>`;
-  
-  // Section 4: Dependencies – static title
-  tocHTML += `<li>4. Dependencies</li>`;
-  
-  // Section 5: Script Details – list each script title (Step 6)
-  const step6 = data["step-6"] || {};
-  tocHTML += `<li>5. Script Details`;
-  if (step6.scripts && step6.scripts.length > 0) {
-    tocHTML += `<ul>`;
-    step6.scripts.forEach((script, i) => {
-      tocHTML += `<li>${script.name || "Script " + (i + 1)}</li>`;
-    });
-    tocHTML += `</ul>`;
-  }
-  tocHTML += `</li>`;
-  
-  // Section 6: Custom Records – list each record name (Step 7)
-  const step7 = data["step-7"] || {};
-  tocHTML += `<li>6. Custom Records`;
-  if (step7.customRecords && step7.customRecords.length > 0) {
-    tocHTML += `<ul>`;
-    step7.customRecords.forEach((record, i) => {
-      tocHTML += `<li>${record.name || "Record " + (i + 1)}</li>`;
-    });
-    tocHTML += `</ul>`;
-  }
-  tocHTML += `</li>`;
-  
-  // Section 7: Workflow – list each workflow's details (Step 8)
-  const step8 = data["step-8"] || {};
-  tocHTML += `<li>7. Workflow`;
-  if (step8.workflows && step8.workflows.length > 0) {
-    tocHTML += `<ul>`;
-    step8.workflows.forEach((wf, i) => {
-      tocHTML += `<li>${wf.details || "Workflow " + (i + 1)}</li>`;
-    });
-    tocHTML += `</ul>`;
-  }
-  tocHTML += `</li>`;
-  
-  // Section 8: Deployment Checklist – static title
-  tocHTML += `<li>8. Deployment Checklist</li>`;
-  
-  // Section 9: Contact and License – static title
-  tocHTML += `<li>9. Contact and License</li>`;
-  
-  tocHTML += `</ul></div>`;
-  return tocHTML;
-}
-
 
   /*---------------------------
     USER STORIES & FEATURES (Step 2)
@@ -620,7 +612,6 @@
 
   /*---------------------------
     CONFIGURATION SECTION (Step 3 & Step 4)
-    (Playbook: processes & rollbacks from step-3, and Environment IDs from step-4)
   ----------------------------*/
   function generateConfigurationSection(data) {
     const step3 = data["step-3"] || {};
@@ -715,7 +706,7 @@
     return `
       <section class="no-break">
         <br>
-        <h2 class="section-title">3. Dependencies</h2>
+        <h2 class="section-title">4. Dependencies</h2>
         <h3 class="subsection-title">Deployment Dependencies</h3>
         ${generateDeploymentDependencies(step5["deployment-dependencies-body"])}
         <h3 class="subsection-title">Development Dependencies</h3>
@@ -786,10 +777,10 @@
   function generateScriptDetailsSection(data) {
     const step6 = data["step-6"] || {};
     if (!step6.scripts || !step6.scripts.length)
-      return "<section><br><h2 class='section-title'>4. Script Details</h2><p>No scripts specified.</p></section>";
+      return "<section><br><h2 class='section-title'>5. Script Details</h2><p>No scripts specified.</p></section>";
     return `
       <section><br>
-        <h2 class="section-title">4. Script Details</h2>
+        <h2 class="section-title">5. Script Details</h2>
         ${step6.scripts
           .map(
             (script, index) => `
@@ -1127,13 +1118,49 @@
   }
 
   /*---------------------------
-    DEPLOYMENT CHECKLIST (Step 9)
+    TROUBLESHOOTING SECTION (New - from Step 10)
   ----------------------------*/
-  function generateChecklistSection(data) {
-    const step9 = data["step-9"] || {};
+  function generateTroubleshootingSection(data) {
+    const step10 = data["step-10"] || {};
+    if (!step10["troubleshooting-body"] || !step10["troubleshooting-body"].length)
+      return "<section class='no-break'><h2 class='section-title'>8. Troubleshooting</h2><p>No troubleshooting issues specified.</p></section>";
     return `
       <section class="no-break"><br>
-        <h2 class="section-title">8. Deployment Checklist</h2>
+        <h2 class="section-title">8. Troubleshooting</h2>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Issue</th>
+              <th>Cause</th>
+              <th>Resolution</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${step10["troubleshooting-body"]
+              .map(
+                (issue) => `
+              <tr>
+                <td>${issue.error_issue || ""}</td>
+                <td>${issue.cause || ""}</td>
+                <td>${issue.resolution || ""}</td>
+              </tr>
+            `
+              )
+              .join("")}
+          </tbody>
+        </table>
+      </section>
+    `;
+  }
+
+  /*---------------------------
+    DEPLOYMENT CHECKLIST (Now from Step 11)
+  ----------------------------*/
+  function generateChecklistSection(data) {
+    const step11 = data["step-11"] || {};
+    return `
+      <section class="no-break"><br>
+        <h2 class="section-title">9. Deployment Checklist</h2>
         <table class="table table-bordered">
           <thead>
             <tr>
@@ -1144,35 +1171,35 @@
           <tbody>
             <tr>
               <td>Production Version Backed Up</td>
-              <td>${step9.production_version_backed_up ? '<i class="fas fa-check-circle text-success"></i>' : '<i class="fas fa-times-circle text-danger"></i>'}</td>
+              <td>${step11.production_version_backed_up ? '<i class="fas fa-check-circle text-success"></i>' : '<i class="fas fa-times-circle text-danger"></i>'}</td>
             </tr>
             <tr>
               <td>Code Changes Documented</td>
-              <td>${step9.code_changes_documented ? '<i class="fas fa-check-circle text-success"></i>' : '<i class="fas fa-times-circle text-danger"></i>'}</td>
+              <td>${step11.code_changes_documented ? '<i class="fas fa-check-circle text-success"></i>' : '<i class="fas fa-times-circle text-danger"></i>'}</td>
             </tr>
             <tr>
               <td>Fields/Records Listed</td>
-              <td>${step9.fields_records_listed ? '<i class="fas fa-check-circle text-success"></i>' : '<i class="fas fa-times-circle text-danger"></i>'}</td>
+              <td>${step11.fields_records_listed ? '<i class="fas fa-check-circle text-success"></i>' : '<i class="fas fa-times-circle text-danger"></i>'}</td>
             </tr>
             <tr>
               <td>Rollback Steps Defined</td>
-              <td>${step9.rollback_steps_defined ? '<i class="fas fa-check-circle text-success"></i>' : '<i class="fas fa-times-circle text-danger"></i>'}</td>
+              <td>${step11.rollback_steps_defined ? '<i class="fas fa-check-circle text-success"></i>' : '<i class="fas fa-times-circle text-danger"></i>'}</td>
             </tr>
             <tr>
               <td>Deployment Reviewed</td>
-              <td>${step9.deployment_reviewed ? '<i class="fas fa-check-circle text-success"></i>' : '<i class="fas fa-times-circle text-danger"></i>'}</td>
+              <td>${step11.deployment_reviewed ? '<i class="fas fa-check-circle text-success"></i>' : '<i class="fas fa-times-circle text-danger"></i>'}</td>
             </tr>
             <tr>
               <td>Tested by Functional</td>
-              <td>${step9.tested_by_functional ? '<i class="fas fa-check-circle text-success"></i>' : '<i class="fas fa-times-circle text-danger"></i>'}</td>
+              <td>${step11.tested_by_functional ? '<i class="fas fa-check-circle text-success"></i>' : '<i class="fas fa-times-circle text-danger"></i>'}</td>
             </tr>
             <tr>
               <td>Tested by Client</td>
-              <td>${step9.tested_by_client ? '<i class="fas fa-check-circle text-success"></i>' : '<i class="fas fa-times-circle text-danger"></i>'}</td>
+              <td>${step11.tested_by_client ? '<i class="fas fa-check-circle text-success"></i>' : '<i class="fas fa-times-circle text-danger"></i>'}</td>
             </tr>
             <tr>
               <td>Deployment Plan Approved</td>
-              <td>${step9.deployment_plan_approved ? '<i class="fas fa-check-circle text-success"></i>' : '<i class="fas fa-times-circle text-danger"></i>'}</td>
+              <td>${step11.deployment_plan_approved ? '<i class="fas fa-check-circle text-success"></i>' : '<i class="fas fa-times-circle text-danger"></i>'}</td>
             </tr>
           </tbody>
         </table>
@@ -1181,21 +1208,21 @@
   }
 
   /*---------------------------
-    CONTACT & LICENSE SECTION (Step 10)
+    CONTACT & LICENSE SECTION (Now from Step 12)
   ----------------------------*/
   function generateContactsSection(data) {
-    const step10 = data["step-10"] || {};
+    const step12 = data["step-12"] || {};
     return `
       <section class="no-break"><br>
-        <h2 class="section-title">9. Contact and License</h2>
+        <h2 class="section-title">10. Contact and License</h2>
         <h3 class="subsection-title">Developers</h3>
-        ${generateDevelopersTable(step10["developers-body"])}
+        ${generateDevelopersTable(step12["developers-body"])}
         <h3 class="subsection-title">Functional Contacts</h3>
-        ${generateFunctionalTable(step10["functional-body"])}
+        ${generateFunctionalTable(step12["functional-body"])}
         <div class="script-details mb-4">
           <dl>
             <dt>License</dt>
-            <dd>${step10.license || ""}</dd>
+            <dd>${step12.license || ""}</dd>
           </dl>
         </div>
       </section>
