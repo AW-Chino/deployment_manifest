@@ -1,0 +1,921 @@
+{
+  "step-1": {
+    "project_name": "Sample Deployment Manifest Documentation",
+    "client": "AppWrap 2.0",
+    "developer": "C. Dela Cruz",
+    "development_environment": "4616839_SB1",
+    "version": "0.5.0",
+    "date": "2025-02-01",
+    "change_summary": "Initial development of core SFDC lookup functionality and queue management. (Sandbox)",
+    "version-history-body": [
+      {
+        "version": "0.6.0",
+        "date": "2025-02-24",
+        "change_summary": "Enhanced queue management and error handling functionality"
+      },
+      {
+        "version": "0.5.0",
+        "date": "2025-02-01",
+        "change_summary": "Initial development of core SFDC lookup functionality and queue management. (Sandbox)"
+      }
+    ]
+  },
+  "step-2": {
+    "story_id": "Rev Rec JE: Automation of placing SFDC Opportunity # in the JE Line",
+    "story_description": "As a user, I want to have in my Journal entry line level a SFDC Opportunity # to be automatically populated, so that it will lessen the time to analyse where that JE line came from.",
+    "feature_title": "Comprehensive Error Handling",
+    "feature_description": "Implements robust error handling with detailed logging and status tracking at both the queue and line item level.",
+    "usage_title": "Emergency Stop Processing",
+    "usage_description": "Use kill switches in the main configuration record to stop processing either gracefully or immediately.",
+    "user-stories-body": [
+      {
+        "story_id": "Rev Rec JE: Automation of placing SFDC Opportunity # in the JE Line",
+        "story_description": "As a user, I want to have in my Journal entry line level a SFDC Opportunity # to be automatically populated, so that it will lessen the time to analyse where that JE line came from."
+      }
+    ],
+    "features-body": [
+      {
+        "feature_title": "Automated SFDC Value Population",
+        "feature_description": "Automatically retrieves and populates SFDC opportunity IDs in Journal Entry lines by tracing through Revenue Recognition Plans and Revenue Elements to source transactions."
+      },
+      {
+        "feature_title": "Queue Management System",
+        "feature_description": "Manages the processing of Journal Entries through a queue system with status tracking and error handling capabilities."
+      },
+      {
+        "feature_title": "Process Control Mechanisms",
+        "feature_description": "Provides both soft and hard kill switches for graceful termination or immediate stoppage of processing when needed."
+      },
+      {
+        "feature_title": "Batch Processing via MapReduce",
+        "feature_description": "Utilizes NetSuite's MapReduce framework for efficient processing of large volumes of Journal Entries and line items."
+      },
+      {
+        "feature_title": "Comprehensive Error Handling",
+        "feature_description": "Implements robust error handling with detailed logging and status tracking at both the queue and line item level."
+      }
+    ],
+    "usage-body": [
+      {
+        "usage_title": "Queue Journal Entry for Processing",
+        "usage_description": "From a Journal Entry record, click the 'Queue SFDC Processing' button. The system validates eligibility and creates a queue record."
+      },
+      {
+        "usage_title": "Monitor Processing Status",
+        "usage_description": "View the queue record to monitor processing status, check for errors, and track progress."
+      },
+      {
+        "usage_title": "Handle Processing Errors",
+        "usage_description": "Review error logs in the queue record, address any issues, and requeue if necessary."
+      },
+      {
+        "usage_title": "Emergency Stop Processing",
+        "usage_description": "Use kill switches in the main configuration record to stop processing either gracefully or immediately."
+      }
+    ]
+  },
+  "step-3": {
+    "rollback_description": "Reset Journal Entry status fields if necessary.",
+    "processes": [
+      {
+        "name": "Initial Setup Process",
+        "steps": [
+          {
+            "step_description": "Deploy the User Event script (AW_RARJE_SFDC_BTN_UE.js) to add the Queue button to Journal Entry forms."
+          },
+          {
+            "step_description": "Deploy the Client script (AW_RARJE_SFDC_BTN_CS.js) to handle button click events and queue creation."
+          },
+          {
+            "step_description": "Deploy the library script (AW_RARJE_SFDC_LIB.js) containing core business logic."
+          },
+          {
+            "step_description": "Deploy the MapReduce script (AW_RARJE_SFDC_MR.js) for processing queued entries."
+          },
+          {
+            "step_description": "Create and configure the Main record (customrecord_aw_rarje_main) for process control."
+          }
+        ]
+      },
+      {
+        "name": "Queue Processing Workflow",
+        "steps": [
+          {
+            "step_description": "User clicks 'Queue SFDC Processing' button on eligible Journal Entry."
+          },
+          {
+            "step_description": "System validates Journal Entry lines for processing eligibility."
+          },
+          {
+            "step_description": "Queue record is created with initial status 'Pending'."
+          },
+          {
+            "step_description": "MapReduce script processes queue entries in FIFO order."
+          },
+          {
+            "step_description": "System updates status and logs throughout processing."
+          }
+        ]
+      }
+    ],
+    "rollbacks": [
+      {
+        "description": "Stop all processing by enabling the hard kill switch in the Main record."
+      },
+      {
+        "description": "Clear the top queue value in the Main record to reset queue processing."
+      },
+      {
+        "description": "Update queue record status to 'Error' for any affected entries."
+      },
+      {
+        "description": "Reset Journal Entry status fields if necessary."
+      }
+    ]
+  },
+  "step-4": {
+    "env_name": "Queue Status - Killed",
+    "env_notes": "Internal ID for Killed status",
+    "sandbox_value": "5",
+    "production_value": "5",
+    "environment-ids-body": [
+      {
+        "env_name": "Main Configuration Record",
+        "env_notes": "Internal ID of the customrecord_aw_rarje_main record",
+        "sandbox_value": "1",
+        "production_value": "1"
+      },
+      {
+        "env_name": "Queue Status - Pending",
+        "env_notes": "Internal ID for Pending status",
+        "sandbox_value": "1",
+        "production_value": "1"
+      },
+      {
+        "env_name": "Queue Status - Processing",
+        "env_notes": "Internal ID for Processing status",
+        "sandbox_value": "2",
+        "production_value": "2"
+      },
+      {
+        "env_name": "Queue Status - Completed",
+        "env_notes": "Internal ID for Completed status",
+        "sandbox_value": "3",
+        "production_value": "3"
+      },
+      {
+        "env_name": "Queue Status - Error",
+        "env_notes": "Internal ID for Error status",
+        "sandbox_value": "4",
+        "production_value": "4"
+      },
+      {
+        "env_name": "Queue Status - Killed",
+        "env_notes": "Internal ID for Killed status",
+        "sandbox_value": "5",
+        "production_value": "5"
+      }
+    ]
+  },
+  "step-5": {
+    "dependency_name": "ESLint",
+    "dependency_version": "8.56.0",
+    "dependency_license": "MIT",
+    "deployment-dependencies-body": [
+      {
+        "dependency_name": "SuiteScript 2.0",
+        "dependency_version": "2024.1",
+        "dependency_license": "NetSuite License"
+      }
+    ],
+    "dev-dependencies-body": [
+      {
+        "dependency_name": "ESLint",
+        "dependency_version": "8.56.0",
+        "dependency_license": "MIT"
+      }
+    ]
+  },
+  "step-6": {
+    "scripts": [
+      {
+        "name": "AppWrap - RAR JE SFDC BTN UE",
+        "details": {
+          "id": "customscript_aw_rarje_sfdbtn_ue",
+          "type": "UserEventScript",
+          "description": "Enhanced User Event script with improved eligibility checking and queue management",
+          "fileName": "AW_RARJE_SFDC_BTN_UE.js",
+          "location": "/SuiteScripts/Populate SFDC/"
+        },
+        "parameters": [
+          {
+            "parameter_name": "testParam",
+            "parameter_value": "testValue"
+          }
+        ],
+        "entryPoints": [
+          {
+            "entry_point_name": "beforeLoad",
+            "function_name": "beforeLoad"
+          },
+          {
+            "entry_point_name": "afterSubmit",
+            "function_name": "afterSubmit"
+          }
+        ],
+        "deploymentRecords": [
+          {
+            "applied_to": "Journal Entry",
+            "deployment_id": "customdeploy_aw_test_sfdc_ue",
+            "deployment_notes": "Deployed to all Journal Entry forms with enhanced queue creation"
+          }
+        ],
+        "versionHistory": [
+          {
+            "version": "0.6.0",
+            "changes": "Added afterSubmit function for automatic queue creation,Enhanced eligibility checking logic,Improved error handling and logging,Added comprehensive logging"
+          }
+        ],
+        "libraries": [
+          {
+            "library_name": "AW_RARJE_SFDC_LIB.js",
+            "purpose": "Core business logic and queue management"
+          },
+          {
+            "library_name": "N/ui/serverWidget",
+            "purpose": "UI manipulation"
+          },
+          {
+            "library_name": "N/log",
+            "purpose": "Logging functionality"
+          }
+        ],
+        "unitTests": [
+          {
+            "test_description": "Eligibility check on JE creation",
+            "test_result": "Correctly identifies eligible JEs"
+          },
+          {
+            "test_description": "Queue creation in afterSubmit",
+            "test_result": "Successfully creates queue records"
+          },
+          {
+            "test_description": "Button visibility check",
+            "test_result": "Button appears only on eligible JEs"
+          }
+        ],
+        "checklists": {
+          "standards": true,
+          "disclaimer": true,
+          "expectations": true,
+          "eslint": true
+        }
+      },
+      {
+        "name": "AW_RARJE_SFDC_BTN_CS.js",
+        "details": {
+          "id": "customscript_aw_rarje_sfdbtn_cs",
+          "type": "ClientScript",
+          "description": "Client script that handles the Queue SFDC Processing button click event and manages queue record creation",
+          "fileName": "AW_RARJE_SFDC_BTN_CS.js",
+          "location": "/SuiteScripts/Populate SFDC/"
+        },
+        "parameters": [
+          {
+            "parameter_name": "testParam",
+            "parameter_value": "testValue"
+          }
+        ],
+        "entryPoints": [
+          {
+            "entry_point_name": "pageInit",
+            "function_name": "pageInit"
+          },
+          {
+            "entry_point_name": "queueSFDCProcessing",
+            "function_name": "queueSFDCProcessing"
+          }
+        ],
+        "deploymentRecords": [
+          {
+            "applied_to": "Not Deployed",
+            "deployment_id": "-",
+            "deployment_notes": "Set in AW_RARJE_SFDC_BTN_UE.js"
+          }
+        ],
+        "versionHistory": [
+          {
+            "version": "0.6.0",
+            "changes": "Enhanced error handling,Improved user feedback,Added validation checks"
+          }
+        ],
+        "libraries": [
+          {
+            "library_name": "N/record",
+            "purpose": "Record operations"
+          },
+          {
+            "library_name": "N/currentRecord",
+            "purpose": "Current record access"
+          }
+        ],
+        "unitTests": [
+          {
+            "test_description": "Queue creation for eligible JE",
+            "test_result": "Queue record created successfully"
+          },
+          {
+            "test_description": "Duplicate queue prevention",
+            "test_result": "Prevents duplicate queue creation"
+          },
+          {
+            "test_description": "Error handling",
+            "test_result": "Properly displays error messages"
+          }
+        ],
+        "checklists": {
+          "standards": true,
+          "disclaimer": true,
+          "expectations": true,
+          "eslint": true
+        }
+      },
+      {
+        "name": "AW_RARJE_SFDC_LIB.js",
+        "details": {
+          "id": "customscript_aw_rarje_sfdc_lib",
+          "type": "Library",
+          "description": "Enhanced library with improved SFDC lookup and queue management",
+          "fileName": "AW_RARJE_SFDC_LIB.js",
+          "location": "/SuiteScripts/Populate SFDC/"
+        },
+        "parameters": [
+          {
+            "parameter_name": "testParam",
+            "parameter_value": "testValue"
+          }
+        ],
+        "entryPoints": [
+          {
+            "entry_point_name": "getSFDC",
+            "function_name": "getSFDC"
+          },
+          {
+            "entry_point_name": "checkAndSetTopQueue",
+            "function_name": "checkAndSetTopQueue"
+          },
+          {
+            "entry_point_name": "updateOverallStatus",
+            "function_name": "updateOverallStatus"
+          },
+          {
+            "entry_point_name": "buildEligibleLineData",
+            "function_name": "buildEligibleLineData"
+          }
+        ],
+        "deploymentRecords": [],
+        "versionHistory": [
+          {
+            "version": "0.6.0",
+            "changes": "Added updateOverallStatus function,Enhanced error handling in getSFDC,Improved queue management logic,Added comprehensive logging"
+          }
+        ],
+        "libraries": [
+          {
+            "library_name": "N/record",
+            "purpose": "Record operations"
+          },
+          {
+            "library_name": "N/search",
+            "purpose": "Search operations"
+          },
+          {
+            "library_name": "N/log",
+            "purpose": "Logging functionality"
+          }
+        ],
+        "unitTests": [
+          {
+            "test_description": "SFDC lookup functionality",
+            "test_result": "Successfully retrieves SFDC values"
+          },
+          {
+            "test_description": "Queue management functions",
+            "test_result": "Properly manages queue processing"
+          },
+          {
+            "test_description": "Error handling",
+            "test_result": "Correctly handles and logs errors"
+          },
+          {
+            "test_description": "Data validation",
+            "test_result": "Properly validates input data"
+          }
+        ],
+        "checklists": {
+          "standards": true,
+          "disclaimer": true,
+          "expectations": true,
+          "eslint": true
+        }
+      },
+      {
+        "name": "AW_RARJE_SFDC_MR.js",
+        "details": {
+          "id": "customscript_aw_rarje_sfdc_mr",
+          "type": "MapReduceScript",
+          "description": "Enhanced MapReduce script with improved processing and error handling",
+          "fileName": "AW_RARJE_SFDC_MR.js",
+          "location": "/SuiteScripts/Populate SFDC/"
+        },
+        "parameters": [
+          {
+            "parameter_name": "testParam",
+            "parameter_value": "testValue"
+          }
+        ],
+        "entryPoints": [
+          {
+            "entry_point_name": "getInputData",
+            "function_name": "getInputData"
+          },
+          {
+            "entry_point_name": "map",
+            "function_name": "map"
+          },
+          {
+            "entry_point_name": "reduce",
+            "function_name": "reduce"
+          },
+          {
+            "entry_point_name": "summarize",
+            "function_name": "summarize"
+          }
+        ],
+        "deploymentRecords": [
+          {
+            "applied_to": "Map/Reduce Script",
+            "deployment_id": "customdeploy_aw_rarje_sfdc_mr",
+            "deployment_notes": "Deployed with 60-minute yield time and single concurrency"
+          }
+        ],
+        "versionHistory": [
+          {
+            "version": "0.6.0",
+            "changes": "Enhanced queue processing logic,Improved error handling and recovery,Added usage monitoring,Enhanced status tracking,Implemented FIFO processing"
+          }
+        ],
+        "libraries": [
+          {
+            "library_name": "AW_RARJE_SFDC_LIB.js",
+            "purpose": "Core business logic and queue management"
+          },
+          {
+            "library_name": "N/runtime",
+            "purpose": "Script runtime operations"
+          },
+          {
+            "library_name": "N/record",
+            "purpose": "Record operations"
+          },
+          {
+            "library_name": "N/search",
+            "purpose": "Search operations"
+          },
+          {
+            "library_name": "N/log",
+            "purpose": "Logging functionality"
+          }
+        ],
+        "unitTests": [
+          {
+            "test_description": "MapReduce processing flow",
+            "test_result": "Successfully processes all stages"
+          },
+          {
+            "test_description": "Kill switch functionality",
+            "test_result": "Properly handles processing termination"
+          },
+          {
+            "test_description": "Usage monitoring",
+            "test_result": "Correctly tracks and manages script usage"
+          },
+          {
+            "test_description": "Error recovery",
+            "test_result": "Successfully recovers from processing errors"
+          },
+          {
+            "test_description": "Queue management",
+            "test_result": "Maintains proper FIFO processing order"
+          }
+        ],
+        "checklists": {
+          "standards": true,
+          "disclaimer": true,
+          "expectations": true,
+          "eslint": true
+        }
+      }
+    ]
+  },
+  "step-7": {
+    "customRecords": [
+      {
+        "name": "AppWrap - RAR JE SFDC Processing",
+        "id": "customrecord_aw_rarje_main",
+        "type": "Configuration Record",
+        "description": "Main configuration record for controlling the SFDC processing system.",
+        "fields": [
+          {
+            "field_name": "Top Queue Transaction",
+            "field_id": "custrecord_aw_rarje_topqueue",
+            "field_type": "List/Record",
+            "field_description": "Current queue record being processed",
+            "mandatory": "true",
+            "searchable": "true"
+          },
+          {
+            "field_name": "Kill Switch – Soft",
+            "field_id": "custrecord_aw_rarje_kill_soft",
+            "field_type": "Checkbox",
+            "field_description": "Enables graceful processing termination",
+            "mandatory": "",
+            "searchable": "true",
+            "default_value": ""
+          },
+          {
+            "field_name": "Kill Switch – Hard",
+            "field_id": "custrecord_aw_rarje_kill_hard",
+            "field_type": "Checkbox",
+            "field_description": "Enables immediate processing termination",
+            "mandatory": "",
+            "searchable": "true",
+            "default_value": ""
+          },
+          {
+            "field_name": "MR Status",
+            "field_id": "custrecord_aw_rarje_ovrstatus",
+            "field_type": "List/Record",
+            "field_description": "Overall MapReduce processing status",
+            "mandatory": "true",
+            "searchable": "true"
+          }
+        ]
+      },
+      {
+        "name": "AppWrap - RAR JE SFDC Queue",
+        "id": "customrecord_aw_rarje_queue",
+        "type": "Transaction Record",
+        "description": "Enhanced queue record with additional tracking fields",
+        "fields": [
+          {
+            "field_name": "Parent Link",
+            "field_id": "custrecord_aw_rrje_chd_par",
+            "field_type": "List/Record",
+            "field_description": "Link to main configuration record",
+            "mandatory": "true",
+            "searchable": "true"
+          },
+          {
+            "field_name": "Journal Entry",
+            "field_id": "custrecord_aw_rrje_chd_je",
+            "field_type": "List/Record",
+            "field_description": "Journal Entry being processed",
+            "mandatory": "true",
+            "searchable": "true"
+          },
+          {
+            "field_name": "Total Lines",
+            "field_id": "custrecord_aw_rrje_chd_total",
+            "field_type": "Integer",
+            "field_description": "Total number of lines to process",
+            "mandatory": "true",
+            "searchable": "true"
+          },
+          {
+            "field_name": "Lines to Process",
+            "field_id": "custrecord_aw_rrje_chd_toprocess",
+            "field_type": "Integer",
+            "field_description": "Number of lines remaining to process",
+            "mandatory": "true",
+            "searchable": "true"
+          },
+          {
+            "field_name": "Status",
+            "field_id": "custrecord_aw_rrje_chd_status",
+            "field_type": "List/Record",
+            "field_description": "Current processing status",
+            "mandatory": "true",
+            "searchable": "true"
+          },
+          {
+            "field_name": "Date Added",
+            "field_id": "custrecord_aw_rrje_chd_date",
+            "field_type": "DateTime",
+            "field_description": "Date/time queue record was created",
+            "mandatory": "true",
+            "searchable": "true"
+          },
+          {
+            "field_name": "Ignore List",
+            "field_id": "custrecord_aw_rrje_chd_ignore",
+            "field_type": "Long Text",
+            "field_description": "List of revenue plans to ignore",
+            "mandatory": "",
+            "searchable": ""
+          },
+          {
+            "field_name": "Error Log",
+            "field_id": "custrecord_aw_rrje_chd_errmsg",
+            "field_type": "Long Text",
+            "field_description": "Detailed error messages if any",
+            "mandatory": "",
+            "searchable": ""
+          }
+        ]
+      }
+    ]
+  },
+  "step-8": {
+    "workflow_details": "Test Workflow",
+    "action": "Add Form Change WFA",
+    "state": "State 3: Init Approval (custstate_23243)",
+    "details": "Add WFA on BeforeLoad",
+    "table-data": [
+      {
+        "action": "Add Form Change WFA",
+        "state": "State 3: Init Approval (custstate_23243)",
+        "details": "Add WFA on BeforeLoad"
+      }
+    ],
+    "workflows": [
+      {
+        "details": "Test Workflow",
+        "actions": [
+          {
+            "action": "Add Form Change WFA",
+            "state": "State 3: Init Approval (custstate_23243)",
+            "details": "Add WFA on BeforeLoad"
+          }
+        ]
+      }
+    ]
+  },
+  "step-9": {
+    "field_name": "SFDC Opportunity Number",
+    "field_id": "custcol2",
+    "field_description": "SFDC Opportunity Number on JE line level",
+    "field_type": "Free-Form Text",
+    "applies_to": "Journal Entry Line",
+    "searchable": "true",
+    "template_name": "aw_invoice_pdf",
+    "template_id": "123",
+    "template_type": "ADVPDF",
+    "template_description": "Used as Transaction Printed PDF",
+    "search_name": "Customer Search",
+    "search_id": "customsearch2324",
+    "search_description": "Used in WFA Script to validate customer",
+    "search_criteria": "N/A",
+    "search_results": "N/A",
+    "custom-fields-body": [
+      {
+        "field_name": "RARJE SFDC Queue",
+        "field_id": "custbody_aw_sfdc_queue",
+        "field_description": "Queue Record",
+        "field_type": "List/Record",
+        "applies_to": "Journal Entry Header",
+        "mandatory": "",
+        "searchable": "true"
+      },
+      {
+        "field_name": "RARJE SFDC Queue Status",
+        "field_id": "custbody_aw_sfdc_queue_status",
+        "field_description": "Queue Processing Status",
+        "field_type": "List/Record",
+        "applies_to": "Journal Entry Header",
+        "mandatory": "",
+        "searchable": "true"
+      },
+      {
+        "field_name": "SFDC Opportunity Number",
+        "field_id": "custcol2",
+        "field_description": "SFDC Opportunity Number on JE line level",
+        "field_type": "Free-Form Text",
+        "applies_to": "Journal Entry Line",
+        "mandatory": "",
+        "searchable": "true"
+      }
+    ],
+    "templates-body": [
+      {
+        "template_name": "aw_invoice_pdf",
+        "template_id": "123",
+        "template_type": "ADVPDF",
+        "template_description": "Used as Transaction Printed PDF"
+      }
+    ],
+    "saved-searches-body": [
+      {
+        "search_name": "Customer Search",
+        "search_id": "customsearch2324",
+        "search_description": "Used in WFA Script to validate customer",
+        "search_criteria": "N/A",
+        "search_results": "N/A"
+      }
+    ]
+  },
+  "step-10": {
+    "error_issue": "Missing SFDC values",
+    "cause": "Broken chain in Revenue Recognition Plan to source transaction",
+    "resolution": "Validate complete chain of references before processing",
+    "prevention": "Implement pre-processing validation checks",
+    "impact": "Medium - Incomplete data",
+    "troubleshooting-body": [
+      {
+        "error_issue": "Usage limit exceeded during processing",
+        "cause": "Complex processing logic consuming more units than expected",
+        "resolution": "Monitor usage with runtime.getCurrentScript().getRemainingUsage()",
+        "prevention": "Implement yield points in processing loops",
+        "impact": "High - Script termination"
+      },
+      {
+        "error_issue": "Record has been changed error",
+        "cause": "Concurrent updates to queue records",
+        "resolution": "Use submitFields instead of record.load/save for status updates",
+        "prevention": "Implement proper record locking mechanism",
+        "impact": "Medium - Processing delay"
+      },
+      {
+        "error_issue": "Processing stuck in loop",
+        "cause": "Invalid revenue plan references or circular dependencies",
+        "resolution": "Implement proper error handling and logging for revenue plan lookup",
+        "prevention": "Validate revenue plan chain before processing",
+        "impact": "High - Process interruption"
+      },
+      {
+        "error_issue": "Missing SFDC values",
+        "cause": "Broken chain in Revenue Recognition Plan to source transaction",
+        "resolution": "Validate complete chain of references before processing",
+        "prevention": "Implement pre-processing validation checks",
+        "impact": "Medium - Incomplete data"
+      }
+    ]
+  },
+  "step-11": {
+    "production_version_backed_up": true,
+    "code_changes_documented": true,
+    "fields_records_listed": true,
+    "rollback_steps_defined": true,
+    "deployment_reviewed": true,
+    "tested_by_functional": false,
+    "tested_by_client": false,
+    "deployment_plan_approved": false
+  },
+  "step-12": {
+    "developer_name": "Chino Dela Cruz",
+    "developer_note": "Main Developer",
+    "developer_role": "Technical Consultant",
+    "responsibility": "Requirements gathering and testing",
+    "functional_name": "Karl Acuna",
+    "functional_note": "Task Requester",
+    "functional_role": "Business Analyst",
+    "license": "Copyright 2025 AppWrap, Inc. All Rights Reserved.",
+    "developers-body": [
+      {
+        "developer_name": "Chino Dela Cruz",
+        "developer_email": "cdelacruz@appwrap.com",
+        "developer_note": "Main Developer",
+        "developer_role": "Technical Consultant",
+        "responsibility": "Primary development and implementation"
+      }
+    ],
+    "functional-body": [
+      {
+        "functional_name": "Karl Acuna",
+        "functional_email": "kacuna@appwrap.com",
+        "functional_note": "Task Requester",
+        "functional_role": "Business Analyst",
+        "responsibility": "Requirements gathering and testing"
+      }
+    ]
+  },
+  "step-13": {
+    "component_type": "Workflow",
+    "component_name": "Test Workflow",
+    "deployment_date": "2025-02-27",
+    "documentation_version": "v1",
+    "status": "Not Deployed",
+    "change_description": "test",
+    "installation_method": "test",
+    "components-body": [
+      {
+        "component_type": "Script",
+        "component_name": "AppWrap - RAR JE SFDC BTN UE",
+        "deployment_date": "2025-02-27",
+        "documentation_version": "v1",
+        "status": "Not Deployed",
+        "change_description": "test",
+        "installation_method": "test"
+      },
+      {
+        "component_type": "Script",
+        "component_name": "AW_RARJE_SFDC_BTN_CS.js",
+        "deployment_date": "2025-02-27",
+        "documentation_version": "v1",
+        "status": "No Change",
+        "change_description": "test",
+        "installation_method": "test"
+      },
+      {
+        "component_type": "Script",
+        "component_name": "AW_RARJE_SFDC_LIB.js",
+        "deployment_date": "2025-02-27",
+        "documentation_version": "v1",
+        "status": "Updated",
+        "change_description": "test",
+        "installation_method": "test"
+      },
+      {
+        "component_type": "Script",
+        "component_name": "AW_RARJE_SFDC_MR.js",
+        "deployment_date": "2025-02-27",
+        "documentation_version": "v1",
+        "status": "Not Deployed",
+        "change_description": "test",
+        "installation_method": "test"
+      },
+      {
+        "component_type": "Custom Record",
+        "component_name": "AppWrap - RAR JE SFDC Processing",
+        "deployment_date": "2025-02-27",
+        "documentation_version": "v1",
+        "status": "Not Deployed",
+        "change_description": "test",
+        "installation_method": "test"
+      },
+      {
+        "component_type": "Custom Record",
+        "component_name": "AppWrap - RAR JE SFDC Queue",
+        "deployment_date": "2025-02-27",
+        "documentation_version": "v1",
+        "status": "No Change",
+        "change_description": "test",
+        "installation_method": "test"
+      },
+      {
+        "component_type": "Custom Field",
+        "component_name": "RARJE SFDC Queue",
+        "deployment_date": "2025-02-27",
+        "documentation_version": "v1",
+        "status": "Not Deployed",
+        "change_description": "test",
+        "installation_method": "test"
+      },
+      {
+        "component_type": "Custom Field",
+        "component_name": "RARJE SFDC Queue Status",
+        "deployment_date": "2025-02-27",
+        "documentation_version": "v2",
+        "status": "New",
+        "change_description": "test",
+        "installation_method": "test"
+      },
+      {
+        "component_type": "Custom Field",
+        "component_name": "SFDC Opportunity Number",
+        "deployment_date": "2025-02-27",
+        "documentation_version": "v2",
+        "status": "New",
+        "change_description": "test",
+        "installation_method": "test"
+      },
+      {
+        "component_type": "Template",
+        "component_name": "aw_invoice_pdf",
+        "deployment_date": "2025-02-27",
+        "documentation_version": "v1",
+        "status": "Not Deployed",
+        "change_description": "test",
+        "installation_method": "test"
+      },
+      {
+        "component_type": "Saved Search",
+        "component_name": "Customer Search",
+        "deployment_date": "2025-02-27",
+        "documentation_version": "v1",
+        "status": "Not Deployed",
+        "change_description": "test",
+        "installation_method": "test"
+      },
+      {
+        "component_type": "Workflow",
+        "component_name": "Test Workflow",
+        "deployment_date": "2025-02-27",
+        "documentation_version": "v1",
+        "status": "Not Deployed",
+        "change_description": "test",
+        "installation_method": "test"
+      }
+    ]
+  }
+}

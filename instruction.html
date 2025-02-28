@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Deployment Manifest Instructions</title>
+  <!-- (Optional) Bootstrap for styling -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <style>
+    body {
+      background: #f8f9fa;
+      color: #212529;
+      margin: 20px;
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    h1 {
+      margin-bottom: 1rem;
+      color: #0d6efd;
+    }
+    pre {
+      background: #fff;
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+      padding: 15px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      max-height: 70vh;
+      overflow-y: auto;
+      font-size: 0.95rem;
+    }
+    .copy-btn {
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+    <img src="https://appwrap.com/wp-content/uploads/2024/12/appwrap-logo.svg" alt="AppWrap Logo" class="img-fluid">
+    <h1>Deployment Manifest Instructions</h1>
+  <button id="copyButton" class="btn btn-primary copy-btn">Copy Instructions</button>
+
+  <pre id="instructions">
+You are provided with detailed project and script information for a NetSuite deployment. Using that information, produce a JSON manifest matching the following structure and rules:
+
+1. **Overall JSON Format**  
+   ```json
+   {
+     "step-1": { /* Project Information */ },
+     "step-2": { /* Project Scope */ },
+     "step-3": { /* Playbook */ },
+     "step-4": { /* Configuration */ },
+     "step-5": { /* Dependencies */ },
+     "step-6": { /* Scripts */ },
+     "step-7": { /* Custom Records */ },
+     "step-8": { /* Workflow */ },
+     "step-9": { /* Custom Fields */ },
+     "step-10": { /* Troubleshooting */ },
+     "step-11": { /* Deployment Checklist */ },
+     "step-12": { /* Contact & License */ }
+   }
+   ```
+
+2. **Section Details** (include only the ones you need, but maintain the structure):
+   - **Step 1 (Project Info)** must include:
+     - `project_name` (string)
+     - `client` (string)
+     - `developer` (**default to "C. Dela Cruz"** if no name is specified by the user)
+     - `development_environment` (string)
+     - `version` (string, semantic version preferred, e.g. "1.0.0")
+     - `date` (`YYYY-MM-DD`)
+     - `change_summary` (string)
+     - `version-history-body` (array of objects, each with `version`, `date`, `change_summary`)
+
+   - **Step 2 (Project Scope)**: user-stories-body, features-body, usage-body
+
+   - **Step 3 (Playbook)**: processes (name + steps) and rollbacks (list of rollback actions)
+
+   - **Step 4 (Configuration)**: environment-ids-body (list of environment IDs)
+
+   - **Step 5 (Dependencies)**: deployment-dependencies-body, dev-dependencies-body
+
+   - **Step 6 (Scripts)**: scripts array, each with:
+     - `name`
+     - `details` (`id`, `type`, `description`, `fileName`, `location`)
+     - `parameters` (`parameter_name`, `parameter_id`, `parameter_type`, `parameter_description`)
+     - `entryPoints` (`entry_point_name`, `function_name`)
+     - `deploymentRecords` (`applied_to`, `deployment_id`, `deployment_notes`)
+     - `libraries` (`library_name`, `file_name`, `location`, `purpose`)
+     - `unitTests` (`test_description`, `test_result`)
+     - `checklists` (`standards`, `disclaimer`, `expectations`, `eslint` booleans)
+
+   - **Step 7 (Custom Records)**: customRecords array, each with `name`, `id`, `type`, `description`, `fields`
+
+   - **Step 8 (Workflow)**: workflows array, each with `details`, `actions` (`action`, `state`, `details`)
+
+   - **Step 9 (Custom Fields)**: custom-fields-body, saved-searches-body, templates-body
+
+   - **Step 10 (Troubleshooting)**: troubleshooting-body array
+
+   - **Step 11 (Deployment Checklist)**:
+     ```
+     {
+       "production_version_backed_up": boolean,
+       "code_changes_documented": boolean,
+       "fields_records_listed": boolean,
+       "rollback_steps_defined": boolean,
+       "deployment_reviewed": boolean,
+       "tested_by_functional": boolean,
+       "tested_by_client": boolean,
+       "deployment_plan_approved": boolean
+     }
+     ```
+
+   - **Step 12 (Contact & License)**: `license`, `developers-body`, `functional-body`
+
+3. **Validation Rules**:
+   - The `"developer"` field must be `"C. Dela Cruz"` by default, or `"Chino Dela Cruz"` if the user specifies differently
+   - All dates are in `YYYY-MM-DD` format
+   - Script/record IDs must follow NetSuite naming conventions (e.g., `customscript_`, `customrecord_`)
+   - Provide meaningful version histories and change summaries
+
+4. **Required Fields**:
+   - `project_name`
+   - `client`
+   - `developer` (defaults to `"C. Dela Cruz"`)
+   - `development_environment`
+   - `license`
+
+5. **Please Return**:
+   - A single JSON object matching the above structure
+   - **No additional text**; only valid JSON.
+
+**Now here are my specific details:**
+[Paste or describe your project, scripts, custom records, etc. in natural language]
+
+**Generate the JSON** that fits all these details, ensuring it meets the structure and rules above.
+
+----
+
+Below is a sample JSON as reference:
+```json
+{
+  "step-1": {
+    "project_name": "Comprehensive Deployment Manifest",
+    "client": "AppWrap Enterprise",
+    "developer": "Chino Dela Cruz",
+    "development_environment": "Sandbox_01",
+    "version": "v1.0.0",
+    "date": "2025-02-13",
+    "change_summary": "Updated Project",
+    "version-history-body": [
+      {
+        "version": "v0.9.0",
+        "date": "2025-02-01",
+        "change_summary": "Initial Version"
+      },
+      {
+        "version": "v1.0.0",
+        "date": "2025-02-13",
+        "change_summary": "Updated Project"
+      }
+    ]
+  },
+  "step-2": {
+    "story_id": "Create a Deployment Process Wizard",
+    "story_description": "As a user, I need a clear deployment process so I can execute tasks accurately.",
+    "feature_title": "Automated Process",
+    "feature_description": "Streamlines deployment tasks with automation.",
+    "usage_title": "Standard Usage",
+    "usage_description": "Deploy using the standard process flow.",
+    "user-stories-body": [
+      {
+        "story_id": "Create a Deployment Process Wizard",
+        "story_description": "As a user, I need a clear deployment process so I can execute tasks accurately."
+      }
+    ],
+    "features-body": [
+      {
+        "feature_title": "Automated Process",
+        "feature_description": "Streamlines deployment tasks with automation."
+      }
+    ],
+    "usage-body": [
+      {
+        "usage_title": "Standard Usage",
+        "usage_description": "Deploy using the standard process flow."
+      }
+    ]
+  },
+  "step-3": {
+    "description": "Set Scripts to Inactive",
+    "installation_image": "deployment.png",
+    "installationProcess": [
+      {
+        "description": "npm install",
+        "installation_image": ""
+      },
+      {
+        "description": "Install Bundle 12345",
+        "installation_image": "bundle_components.jpg"
+      }
+    ],
+    "rollbackProcess": [
+      {
+        "description": "Set Scripts to Inactive",
+        "installation_image": "deployment.png"
+      }
+    ]
+  },
+  "step-4": {
+    "description": "Configure Custom Record",
+    "installation_image": "Custom Record Default Values.png",
+    "env_name": "file.txt",
+    "env_notes": "Used as source of fields",
+    "sandbox_value": "File ID: 23453",
+    "production_value": "File ID: 45346",
+    "configurationProcess": [
+      {
+        "description": "Configure Script Parameters",
+        "installation_image": "parameter.png"
+      },
+      {
+        "description": "Configure Custom Record",
+        "installation_image": "Custom Record Default Values.png"
+      }
+    ],
+    "environment-ids-body": [
+      {
+        "env_name": "file.txt",
+        "env_notes": "Used as source of fields",
+        "sandbox_value": "File ID: 23453",
+        "production_value": "File ID: 45346"
+      }
+    ]
+  },
+  "step-5": {
+    "dependency_name": "SuiteCloud Unit Testing",
+    "dependency_version": "v1.4.1",
+    "dependency_license": "UPL, Version 1.0",
+    "deployment-dependencies-body": [
+      {
+        "dependency_name": "AppWrap_UtilityBelt",
+        "dependency_version": "v1.0",
+        "dependency_license": "Copyright 2023 AppWrap, Inc."
+      }
+    ],
+    "dev-dependencies-body": [
+      {
+        "dependency_name": "Node.js",
+        "dependency_version": "Latest Stable",
+        "dependency_license": "MIT License"
+      },
+      {
+        "dependency_name": "Jest",
+        "dependency_version": "v27.3.1",
+        "dependency_license": "MIT License"
+      },
+      {
+        "dependency_name": "SuiteCloud Unit Testing",
+        "dependency_version": "v1.4.1",
+        "dependency_license": "UPL, Version 1.0"
+      }
+    ]
+  },
+  "step-6": {
+    "scripts": [
+      {
+        "name": "AppWrap - Deployment Wizard UE",
+        "details": {
+          "id": "customscript_aw_depwiz_ue",
+          "type": "User Event",
+          "description": "Sample Script Description",
+          "fileName": "aw_depwiz_ue.js",
+          "location": "/SuiteScript/AppWrap/Wizard/"
+        },
+        "parameters": [
+          {
+            "parameter_name": "File ID",
+            "parameter_id": "_aw_dep_fileid",
+            "parameter_type": "integer",
+            "parameter_description": "Source File"
+          }
+        ],
+        "entryPoints": [
+          {
+            "entry_point_name": "beforeLoad",
+            "function_name": "initDeployment"
+          }
+        ],
+        "deploymentRecords": [
+          {
+            "applied_to": "Journal Entry",
+            "deployment_id": "customdeploy1",
+            "deployment_notes": "Deployed on JE forms."
+          }
+        ],
+        "versionHistory": [
+          {
+            "version": "1.0.0",
+            "date": "2025-02-04",
+            "change_summary": "Initial Script",
+            "commit_id": "None"
+          }
+        ],
+        "libraries": [
+          {
+            "library_name": "AppWrap_UtilityBelt",
+            "file_name": "AppWrap_UtilityBelt.js",
+            "location": "/SuiteScript/AppWrap/lib/",
+            "purpose": "Util"
+          }
+        ],
+        "unitTests": [],
+        "checklists": {
+          "standards": true,
+          "disclaimer": true,
+          "expectations": true,
+          "eslint": true
+        }
+      }
+    ]
+  },
+  "step-7": {
+    "customRecords": [
+      {
+        "name": "Wizard Config",
+        "id": "customrecord_depwizard",
+        "type": "customrecord_depwizard",
+        "description": "Primary configuration record for deployment.",
+        "fields": [
+          {
+            "field_name": "Name",
+            "field_id": "name",
+            "field_type": "Text",
+            "field_description": "Name"
+          },
+          {
+            "field_name": "Enable Wizard",
+            "field_id": "custfield_enable_wiz",
+            "field_type": "Checkbox",
+            "field_description": "Toggle Wizard"
+          }
+        ]
+      }
+    ]
+  },
+  "step-8": {
+    "workflow_details": "Deployment Wizard",
+    "action": "Add State 1",
+    "state": "custstate1",
+    "details": "Initial State that contains WFAs",
+    "table-data": [
+      {
+        "action": "Add State 1",
+        "state": "custstate1",
+        "details": "Initial State that contains WFAs"
+      }
+    ],
+    "workflows": [
+      {
+        "details": "Deployment Wizard",
+        "actions": [
+          {
+            "action": "Add State 1",
+            "state": "custstate1",
+            "details": "Initial State that contains WFAs"
+          }
+        ]
+      }
+    ]
+  },
+  "step-9": {
+    "field_name": "JE Wizard Source",
+    "field_id": "custbody_jewiz_src",
+    "field_type": "Record",
+    "field_description": "Custom Record Link",
+    "template_name": "wizard template",
+    "template_id": "custpdf_wiz",
+    "template_type": "AdvPDF",
+    "template_description": "For Printing",
+    "search_name": "AW - Enabled Wizards",
+    "search_id": "custsearch_aw_enabled_wiz",
+    "search_description": "List down Enabled Wizard Records",
+    "search_criteria": "TBA",
+    "search_results": "TBA",
+    "custom-fields-body": [
+      {
+        "field_name": "JE Wizard Source",
+        "field_id": "custbody_jewiz_src",
+        "field_type": "Record",
+        "field_description": "Custom Record Link"
+      }
+    ],
+    "templates-body": [
+      {
+        "template_name": "wizard template",
+        "template_id": "custpdf_wiz",
+        "template_type": "AdvPDF",
+        "template_description": "For Printing"
+      }
+    ],
+    "saved-searches-body": [
+      {
+        "search_name": "AW - Enabled Wizards",
+        "search_id": "custsearch_aw_enabled_wiz",
+        "search_description": "List down Enabled Wizard Records",
+        "search_criteria": "TBA",
+        "search_results": "TBA"
+      }
+    ]
+  },
+  "step-10": {
+    "error_issue": "Record Locking Error",
+    "cause": "Concurrent updates",
+    "resolution": "Implement record locking",
+    "test_description": "Validate rollback functionality",
+    "test_result": "Rollback process executed correctly.",
+    "troubleshooting-body": [
+      {
+        "error_issue": "Script Timeout",
+        "cause": "Long processing time",
+        "resolution": "Optimize script loops"
+      },
+      {
+        "error_issue": "Record Locking Error",
+        "cause": "Concurrent updates",
+        "resolution": "Implement record locking"
+      }
+    ],
+    "unitTesting": [
+      {
+        "test_description": "Verify deployment script triggers",
+        "test_result": "Deployment script triggered as expected."
+      },
+      {
+        "test_description": "Validate rollback functionality",
+        "test_result": "Rollback process executed correctly."
+      }
+    ]
+  },
+  "step-11": {
+    "production_version_backed_up": true,
+    "code_changes_documented": true,
+    "fields_records_listed": true,
+    "rollback_steps_defined": true,
+    "deployment_reviewed": true,
+    "tested_by_functional": true,
+    "tested_by_client": true,
+    "deployment_plan_approved": true
+  },
+  "step-12": {
+    "developer_name": "C. Dela Cruz",
+    "developer_note": "Main Developer",
+    "functional_name": "AppWrap Support",
+    "functional_note": "Task Requester",
+    "license": "          Copyright 2025 AppWrap, Inc. All Rights Reserved.\n                  ",
+    "developers-body": [
+      {
+        "developer_name": "C. Dela Cruz",
+        "developer_email": "cdelacruz@appwrap.tech",
+        "developer_note": "Main Developer"
+      }
+    ],
+    "functional-body": [
+      {
+        "functional_name": "AppWrap Support",
+        "functional_email": "support@appwrap.com",
+        "functional_note": "Task Requester"
+      }
+    ]
+  },
+  "step-13": {
+    "component_type": "Workflow",
+    "component_name": "Deployment Wizard",
+    "deployment_date": "2025-02-28",
+    "documentation_version": "v1",
+    "status": "Not Deployed",
+    "change_description": "None",
+    "installation_method": "SDF",
+    "components-body": [
+      {
+        "component_type": "Script",
+        "component_name": "AppWrap - Deployment Wizard UE",
+        "deployment_date": "2025-02-28",
+        "documentation_version": "v1",
+        "status": "Not Deployed",
+        "change_description": "None",
+        "installation_method": "Bundle 1234"
+      },
+      {
+        "component_type": "Custom Record",
+        "component_name": "Wizard Config",
+        "deployment_date": "2025-02-28",
+        "documentation_version": "v1",
+        "status": "Not Deployed",
+        "change_description": "None",
+        "installation_method": "Bundle 1234"
+      },
+      {
+        "component_type": "Custom Field",
+        "component_name": "JE Wizard Source",
+        "deployment_date": "2025-02-28",
+        "documentation_version": "v1",
+        "status": "Not Deployed",
+        "change_description": "None",
+        "installation_method": "Manual"
+      },
+      {
+        "component_type": "Template",
+        "component_name": "wizard template",
+        "deployment_date": "2025-02-28",
+        "documentation_version": "v1",
+        "status": "Not Deployed",
+        "change_description": "None",
+        "installation_method": "Copy to Account"
+      },
+      {
+        "component_type": "Saved Search",
+        "component_name": "AW - Enabled Wizards",
+        "deployment_date": "2025-02-28",
+        "documentation_version": "v1",
+        "status": "Not Deployed",
+        "change_description": "None",
+        "installation_method": "Manual"
+      },
+      {
+        "component_type": "Workflow",
+        "component_name": "Deployment Wizard",
+        "deployment_date": "2025-02-28",
+        "documentation_version": "v1",
+        "status": "Not Deployed",
+        "change_description": "None",
+        "installation_method": "SDF"
+      }
+    ]
+  }
+}
+  </pre>
+</div>
+
+<!-- (Optional) Bootstrap Bundle JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  const copyButton = document.getElementById('copyButton');
+  const instructions = document.getElementById('instructions');
+
+  copyButton.addEventListener('click', () => {
+    // Copy text from <pre> to clipboard
+    const textToCopy = instructions.textContent;
+    navigator.clipboard.writeText(textToCopy)
+      .then(() => {
+        copyButton.textContent = 'Copied!';
+        setTimeout(() => {
+          copyButton.textContent = 'Copy Instructions';
+        }, 2000);
+      })
+      .catch(err => {
+        console.error('Error copying text:', err);
+      });
+  });
+</script>
+</body>
+</html>

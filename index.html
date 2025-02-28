@@ -7,6 +7,7 @@
   
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -15,93 +16,95 @@
     <!-- Sidebar -->
     <nav class="sidebar">
       <div class="sidebar-header">
-        <h3><i class="fas fa-cloud me-2"></i> appwrap</h3>
+       <img src="https://appwrap.com/wp-content/uploads/2024/12/appwrap-logo.svg" alt="AppWrap Logo" class="img-fluid">
         <p class="mb-0">Deployment Wizard</p>
       </div>
       <ul class="nav nav-tabs flex-column">
-        <!-- Step 1: Project Information -->
+        <!-- Steps 1 to 13 -->
         <li class="nav-item">
           <a class="nav-link step-link active" href="#" data-step="1">
             <i class="fas fa-info-circle"></i> Project Information
           </a>
         </li>
-        <!-- Step 2: Project Scope -->
         <li class="nav-item">
           <a class="nav-link step-link" href="#" data-step="2">
             <i class="fas fa-search"></i> Project Scope
           </a>
         </li>
-        <!-- Step 3: Playbook (Process & Rollback) -->
         <li class="nav-item">
           <a class="nav-link step-link" href="#" data-step="3">
             <i class="fas fa-book-open"></i> Playbook
           </a>
         </li>
-        <!-- Step 4: Configuration (Env. Specific IDs) -->
         <li class="nav-item">
           <a class="nav-link step-link" href="#" data-step="4">
             <i class="fas fa-cogs"></i> Configuration
           </a>
         </li>
-        <!-- Step 5: ReadMe Doc -->
         <li class="nav-item">
           <a class="nav-link step-link" href="#" data-step="5">
-            <i class="fas fa-file-alt"></i> ReadMe Doc
+            <i class="fas fa-file-alt"></i> Dependencies
           </a>
         </li>
-        <!-- Step 6: Scripts -->
         <li class="nav-item">
           <a class="nav-link step-link" href="#" data-step="6">
             <i class="fas fa-code"></i> Scripts
           </a>
         </li>
-        <!-- Step 7: Custom Records -->
         <li class="nav-item">
           <a class="nav-link step-link" href="#" data-step="7">
             <i class="fas fa-database"></i> Custom Records
           </a>
         </li>
-        <!-- Step 8: Workflow -->
         <li class="nav-item">
           <a class="nav-link step-link" href="#" data-step="8">
             <i class="fas fa-project-diagram"></i> Workflow
           </a>
         </li>
-        <!-- Step 9: Components -->
         <li class="nav-item">
           <a class="nav-link step-link" href="#" data-step="9">
-            <i class="fas fa-puzzle-piece"></i> Components
+            <i class="fas fa-puzzle-piece"></i> Customs
           </a>
         </li>
-        <!-- Step 10: Documentation -->
         <li class="nav-item">
           <a class="nav-link step-link" href="#" data-step="10">
             <i class="fas fa-book"></i> Documentation
           </a>
         </li>
-        <!-- Step 11: Deployment -->
         <li class="nav-item">
           <a class="nav-link step-link" href="#" data-step="11">
             <i class="fas fa-rocket"></i> Deployment
           </a>
         </li>
-        <!-- Step 12: Contact -->
         <li class="nav-item">
           <a class="nav-link step-link" href="#" data-step="12">
             <i class="fas fa-address-card"></i> Contact
           </a>
         </li>
         <li class="nav-item">
+          <a class="nav-link step-link" href="#" data-step="13">
+            <i class="fas fa-list"></i> Components
+          </a>
+        </li>
+      
+        <!-- Additional Links -->
+        <li class="nav-item">
           <a class="nav-link" href="https://htmlpreview.github.io/?https://github.com/AW-Chino/deployment_manifest/blob/main/preview.html" target="_blank">
-            <i class="fas fa-eye"></i> Preview
+            <i class="fas fa-file-pdf"></i>
+            Preview to PDF
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="https://htmlpreview.github.io/?https://github.com/AW-Chino/deployment_manifest/blob/main/readme.html" target="_blank">
-            <i class="fas fa-book"></i>ReadMe
+            <i class="fas fa-book"></i> ReadMe Generator
           </a>
         </li>
-        <!-- Additional Links -->
+        <li class="nav-item">
+          <a class="nav-link" href="https://htmlpreview.github.io/?https://github.com/AW-Chino/deployment_manifest/blob/main/readme.html" target="_blank">
+            <i class="fa fa-info-circle"></i> 
+            Instruction
+          </a>
+        </li>
         <li class="nav-item">
           <a class="nav-link" href="https://gitlab.com/appwrap/appwrap-2.0/tech-task-tracker/-/blob/code-guide/CODE%20GUIDE/documentation-and-quality-standards.md" target="_blank">
             <i class="fas fa-code"></i> Code Guide
@@ -109,8 +112,7 @@
         </li>
         <li class="nav-item">
           <a class="nav-link" href="https://gitlab.com/appwrap/appwrap-2.0/tech-task-tracker/-/blob/code-guide/CODE%20GUIDE/complete-eslint-guide.md" target="_blank">
-            <i class="fas fa-cog"></i>
-            Eslint
+            <i class="fas fa-cog"></i> Eslint
           </a>
         </li>
       </ul>
@@ -123,12 +125,8 @@
           <div class="header-content">
             <h2>Deployment Manifest Wizard</h2>
             <div class="header-actions">
-              <button id="saveBtn" class="btn btn-outline-primary">
-                <i class="fas fa-save"></i> Save JSON
-              </button>
-              <button id="loadBtn" class="btn btn-outline-secondary">
-                <i class="fas fa-folder-open"></i> Load JSON
-              </button>
+              <button id="saveBtn" class="btn btn-outline-primary"><i class="fas fa-save"></i> Save JSON</button>
+              <button id="loadBtn" class="btn btn-outline-secondary"><i class="fas fa-folder-open"></i> Load JSON</button>
               <input type="file" id="jsonLoadInput" style="display:none" accept=".json">
             </div>
           </div>
@@ -174,7 +172,7 @@
                       <th>Version</th>
                       <th>Date</th>
                       <th>Change Summary</th>
-                      <th>Actions</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody class="version-history-body" id="version-history-body"></tbody>
@@ -187,7 +185,6 @@
               <div class="section-header">
                 <h4><i class="fas fa-search"></i> Project Scope</h4>
               </div>
-              <!-- User Stories -->
               <div class="mt-4">
                 <h5>User Stories</h5>
                 <button class="btn btn-secondary add-user-story mb-3">Add User Story</button>
@@ -196,13 +193,12 @@
                     <tr>
                       <th>ID</th>
                       <th>Description</th>
-                      <th>Actions</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody class="user-stories-body" id="user-stories-body"></tbody>
                 </table>
               </div>
-              <!-- Features -->
               <div class="mt-4">
                 <h5>Features</h5>
                 <button class="btn btn-secondary add-feature mb-3">Add Feature</button>
@@ -211,13 +207,12 @@
                     <tr>
                       <th>Title</th>
                       <th>Description</th>
-                      <th>Actions</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody class="features-body" id="features-body"></tbody>
                 </table>
               </div>
-              <!-- Usage -->
               <div class="mt-4">
                 <h5>Usage</h5>
                 <button class="btn btn-secondary add-usage mb-3">Add Usage</button>
@@ -226,7 +221,7 @@
                     <tr>
                       <th>Title</th>
                       <th>Description</th>
-                      <th>Actions</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody class="usage-body" id="usage-body"></tbody>
@@ -234,42 +229,71 @@
               </div>
             </section>
 
-            <!-- Step 3: Playbook (Process and Rollback) -->
+            <!-- Step 3: Playbook -->
             <section id="step-3" class="wizard-step" style="display: none;">
               <div class="section-header">
                 <h4><i class="fas fa-book-open"></i> Playbook</h4>
               </div>
-              <!-- Process Section -->
               <div class="mb-4">
-                <h5>Process</h5>
-                <button type="button" id="add-process-btn" class="btn btn-primary">
-                  <i class="fas fa-plus"></i> Add Process
+                <h5>Installation Process</h5>
+                <button type="button" id="add-installation-process-btn" class="btn btn-primary">
+                  <i class="fas fa-plus"></i> Add Installation Process Step
                 </button>
-                <br>
-                <br>
-                <div id="process-container">
-                  <!-- Dynamically added process blocks will appear here -->
-                </div>
+                <br><br>
+                <table class="table" id="installation-process-table">
+                  <thead>
+                    <tr>
+                      <th>Step #</th>
+                      <th>Description</th>
+                      <th>Image Filename</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody class="installation-process-body" id="installation-process-body"></tbody>
+                </table>
               </div>
-              <!-- Rollback Section -->
               <div class="mb-4">
-                <h5>Rollback</h5>
-                <button type="button" id="add-rollback-btn" class="btn btn-primary">
-                  <i class="fas fa-plus"></i> Add Rollback
+                <h5>Rollback Process</h5>
+                <button type="button" id="add-rollback-process-btn" class="btn btn-primary">
+                  <i class="fas fa-plus"></i> Add Rollback Process Step
                 </button>
-                <br>
-                <br>
-
-                <div id="rollback-container">
-                  <!-- Dynamically added rollback blocks will appear here -->
-                </div>
+                <br><br>
+                <table class="table" id="rollback-process-table">
+                  <thead>
+                    <tr>
+                      <th>Step #</th>
+                      <th>Description</th>
+                      <th>Image Filename</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody class="rollback-process-body" id="rollback-process-body"></tbody>
+                </table>
               </div>
             </section>
 
-            <!-- Step 4: Configuration (Environment Specific IDs only) -->
+            <!-- Step 4: Configuration -->
             <section id="step-4" class="wizard-step" style="display: none;">
               <div class="section-header">
                 <h4><i class="fas fa-cogs"></i> Configuration</h4>
+              </div>
+              <div class="mt-4">
+                <h5>Configuration Process</h5>
+                <button type="button" id="add-configuration-process-btn" class="btn btn-primary">
+                  <i class="fas fa-plus"></i> Add Configuration Process Step
+                </button>
+                <br><br>
+                <table class="table" id="configuration-process-table">
+                  <thead>
+                    <tr>
+                      <th>Step #</th>
+                      <th>Description</th>
+                      <th>Image Filename</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody class="configuration-process-body" id="configuration-process-body"></tbody>
+                </table>
               </div>
               <div class="mt-4">
                 <h5>Environment Specific IDs</h5>
@@ -281,7 +305,7 @@
                       <th>Notes</th>
                       <th>Sandbox Value</th>
                       <th>Production Value</th>
-                      <th>Actions</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody class="environment-ids-body" id="environment-ids-body"></tbody>
@@ -289,12 +313,11 @@
               </div>
             </section>
 
-            <!-- Step 5: ReadMe Doc -->
+            <!-- Step 5: Dependencies -->
             <section id="step-5" class="wizard-step" style="display: none;">
               <div class="section-header">
-                <h4><i class="fas fa-file-alt"></i> ReadMe Doc</h4>
+                <h4><i class="fas fa-file-alt"></i> Dependencies</h4>
               </div>
-              <!-- Deployment Dependencies -->
               <div class="mt-4">
                 <h5>Deployment Dependencies</h5>
                 <button class="btn btn-secondary add-deployment-dependency mb-3">Add Dependency</button>
@@ -304,13 +327,12 @@
                       <th>Dependency Name</th>
                       <th>Dependency Version</th>
                       <th>Dependency License</th>
-                      <th>Actions</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody class="deployment-dependencies-body" id="deployment-dependencies-body"></tbody>
                 </table>
               </div>
-              <!-- Dev Dependencies -->
               <div class="mt-4">
                 <h5>Dev Dependencies</h5>
                 <button class="btn btn-secondary add-dev-dependency mb-3">Add Dev Dependency</button>
@@ -320,7 +342,7 @@
                       <th>Dependency Name</th>
                       <th>Dependency Version</th>
                       <th>Dependency License</th>
-                      <th>Actions</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody class="dev-dependencies-body" id="dev-dependencies-body"></tbody>
@@ -367,28 +389,27 @@
               </div>
             </section>
 
-            <!-- Step 9: Components -->
+            <!-- Step 9: Customs -->
             <section id="step-9" class="wizard-step" style="display: none;">
               <div class="section-header">
-                <h4><i class="fas fa-puzzle-piece"></i> Components</h4>
+                <h4><i class="fas fa-puzzle-piece"></i> Customs</h4>
               </div>
-              <!-- Custom Fields -->
               <div class="mt-4">
                 <h5>Custom Fields</h5>
                 <button class="btn btn-secondary add-custom-field mb-3">Add Custom Field</button>
                 <table class="table" id="custom-fields-table">
                   <thead>
                     <tr>
-                      <th>Field Name</th>
-                      <th>ID</th>
+                      <th>Custom Field Name</th>
+                      <th>Field ID</th>
+                      <th>Field Type</th>
                       <th>Description</th>
-                      <th>Actions</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody class="custom-fields-body" id="custom-fields-body"></tbody>
                 </table>
               </div>
-              <!-- Templates -->
               <div class="mt-4">
                 <h5>Templates</h5>
                 <button class="btn btn-secondary add-template mb-3">Add Template</button>
@@ -399,13 +420,12 @@
                       <th>ID</th>
                       <th>Type</th>
                       <th>Description</th>
-                      <th>Actions</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody class="templates-body" id="templates-body"></tbody>
                 </table>
               </div>
-              <!-- Saved Searches -->
               <div class="mt-4">
                 <h5>Saved Searches</h5>
                 <button class="btn btn-secondary add-saved-search mb-3">Add Saved Search</button>
@@ -417,7 +437,7 @@
                       <th>Description</th>
                       <th>Criteria</th>
                       <th>Results</th>
-                      <th>Actions</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody class="saved-searches-body" id="saved-searches-body"></tbody>
@@ -430,20 +450,35 @@
               <div class="section-header">
                 <h4><i class="fas fa-book"></i> Documentation</h4>
               </div>
-              <!-- Troubleshooting table -->
-              <h5 class="mt-4">Troubleshooting</h5>
-              <button class="btn btn-secondary add-troubleshooting mb-3">Add Issue</button>
-              <table class="table" id="troubleshooting-table">
-                <thead>
-                  <tr>
-                    <th>Error/Issue</th>
-                    <th>Cause</th>
-                    <th>Resolution</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody class="troubleshooting-body" id="troubleshooting-body"></tbody>
-              </table>
+              <div class="mt-4">
+                <h5>Troubleshooting</h5>
+                <button class="btn btn-secondary add-troubleshooting mb-3">Add Issue</button>
+                <table class="table" id="troubleshooting-table">
+                  <thead>
+                    <tr>
+                      <th>Issue</th>
+                      <th>Cause</th>
+                      <th>Resolution</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody class="troubleshooting-body" id="troubleshooting-body"></tbody>
+                </table>
+              </div>
+              <div class="mt-4">
+                <h5>Unit Testing</h5>
+                <button class="btn btn-secondary add-unit-test mb-3">Add Unit Test</button>
+                <table class="table" id="unit-testing-table">
+                  <thead>
+                    <tr>
+                      <th>Test Description</th>
+                      <th>Result</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody class="unit-testing-body" id="unit-testing-body"></tbody>
+                </table>
+              </div>
             </section>
 
             <!-- Step 11: Deployment -->
@@ -458,7 +493,7 @@
                 </div>
                 <div class="form-check mb-2">
                   <input type="checkbox" class="form-check-input" id="code_documented" name="code_changes_documented" data-field="code_changes_documented">
-                  <label class="form-check-label" for="code_documented">Code Changes Fully Documented [Readme Doc]</label>
+                  <label class="form-check-label" for="code_documented">Code Changes Fully Documented [Dependencies]</label>
                 </div>
                 <div class="form-check mb-2">
                   <input type="checkbox" class="form-check-input" id="fields_listed" name="fields_records_listed" data-field="fields_records_listed">
@@ -492,7 +527,6 @@
               <div class="section-header">
                 <h4><i class="fas fa-address-card"></i> Contact</h4>
               </div>
-              <!-- Developers -->
               <div class="mt-4">
                 <h5>Developers</h5>
                 <button class="btn btn-secondary add-developer mb-3">Add Developer</button>
@@ -502,13 +536,12 @@
                       <th>Name</th>
                       <th>Email</th>
                       <th>Note</th>
-                      <th>Actions</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody class="developers-body" id="developers-body"></tbody>
                 </table>
               </div>
-              <!-- Functional -->
               <div class="mt-4">
                 <h5>Functional</h5>
                 <button class="btn btn-secondary add-functional mb-3">Add Functional Contact</button>
@@ -518,316 +551,487 @@
                       <th>Name</th>
                       <th>Email</th>
                       <th>Note</th>
-                      <th>Actions</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody class="functional-body" id="functional-body"></tbody>
                 </table>
               </div>
-              <!-- License -->
               <div class="mt-4">
                 <h5>License</h5>
                 <div class="form-group">
                   <textarea class="form-control" rows="3" name="license" data-field="license" readonly>
-Copyright 2025 AppWrap, Inc. All Rights Reserved.
+          Copyright 2025 AppWrap, Inc. All Rights Reserved.
                   </textarea>
                 </div>
+              </div>
+            </section>
+
+            <!-- Step 13: Components -->
+            <section id="step-13" class="wizard-step" style="display: none;">
+              <div class="section-header">
+                <h4><i class="fas fa-list"></i> Components</h4>
+              </div>
+              <div class="mt-4">
+                <h5>Deployable Components</h5>
+                <button class="btn btn-secondary" onclick="refreshComponents()">Refresh Components</button><br><br>
+                <table class="table" id="components-table">
+                  <thead>
+                    <tr>
+                      <th>Component Type</th>
+                      <th>Component Name</th>
+                      <th>Deployment Date</th>
+                      <th>Documentation Version</th>
+                      <th>Status</th>
+                      <th>Change Description</th>
+                      <th>Installation Method</th>
+                    </tr>
+                  </thead>
+                  <tbody id="components-body"></tbody>
+                </table>
               </div>
             </section>
           </div>
         </div>
       </div>
     </div>
-
-  <!--  <div class="bottom-navigation">
-      <div class="container-fluid">
-        <div class="navigation-content">
-          <button id="prev-btn" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> Previous
-          </button>
-          <button id="next-btn" class="btn btn-primary">
-            Next <i class="fas fa-arrow-right"></i>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>-->
-</div>
-
-<!-- Templates -->
-
-<!-- Script Block Template -->
-<template id="script-block-template">
-  <div class="script-block border p-3 mb-3" data-block-type="script">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <input type="text" class="form-control w-50" name="script_name" data-field="script_name" placeholder="Enter script name">
-      <button type="button" class="btn btn-danger remove-script">Remove Script</button>
-    </div>
-
-    <div class="script-tabs">
-      <button class="tab-button active" data-tab="details">Details</button>
-      <button class="tab-button" data-tab="parameters">Parameters</button>
-      <button class="tab-button" data-tab="entrypoints">Entry Points</button>
-      <button class="tab-button" data-tab="deployment-records">Deployment Records</button>
-      <button class="tab-button" data-tab="version-history">Version History</button>
-      <button class="tab-button" data-tab="libraries">Libraries</button>
-      <button class="tab-button" data-tab="unit-tests">Unit Tests</button>
-      <button class="tab-button" data-tab="checklists">Checklists</button>
-    </div>
-
-    <div class="tab-content mt-3">
-      <div id="details" class="tab-panel active">
-        <div class="form-group">
-          <label>Script Details</label>
-          <div class="row">
-            <div class="col-md-6 mb-3">
-              <input type="text" class="form-control" name="script_id" data-field="script_id" placeholder="Script ID">
-            </div>
-            <div class="col-md-6 mb-3">
-              <input type="text" class="form-control" name="script_type" data-field="script_type" placeholder="Script Type">
-            </div>
-          </div>
-          <div class="mb-3">
-            <textarea class="form-control" rows="3" name="script_description" data-field="script_description" placeholder="Script Description"></textarea>
-          </div>
-          <div class="row">
-            <div class="col-md-6 mb-3">
-              <input type="text" class="form-control" name="file_name" data-field="file_name" placeholder="File Name">
-            </div>
-            <div class="col-md-6 mb-3">
-              <input type="text" class="form-control" name="location" data-field="location" placeholder="Location">
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div id="parameters" class="tab-panel">
-        <button class="btn btn-secondary add-parameters mb-3">Add Parameter</button>
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Parameter Name</th>
-              <th>ID</th>
-              <th>Parameter Type</th>
-              <th>Parameter Description</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody class="parameters-body"></tbody>
-        </table>
-      </div>
-
-      <div id="entrypoints" class="tab-panel">
-        <button class="btn btn-secondary add-entrypoints mb-3">Add Entry Point</button>
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Entry Point Name</th>
-              <th>Function Name</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody class="entrypoints-body"></tbody>
-        </table>
-      </div>
-
-      <div id="deployment-records" class="tab-panel">
-        <button class="btn btn-secondary add-deployment-records mb-3">Add Deployment Record</button>
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Applied To</th>
-              <th>ID</th>
-              <th>Deployment Notes</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody class="deployment-records-body"></tbody>
-        </table>
-      </div>
-
-      <div id="version-history" class="tab-panel">
-        <button class="btn btn-secondary add-version-history mb-3">Add Version</button>
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Version</th>
-              <th>Date</th>
-              <th>Change Summary</th>
-              <th>Commit ID</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody class="version-history-body"></tbody>
-        </table>
-      </div>
-
-      <div id="libraries" class="tab-panel">
-        <button class="btn btn-secondary add-libraries mb-3">Add Library</button>
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Library Name</th>
-              <th>File Name</th>
-              <th>Location</th>
-              <th>Purpose</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody class="libraries-body"></tbody>
-        </table>
-      </div>
-
-      <div id="unit-tests" class="tab-panel">
-        <button class="btn btn-secondary add-unit-tests mb-3">Add Unit Test</button>
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Description</th>
-              <th>Result</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody class="unit-tests-body"></tbody>
-        </table>
-      </div>
-
-      <div id="checklists" class="tab-panel">
-        <div class="form-check mb-2">
-          <input type="checkbox" class="form-check-input" id="standards" name="standards" data-field="standards">
-          <label class="form-check-label" for="standards">Project upholds AppWrap's Deployment Standards and Best Practices</label>
-        </div>
-        <div class="form-check mb-2">
-          <input type="checkbox" class="form-check-input" id="disclaimer" name="disclaimer" data-field="disclaimer">
-          <label class="form-check-label" for="disclaimer">Scripts include AppWrap's Code Disclaimer and Header</label>
-        </div>
-        <div class="form-check mb-2">
-          <input type="checkbox" class="form-check-input" id="expectations" name="expectations" data-field="expectations">
-          <label class="form-check-label" for="expectations">Contributors adhere to AppWrap's Developer and Technical Resources Expectations</label>
-        </div>
-        <div class="form-check mb-2">
-          <input type="checkbox" class="form-check-input" id="eslint" name="eslint" data-field="eslint">
-          <label class="form-check-label" for="eslint">Eslint Checked</label>
-        </div>
-      </div>
-    </div>
   </div>
-</template>
 
-<!-- Custom Record Template -->
-<template id="custom-record-template">
-  <div class="custom-record-block border p-3 mb-3" data-block-type="record">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <input type="text" class="form-control w-50" name="record_name" data-field="record_name" placeholder="Enter record name">
-      <button type="button" class="btn btn-danger remove-record">Remove Record</button>
+  <!-- Script Block Template -->
+  <template id="script-block-template">
+    <div class="script-block border p-3 mb-3" data-block-type="script">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <input type="text" class="form-control w-50" name="script_name" data-field="script_name" placeholder="Enter script name">
+        <button type="button" class="btn btn-danger remove-script">Remove Script</button>
+      </div>
+      <div class="script-tabs"></div>
+      <div class="tab-content mt-3">
+        <div id="details" class="tab-panel active">
+          <div class="form-group">
+            <label>Script Details</label>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <input type="text" class="form-control" name="script_id" data-field="script_id" placeholder="Script ID">
+              </div>
+              <div class="col-md-6 mb-3">
+                <input type="text" class="form-control" name="script_type" data-field="script_type" placeholder="Script Type">
+              </div>
+            </div>
+            <div class="mb-3">
+              <textarea class="form-control" rows="3" name="script_description" data-field="script_description" placeholder="Script Description"></textarea>
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <input type="text" class="form-control" name="file_name" data-field="file_name" placeholder="File Name">
+              </div>
+              <div class="col-md-6 mb-3">
+                <input type="text" class="form-control" name="location" data-field="location" placeholder="Location">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="parameters" class="tab-panel">
+          <button class="btn btn-secondary add-parameters mb-3">Add Parameter</button>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Parameter Name</th>
+                <th>Parameter ID</th>
+                <th>Parameter Type</th>
+                <th>Parameter Description</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody class="parameters-body"></tbody>
+          </table>
+        </div>
+        <div id="entrypoints" class="tab-panel">
+          <button class="btn btn-secondary add-entrypoints mb-3">Add Entry Point</button>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Entry Point Name</th>
+                <th>Function Name</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody class="entrypoints-body"></tbody>
+          </table>
+        </div>
+        <div id="deployment-records" class="tab-panel">
+          <button class="btn btn-secondary add-deployment-records mb-3">Add Deployment Record</button>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Applied To</th>
+                <th>ID</th>
+                <th>Deployment Notes</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody class="deployment-records-body"></tbody>
+          </table>
+        </div>
+        <div id="version-history" class="tab-panel">
+          <button class="btn btn-secondary add-version-history mb-3">Add Version</button>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Script Version</th>
+                <th>Date</th>
+                <th>Change Summary</th>
+                <th>Commit ID</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody class="version-history-body"></tbody>
+          </table>
+        </div>
+        <div id="libraries" class="tab-panel">
+          <button class="btn btn-secondary add-libraries mb-3">Add Library</button>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Library Module Name</th>
+                <th>File Name</th>
+                <th>Location</th>
+                <th>Purpose</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody class="libraries-body"></tbody>
+          </table>
+        </div>
+        <div id="unit-tests" class="tab-panel">
+          <button class="btn btn-secondary add-unit-tests mb-3">Add Unit Test</button>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Description</th>
+                <th>Result</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody class="unit-tests-body"></tbody>
+          </table>
+        </div>
+        <div id="checklists" class="tab-panel">
+          <div class="form-check mb-2">
+            <input type="checkbox" class="form-check-input" id="standards" name="standards" data-field="standards">
+            <label class="form-check-label" for="standards">Project upholds AppWrap's Deployment Standards and Best Practices</label>
+          </div>
+          <div class="form-check mb-2">
+            <input type="checkbox" class="form-check-input" id="disclaimer" name="disclaimer" data-field="disclaimer">
+            <label class="form-check-label" for="disclaimer">Scripts include AppWrap's Code Disclaimer and Header</label>
+          </div>
+          <div class="form-check mb-2">
+            <input type="checkbox" class="form-check-input" id="expectations" name="expectations" data-field="expectations">
+            <label class="form-check-label" for="expectations">Contributors adhere to AppWrap's Developer and Technical Resources Expectations</label>
+          </div>
+          <div class="form-check mb-2">
+            <input type="checkbox" class="form-check-input" id="eslint" name="eslint" data-field="eslint">
+            <label class="form-check-label" for="eslint">Eslint Checked</label>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="form-group">
-      <div class="row">
-        <div class="col-md-6 mb-3">
-          <input type="text" class="form-control" name="record_id" data-field="record_id" placeholder="Record ID">
+  </template>
+
+  <!-- Custom Record Template -->
+  <template id="custom-record-template">
+    <div class="custom-record-block border p-3 mb-3" data-block-type="record">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <input type="text" class="form-control w-50" name="record_name" data-field="record_name" placeholder="Enter record name">
+        <button type="button" class="btn btn-danger remove-record">Remove Record</button>
+      </div>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <input type="text" class="form-control" name="record_id" data-field="record_id" placeholder="Record ID">
+          </div>
+          <div class="col-md-6 mb-3">
+            <input type="text" class="form-control" name="record_type" data-field="record_type" placeholder="Record Type">
+          </div>
         </div>
-        <div class="col-md-6 mb-3">
-          <input type="text" class="form-control" name="record_type" data-field="record_type" placeholder="Record Type">
+        <div class="mb-3">
+          <textarea class="form-control" rows="3" name="record_description" data-field="record_description" placeholder="Record Description"></textarea>
         </div>
+      </div>
+      <div class="record-tabs">
+        <button class="tab-button active" data-tab="fields">Fields</button>
+      </div>
+      <div class="tab-content mt-3">
+        <div id="fields" class="tab-panel active">
+          <button class="btn btn-secondary add-field mb-3">Add Field</button>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Custom Field Name</th>
+                <th>Field ID</th>
+                <th>Field Type</th>
+                <th>Field Description</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody class="fields-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <!-- Workflow Block Template -->
+  <template id="workflow-block-template">
+    <div class="workflow-block border p-3 mb-3" data-block-type="workflow">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <input type="text" class="form-control w-50" name="workflow_details" data-field="workflow_details" placeholder="Enter workflow details">
+        <button type="button" class="btn btn-danger remove-workflow">Remove Workflow</button>
       </div>
       <div class="mb-3">
-        <textarea class="form-control" rows="3" name="record_description" data-field="record_description" placeholder="Record Description"></textarea>
-      </div>
-    </div>
-    <div class="record-tabs">
-      <button class="tab-button active" data-tab="fields">Fields</button>
-    </div>
-    <div class="tab-content mt-3">
-      <div id="fields" class="tab-panel active">
-        <button class="btn btn-secondary add-field mb-3">Add Field</button>
+        <h5>Actions</h5>
+        <button class="btn btn-secondary add-action mb-3">Add Action</button>
         <table class="table">
           <thead>
             <tr>
-              <th>Field Name</th>
-              <th>Field ID</th>
-              <th>Field Type</th>
-              <th>Field Description</th>
-              <th>Actions</th>
+              <th>Action</th>
+              <th>State</th>
+              <th>Details</th>
+              <th>Action</th>
             </tr>
           </thead>
-          <tbody class="fields-body"></tbody>
+          <tbody class="actions-body"></tbody>
         </table>
       </div>
     </div>
-  </div>
-</template>
+  </template>
 
-<!-- Process Block Template -->
-<template id="process-block-template">
-  <div class="process-block border p-3 mb-3" data-block-type="process">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <input type="text" class="form-control w-50" name="process_name" data-field="process_name" placeholder="Enter process name">
-      <button type="button" class="btn btn-danger remove-process">Remove Process</button>
-    </div>
-    <div class="tab-content mt-3">
-      <div class="table-responsive">
-        <button class="btn btn-secondary add-step mb-3">Add Step</button>
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Description</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody class="steps-body"></tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</template>
+  <!-- Bootstrap JS, jQuery -->
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-<!-- New Template: Rollback Block -->
-<template id="rollback-block-template">
-  <div class="rollback-block border p-3 mb-3" data-block-type="rollback">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <input type="text" class="form-control w-50" name="rollback_description" data-field="rollback_description" placeholder="Enter rollback description">
-      <button type="button" class="btn btn-danger remove-rollback">Remove Rollback</button>
-    </div>
-  </div>
-</template>
+  <!-- Custom Scripts -->
+  <script src="json_handler.js"></script>
+  <script src="ui_interactions.js"></script>
+  <script src="form_validation.js"></script>
+  <script src="ui_tooltips.js"></script>
+  <script src="event_handlers.js"></script>
+  <!-- Inline script for Installation Steps row addition and refreshComponents update -->
+  <script>
+    function addInstallationRow() {
+      const tbody = document.getElementById('installation-body');
+      const row = document.createElement('tr');
+      
+      // Auto-number the Step cell based on current row count
+      const stepCell = document.createElement('td');
+      const stepNumber = tbody.querySelectorAll('tr').length + 1;
+      stepCell.textContent = stepNumber;
+      row.appendChild(stepCell);
+      
+      // Description cell: text input
+      const descCell = document.createElement('td');
+      const descInput = document.createElement('input');
+      descInput.type = 'text';
+      descInput.className = 'form-control';
+      descInput.name = 'installation_description';
+      descInput.placeholder = 'Enter description';
+      descCell.appendChild(descInput);
+      row.appendChild(descCell);
+      
+      // Image cell: text input (for image URL)
+      const imageCell = document.createElement('td');
+      const imageInput = document.createElement('input');
+      imageInput.type = 'text';
+      imageInput.className = 'form-control';
+      imageInput.name = 'installation_image';
+      imageInput.placeholder = 'Enter image file name';
+      imageCell.appendChild(imageInput);
+      row.appendChild(imageCell);
+      
+      // Actions cell: Remove button
+      const actionCell = document.createElement('td');
+      const removeBtn = document.createElement('button');
+      removeBtn.textContent = 'Remove';
+      removeBtn.className = 'btn btn-danger btn-sm';
+      removeBtn.addEventListener('click', function() {
+        row.remove();
+        renumberInstallationRows();
+      });
+      actionCell.appendChild(removeBtn);
+      row.appendChild(actionCell);
+      
+      tbody.appendChild(row);
+    }
+    
+    function renumberInstallationRows() {
+      const tbody = document.getElementById('installation-body');
+      const rows = tbody.querySelectorAll('tr');
+      rows.forEach((row, index) => {
+        row.cells[0].textContent = index + 1;
+      });
+    }
+    
+    // Refresh Components dynamic block: scan deployable component names from various sections and add new rows if not already present.
+    function refreshComponents() {
+      // Build a map of component names to their inferred type.
+      const newComponents = new Map();
 
-<!-- New Template: Workflow Block -->
-<template id="workflow-block-template">
-  <div class="workflow-block border p-3 mb-3" data-block-type="workflow">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <input type="text" class="form-control w-50" name="workflow_details" data-field="workflow_details" placeholder="Enter workflow details">
-      <button type="button" class="btn btn-danger remove-workflow">Remove Workflow</button>
-    </div>
-    <div class="mb-3">
-      <h5>Actions</h5>
-      <button class="btn btn-secondary add-action mb-3">Add Action</button>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Action</th>
-            <th>State</th>
-            <th>Details</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody class="actions-body"></tbody>
-      </table>
-    </div>
-  </div>
-</template>
+      // Scripts: type "Script"
+      document.querySelectorAll("#step-6 .script-block input[name='script_name']").forEach(el => {
+        const compName = el.value.trim();
+        if (compName !== "") newComponents.set(compName, "Script");
+      });
 
-<!-- Bootstrap JS, jQuery -->
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+      // Custom Records: type "Custom Record"
+      document.querySelectorAll("#step-7 .custom-record-block input[name='record_name']").forEach(el => {
+        const compName = el.value.trim();
+        if (compName !== "") newComponents.set(compName, "Custom Record");
+      });
 
-<!-- Custom Scripts -->
-<script src="structure.js"></script>
-<script src="structure_loader.js"></script>
-<script src="json_handler.js"></script>
-<script src="ui_interactions.js"></script>
-<script src="form_validation.js"></script>
-<script src="ui_tooltips.js"></script>
-<script src="event_handlers.js"></script>
+      // Custom Fields: type "Custom Field"
+      document.querySelectorAll("#custom-fields-table input[name='field_name']").forEach(el => {
+        const compName = el.value.trim();
+        if (compName !== "") newComponents.set(compName, "Custom Field");
+      });
+
+      // Templates: type "Template"
+      document.querySelectorAll("#templates-table input[name='template_name']").forEach(el => {
+        const compName = el.value.trim();
+        if (compName !== "") newComponents.set(compName, "Template");
+      });
+
+      // Saved Searches: type "Saved Search"
+      document.querySelectorAll("#saved-searches-table input[name='search_name']").forEach(el => {
+        const compName = el.value.trim();
+        if (compName !== "") newComponents.set(compName, "Saved Search");
+      });
+
+      // Workflows: type "Workflow"
+      document.querySelectorAll("#step-8 .workflow-block input[name='workflow_details']").forEach(el => {
+        const compName = el.value.trim();
+        if (compName !== "") newComponents.set(compName, "Workflow");
+      });
+
+      // Libraries: type "Library" 
+      // (Assumes library module name input has name "library_module_name")
+      document.querySelectorAll("#step-6 .script-block input[name='library_module_name']").forEach(el => {
+        const compName = el.value.trim();
+        if (compName !== "") newComponents.set(compName, "Library");
+      });
+
+      // Get existing component names from the Components dynamic block (Step 13)
+      const compTbody = document.getElementById("components-body");
+      const existing = new Set();
+      if (compTbody) {
+        compTbody.querySelectorAll("tr").forEach(row => {
+          const nameInput = row.cells[1].querySelector("input");
+          if (nameInput && nameInput.value.trim() !== "") {
+            existing.add(nameInput.value.trim());
+          }
+        });
+      }
+
+      // For each new component not yet listed, add a new row.
+      newComponents.forEach((compType, compName) => {
+        if (!existing.has(compName)) {
+          const row = document.createElement("tr");
+
+          // Column 1: Component Type (select) with auto-selected value
+          const typeCell = document.createElement("td");
+          const typeSelect = document.createElement("select");
+          typeSelect.className = "form-control";
+          typeSelect.name = "component_type";
+          const types = ["Script", "Custom Record", "Workflow", "Custom Field", "Template", "Saved Search", "Library"];
+          const defaultOpt = document.createElement("option");
+          defaultOpt.value = "";
+          defaultOpt.textContent = "Select Type";
+          typeSelect.appendChild(defaultOpt);
+          types.forEach(type => {
+            const opt = document.createElement("option");
+            opt.value = type;
+            opt.textContent = type;
+            typeSelect.appendChild(opt);
+          });
+          typeSelect.value = compType;
+          typeCell.appendChild(typeSelect);
+          row.appendChild(typeCell);
+
+          // Column 2: Component Name (editable)
+          const nameCell = document.createElement("td");
+          const nameInput = document.createElement("input");
+          nameInput.type = "text";
+          nameInput.className = "form-control";
+          nameInput.name = "component_name";
+          nameInput.value = compName;
+          nameCell.appendChild(nameInput);
+          row.appendChild(nameCell);
+
+          // Column 3: Deployment Date (editable, type date)
+          const dateCell = document.createElement("td");
+          const dateInput = document.createElement("input");
+          dateInput.type = "date";
+          dateInput.className = "form-control";
+          dateInput.name = "deployment_date";
+          const today = new Date().toISOString().split("T")[0];
+          dateInput.value = today;
+          dateCell.appendChild(dateInput);
+          row.appendChild(dateCell);
+
+          // Column 4: Documentation Version (editable)
+          const docVerCell = document.createElement("td");
+          const docVerInput = document.createElement("input");
+          docVerInput.type = "text";
+          docVerInput.className = "form-control";
+          docVerInput.name = "documentation_version";
+          docVerCell.appendChild(docVerInput);
+          row.appendChild(docVerCell);
+
+          // Column 5: Status (select) with default "Not Deployed"
+          const statusCell = document.createElement("td");
+          const statusSelect = document.createElement("select");
+          statusSelect.className = "form-control";
+          statusSelect.name = "status";
+          const statuses = ["New", "No Change", "Updated", "Not Deployed"];
+          statuses.forEach(status => {
+            const opt = document.createElement("option");
+            opt.value = status;
+            opt.textContent = status;
+            if (status === "Not Deployed") opt.selected = true;
+            statusSelect.appendChild(opt);
+          });
+          statusCell.appendChild(statusSelect);
+          row.appendChild(statusCell);
+
+          // Column 6: Change Description (editable textarea)
+          const changeDescCell = document.createElement("td");
+          const changeDescInput = document.createElement("textarea");
+          changeDescInput.className = "form-control";
+          changeDescInput.name = "change_description";
+          changeDescInput.rows = 2;
+          changeDescCell.appendChild(changeDescInput);
+          row.appendChild(changeDescCell);
+
+          // Column 7: Installation Method (editable)
+          const instMethodCell = document.createElement("td");
+          const instMethodInput = document.createElement("input");
+          instMethodInput.type = "text";
+          instMethodInput.className = "form-control";
+          instMethodInput.name = "installation_method";
+          instMethodCell.appendChild(instMethodInput);
+          row.appendChild(instMethodCell);
+
+          compTbody.appendChild(row);
+        }
+      });
+    }
+
+    // Make the function globally available
+    window.refreshComponents = refreshComponents;
+  </script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        attachJSONHandlers();
+    });
+  </script>
 </body>
 </html>

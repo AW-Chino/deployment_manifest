@@ -1,3 +1,5 @@
+// event_handlers.js
+
 document.addEventListener("DOMContentLoaded", function () {
     attachEventListeners();
     initializeSections();
@@ -9,201 +11,239 @@ function initializeSections() {
     initializeScriptSection();
     initializeCustomRecordSection();
     initializeProcessSection();
-
-    // NEW: Initialize Rollback and Workflow sections
-    initializeRollbackSection();
+    initializeRollbackProcessSection(); // New rollback process section
     initializeWorkflowSection();
-
-    // Initialize documentation tables
+    initializeInstallationProcessSection();
+    initializeConfigurationProcessSection();
+    initializeUnitTestSection();
     setupDocumentationTables();
-
-    // Initialize regular tables
     initializeRegularTables();
 
+    // Hide all wizard steps and show step 1
     document.querySelectorAll(".wizard-step").forEach(section => {
         section.style.display = "none";
     });
-
-    document.getElementById("step-1").style.display = "block"; // Show only step 1 on load
+    document.getElementById("step-1").style.display = "block";
 }
 
-// ===================
-// New: Rollback Section
-// (Code differences functionality removed)
-// ===================
+// --- Dynamic Block Initializers ---
 
-function initializeRollbackSection() {
-    const addRollbackBtn = document.getElementById("add-rollback-btn");
-    const rollbackContainer = document.getElementById("rollback-container");
-    const rollbackTemplate = document.getElementById("rollback-block-template");
-
-    if (addRollbackBtn && rollbackContainer && rollbackTemplate) {
-        addRollbackBtn.addEventListener("click", () => {
-            addNewRollback(rollbackContainer, rollbackTemplate);
+// Installation Process Section
+function initializeInstallationProcessSection() {
+    const btn = document.getElementById("add-installation-process-btn");
+    const tbody = document.getElementById("installation-process-body");
+    if (btn && tbody) {
+        btn.addEventListener("click", () => {
+            const stepNumber = tbody.querySelectorAll("tr").length + 1;
+            const row = document.createElement("tr");
+            // Auto-number Step
+            const stepCell = document.createElement("td");
+            stepCell.textContent = stepNumber;
+            row.appendChild(stepCell);
+            // Description
+            const descCell = document.createElement("td");
+            const descInput = document.createElement("input");
+            descInput.type = "text";
+            descInput.className = "form-control";
+            descInput.name = "description";
+            descInput.placeholder = "Enter description";
+            descCell.appendChild(descInput);
+            row.appendChild(descCell);
+            // Image Filename
+            const imageCell = document.createElement("td");
+            const imageInput = document.createElement("input");
+            imageInput.type = "text";
+            imageInput.className = "form-control";
+            imageInput.name = "installation_image";
+            imageInput.placeholder = "Enter image filename";
+            imageCell.appendChild(imageInput);
+            row.appendChild(imageCell);
+            // Action: Remove Button
+            const actionCell = document.createElement("td");
+            const removeBtn = document.createElement("button");
+            removeBtn.textContent = "Remove";
+            removeBtn.className = "btn btn-danger btn-sm";
+            removeBtn.addEventListener("click", function() {
+                row.remove();
+                renumberTableRows(tbody);
+            });
+            actionCell.appendChild(removeBtn);
+            row.appendChild(actionCell);
+            tbody.appendChild(row);
         });
     }
 }
 
-function addNewRollback(container, template) {
-    const rollbackBlock = template.content.cloneNode(true).firstElementChild;
-    const uniqueId = `rollback-${Date.now()}`;
-    rollbackBlock.id = uniqueId;
-
-    setupRollbackBlock(rollbackBlock);
-    container.appendChild(rollbackBlock);
-}
-
-function setupRollbackBlock(block) {
-    // Set up remove button
-    const removeRollbackBtn = block.querySelector(".remove-rollback");
-    if (removeRollbackBtn) {
-        removeRollbackBtn.addEventListener("click", () => block.remove());
-    }
-
-    // NOTE: The "code differences" functionality has been removed.
-    // Add data attributes for JSON handling
-    addDataAttributes(block, 'rollback');
-}
-
-// ===================
-// New: Workflow Section (Separate Page)
-// ===================
-
-function initializeWorkflowSection() {
-    const addWorkflowBtn = document.getElementById("add-workflow-btn");
-    const workflowContainer = document.getElementById("workflow-container");
-    const workflowTemplate = document.getElementById("workflow-block-template");
-
-    if (addWorkflowBtn && workflowContainer && workflowTemplate) {
-        addWorkflowBtn.addEventListener("click", () => {
-            addNewWorkflow(workflowContainer, workflowTemplate);
+// Rollback Process Section
+function initializeRollbackProcessSection() {
+    const btn = document.getElementById("add-rollback-process-btn");
+    const tbody = document.getElementById("rollback-process-body");
+    if (btn && tbody) {
+        btn.addEventListener("click", () => {
+            const stepNumber = tbody.querySelectorAll("tr").length + 1;
+            const row = document.createElement("tr");
+            const stepCell = document.createElement("td");
+            stepCell.textContent = stepNumber;
+            row.appendChild(stepCell);
+            const descCell = document.createElement("td");
+            const descInput = document.createElement("input");
+            descInput.type = "text";
+            descInput.className = "form-control";
+            descInput.name = "description";
+            descInput.placeholder = "Enter description";
+            descCell.appendChild(descInput);
+            row.appendChild(descCell);
+            const imageCell = document.createElement("td");
+            const imageInput = document.createElement("input");
+            imageInput.type = "text";
+            imageInput.className = "form-control";
+            imageInput.name = "installation_image";
+            imageInput.placeholder = "Enter image filename";
+            imageCell.appendChild(imageInput);
+            row.appendChild(imageCell);
+            const actionCell = document.createElement("td");
+            const removeBtn = document.createElement("button");
+            removeBtn.textContent = "Remove";
+            removeBtn.className = "btn btn-danger btn-sm";
+            removeBtn.addEventListener("click", function() {
+                row.remove();
+                renumberTableRows(tbody);
+            });
+            actionCell.appendChild(removeBtn);
+            row.appendChild(actionCell);
+            tbody.appendChild(row);
         });
     }
 }
 
-function addNewWorkflow(container, template) {
-    const workflowBlock = template.content.cloneNode(true).firstElementChild;
-    const uniqueId = `workflow-${Date.now()}`;
-    workflowBlock.id = uniqueId;
-
-    setupWorkflowBlock(workflowBlock);
-    container.appendChild(workflowBlock);
-}
-
-function setupWorkflowBlock(block) {
-    // Set up remove workflow button
-    const removeWorkflowBtn = block.querySelector(".remove-workflow");
-    if (removeWorkflowBtn) {
-        removeWorkflowBtn.addEventListener("click", () => block.remove());
-    }
-
-    // Set up Add Action button in the workflow block
-    const addActionBtn = block.querySelector(".add-action");
-    const actionsBody = block.querySelector(".actions-body");
-    if (addActionBtn && actionsBody) {
-        addActionBtn.addEventListener("click", () => {
-            addActionRow(actionsBody);
+// Configuration Process Section
+function initializeConfigurationProcessSection() {
+    const btn = document.getElementById("add-configuration-process-btn");
+    const tbody = document.getElementById("configuration-process-body");
+    if (btn && tbody) {
+        btn.addEventListener("click", () => {
+            const stepNumber = tbody.querySelectorAll("tr").length + 1;
+            const row = document.createElement("tr");
+            const stepCell = document.createElement("td");
+            stepCell.textContent = stepNumber;
+            row.appendChild(stepCell);
+            const descCell = document.createElement("td");
+            const descInput = document.createElement("input");
+            descInput.type = "text";
+            descInput.className = "form-control";
+            descInput.name = "description";
+            descInput.placeholder = "Enter description";
+            descCell.appendChild(descInput);
+            row.appendChild(descCell);
+            const imageCell = document.createElement("td");
+            const imageInput = document.createElement("input");
+            imageInput.type = "text";
+            imageInput.className = "form-control";
+            imageInput.name = "installation_image";
+            imageInput.placeholder = "Enter image filename";
+            imageCell.appendChild(imageInput);
+            row.appendChild(imageCell);
+            const actionCell = document.createElement("td");
+            const removeBtn = document.createElement("button");
+            removeBtn.textContent = "Remove";
+            removeBtn.className = "btn btn-danger btn-sm";
+            removeBtn.addEventListener("click", function() {
+                row.remove();
+                renumberTableRows(tbody);
+            });
+            actionCell.appendChild(removeBtn);
+            row.appendChild(actionCell);
+            tbody.appendChild(row);
         });
     }
-
-    // Add data attributes for JSON handling
-    addDataAttributes(block, 'workflow');
 }
 
-function addActionRow(tbody) {
-    const row = document.createElement("tr");
-    const columns = [
-        { name: 'Action', type: 'text', key: 'action' },
-        { name: 'State', type: 'text', key: 'state' },
-        { name: 'Details', type: 'textarea', key: 'details' }
-    ];
+// Unit Test Section in Documentation
+function initializeUnitTestSection() {
+    const btn = document.querySelector(".add-unit-test");
+    const tbody = document.getElementById("unit-testing-body");
+    if (btn && tbody) {
+        btn.addEventListener("click", () => {
+            const row = document.createElement("tr");
+            const testDescCell = document.createElement("td");
+            const testDescInput = document.createElement("textarea");
+            testDescInput.className = "form-control";
+            testDescInput.name = "test_description";
+            testDescInput.placeholder = "Enter test description";
+            testDescInput.rows = 2;
+            testDescCell.appendChild(testDescInput);
+            row.appendChild(testDescCell);
+            const testResultCell = document.createElement("td");
+            const testResultInput = document.createElement("input");
+            testResultInput.type = "text";
+            testResultInput.className = "form-control";
+            testResultInput.name = "test_result";
+            testResultInput.placeholder = "Enter test result";
+            testResultCell.appendChild(testResultInput);
+            row.appendChild(testResultCell);
+            const actionCell = document.createElement("td");
+            const removeBtn = document.createElement("button");
+            removeBtn.textContent = "Remove";
+            removeBtn.className = "btn btn-danger btn-sm";
+            removeBtn.addEventListener("click", () => row.remove());
+            actionCell.appendChild(removeBtn);
+            row.appendChild(actionCell);
+            tbody.appendChild(row);
+        });
+    }
+}
 
-    columns.forEach(col => {
-        const td = document.createElement("td");
-        let input;
-        if (col.type === 'textarea') {
-            input = document.createElement("textarea");
-            input.rows = 2;
-        } else {
-            input = document.createElement("input");
-            input.type = col.type;
+// Helper: Renumber table rows in a tbody
+function renumberTableRows(tbody) {
+    const rows = tbody.querySelectorAll("tr");
+    rows.forEach((row, index) => {
+        if (row.cells.length > 0) {
+            row.cells[0].textContent = index + 1;
         }
-        input.className = "form-control";
-        input.name = col.key;
-        input.placeholder = col.name;
-        input.setAttribute('data-field', col.key);
-        td.appendChild(input);
-        row.appendChild(td);
     });
-
-    // Add remove button cell
-    const actionTd = document.createElement("td");
-    const removeBtn = document.createElement("button");
-    removeBtn.textContent = "Remove";
-    removeBtn.className = "btn btn-danger btn-sm";
-    removeBtn.onclick = () => row.remove();
-    actionTd.appendChild(removeBtn);
-    row.appendChild(actionTd);
-
-    tbody.appendChild(row);
 }
 
-// ===================
-// Regular Tables, Navigation, and Other Sections
-// (Functions below remain unchanged.)
-// ===================
-
+// Regular Tables Initialization (Attach add handlers for basic tables)
 function initializeRegularTables() {
-    // Project Information (Step 1)
     attachAddHandler('add-version', 'version-history-body', [
         { name: 'Version', type: 'text', key: 'version' },
         { name: 'Date', type: 'date', key: 'date' },
         { name: 'Change Summary', type: 'textarea', key: 'change_summary' }
     ]);
-
-    // Project Scope (Step 2)
     attachAddHandler('add-user-story', 'user-stories-body', [
         { name: 'ID', type: 'text', key: 'story_id' },
         { name: 'Description', type: 'textarea', key: 'story_description' }
     ]);
-
     attachAddHandler('add-feature', 'features-body', [
         { name: 'Title', type: 'text', key: 'feature_title' },
         { name: 'Description', type: 'textarea', key: 'feature_description' }
     ]);
-
     attachAddHandler('add-usage', 'usage-body', [
         { name: 'Title', type: 'text', key: 'usage_title' },
         { name: 'Description', type: 'textarea', key: 'usage_description' }
     ]);
-
-    // ReadMe Doc (Step 5)
     attachAddHandler('add-deployment-dependency', 'deployment-dependencies-body', [
         { name: 'Dependency Name', type: 'text', key: 'dependency_name' },
         { name: 'Dependency Version', type: 'text', key: 'dependency_version' },
         { name: 'Dependency License', type: 'text', key: 'dependency_license' }
     ]);
-
     attachAddHandler('add-dev-dependency', 'dev-dependencies-body', [
         { name: 'Dependency Name', type: 'text', key: 'dependency_name' },
         { name: 'Dependency Version', type: 'text', key: 'dependency_version' },
         { name: 'Dependency License', type: 'text', key: 'dependency_license' }
     ]);
-
-    // Components (Step 9)
     attachAddHandler('add-custom-field', 'custom-fields-body', [
-        { name: 'Field Name', type: 'text', key: 'field_name' },
-        { name: 'ID', type: 'text', key: 'field_id' },
-        { name: 'Description', type: 'textarea', key: 'field_description' }
+        { name: 'Custom Field Name', type: 'text', key: 'field_name' },
+        { name: 'Field ID', type: 'text', key: 'field_id' },
+        { name: 'Field Type', type: 'text', key: 'field_type' },
+        { name: 'Field Description', type: 'textarea', key: 'field_description' }
     ]);
-
     attachAddHandler('add-template', 'templates-body', [
         { name: 'Template Name', type: 'text', key: 'template_name' },
         { name: 'ID', type: 'text', key: 'template_id' },
         { name: 'Type', type: 'text', key: 'template_type' },
         { name: 'Description', type: 'textarea', key: 'template_description' }
     ]);
-
     attachAddHandler('add-saved-search', 'saved-searches-body', [
         { name: 'Search Name', type: 'text', key: 'search_name' },
         { name: 'ID', type: 'text', key: 'search_id' },
@@ -211,14 +251,11 @@ function initializeRegularTables() {
         { name: 'Criteria', type: 'textarea', key: 'search_criteria' },
         { name: 'Results', type: 'textarea', key: 'search_results' }
     ]);
-
-    // Contact (Step 12)
     attachAddHandler('add-developer', 'developers-body', [
         { name: 'Name', type: 'text', key: 'developer_name' },
         { name: 'Email', type: 'email', key: 'developer_email' },
         { name: 'Note', type: 'text', key: 'developer_note' }
     ]);
-
     attachAddHandler('add-functional', 'functional-body', [
         { name: 'Name', type: 'text', key: 'functional_name' },
         { name: 'Email', type: 'email', key: 'functional_email' },
@@ -229,7 +266,6 @@ function initializeRegularTables() {
 function attachAddHandler(buttonClass, tbodyId, columns) {
     const addButton = document.querySelector(`.${buttonClass}`);
     const tbody = document.getElementById(tbodyId);
-    
     if (addButton && tbody) {
         addButton.addEventListener('click', () => {
             addTableRow(tbody, columns);
@@ -237,16 +273,14 @@ function attachAddHandler(buttonClass, tbodyId, columns) {
     }
 }
 
+// Navigation Event Handlers
 function attachEventListeners() {
-    // Navigation event listeners
     document.querySelectorAll(".step-navigation").forEach(button => {
         button.addEventListener("click", function () {
             const step = parseInt(this.dataset.step, 10);
             navigateToStep(step);
         });
     });
-
-    // Step links in sidebar
     document.querySelectorAll(".step-link").forEach((link, index) => {
         link.addEventListener("click", function(e) {
             e.preventDefault();
@@ -254,8 +288,6 @@ function attachEventListeners() {
             updateStepLinks(index + 1);
         });
     });
-
-    // Next/Previous buttons
     const nextButton = document.getElementById("next-btn");
     const prevButton = document.getElementById("prev-btn");
     if (nextButton && prevButton) {
@@ -274,20 +306,14 @@ function initializeScriptSection() {
     const addScriptBtn = document.getElementById("add-script-btn");
     const scriptsContainer = document.getElementById("scripts-container");
     const scriptTemplate = document.getElementById("script-block-template");
-
     if (addScriptBtn && scriptsContainer && scriptTemplate) {
         addScriptBtn.addEventListener("click", () => {
-            // Create a new script block from template
             const scriptBlock = scriptTemplate.content.cloneNode(true).firstElementChild;
             const uniqueId = `script-${Date.now()}`;
             scriptBlock.id = uniqueId;
-            
-            // Set up the new block
             setupScriptBlock(scriptBlock);
-            
-            // Add to container
             scriptsContainer.appendChild(scriptBlock);
-            return scriptBlock; // Return for chaining
+            return scriptBlock;
         });
     }
 }
@@ -295,14 +321,10 @@ function initializeScriptSection() {
 function setupTabNavigation(block) {
     const tabs = block.querySelectorAll(".tab-button");
     const panels = block.querySelectorAll(".tab-panel");
-
     tabs.forEach(tab => {
         tab.addEventListener("click", function() {
-            // Remove active class from all tabs and panels
             tabs.forEach(t => t.classList.remove("active"));
             panels.forEach(p => p.classList.remove("active"));
-
-            // Activate selected tab and corresponding panel
             this.classList.add("active");
             const targetPanel = block.querySelector(`#${this.dataset.tab}`);
             if (targetPanel) {
@@ -316,25 +338,17 @@ function addNewScript(container, template) {
     const scriptBlock = template.content.cloneNode(true).firstElementChild;
     const uniqueId = `script-${Date.now()}`;
     scriptBlock.id = uniqueId;
-    
     setupScriptBlock(scriptBlock);
     container.appendChild(scriptBlock);
 }
 
 function setupScriptBlock(block) {
-    // Remove script button
     const removeScriptBtn = block.querySelector(".remove-script");
     if (removeScriptBtn) {
         removeScriptBtn.addEventListener("click", () => block.remove());
     }
-
-    // Tab navigation
     setupTabNavigation(block);
-
-    // Table buttons
     setupTableButtons(block);
-
-    // Add data attributes for JSON handling
     addDataAttributes(block, 'script');
 }
 
@@ -343,7 +357,6 @@ function initializeCustomRecordSection() {
     const addRecordBtn = document.getElementById("add-record-btn");
     const recordsContainer = document.getElementById("records-container");
     const recordTemplate = document.getElementById("custom-record-template");
-
     if (addRecordBtn && recordsContainer && recordTemplate) {
         addRecordBtn.addEventListener("click", () => {
             addNewRecord(recordsContainer, recordTemplate);
@@ -355,22 +368,16 @@ function addNewRecord(container, template) {
     const recordBlock = template.content.cloneNode(true).firstElementChild;
     const uniqueId = `record-${Date.now()}`;
     recordBlock.id = uniqueId;
-    
     setupRecordBlock(recordBlock);
     container.appendChild(recordBlock);
 }
 
 function setupRecordBlock(block) {
-    // Remove record button
     const removeRecordBtn = block.querySelector(".remove-record");
     if (removeRecordBtn) {
         removeRecordBtn.addEventListener("click", () => block.remove());
     }
-
-    // Field button
     setupFieldButton(block);
-
-    // Add data attributes for JSON handling
     addDataAttributes(block, 'record');
 }
 
@@ -379,7 +386,6 @@ function initializeProcessSection() {
     const addProcessBtn = document.getElementById("add-process-btn");
     const processContainer = document.getElementById("process-container");
     const processTemplate = document.getElementById("process-block-template");
-
     if (addProcessBtn && processContainer && processTemplate) {
         addProcessBtn.addEventListener("click", () => {
             addNewProcess(processContainer, processTemplate);
@@ -391,30 +397,47 @@ function addNewProcess(container, template) {
     const processBlock = template.content.cloneNode(true).firstElementChild;
     const uniqueId = `process-${Date.now()}`;
     processBlock.id = uniqueId;
-    
     setupProcessBlock(processBlock);
     container.appendChild(processBlock);
 }
 
 function setupProcessBlock(block) {
-    // Remove process button
     const removeProcessBtn = block.querySelector(".remove-process");
     if (removeProcessBtn) {
         removeProcessBtn.addEventListener("click", () => block.remove());
     }
-
-    // Add step button
     const addStepBtn = block.querySelector(".add-step");
     const stepsBody = block.querySelector(".steps-body");
-    
     if (addStepBtn && stepsBody) {
         addStepBtn.addEventListener("click", () => {
             addStepRow(stepsBody);
         });
     }
-
-    // Add data attributes for JSON handling
     addDataAttributes(block, 'process');
+}
+
+// Helper: Add a new step row in a process block
+function addStepRow(tbody) {
+    const row = document.createElement("tr");
+    // Description cell
+    const descCell = document.createElement("td");
+    const descTextarea = document.createElement("textarea");
+    descTextarea.className = "form-control";
+    descTextarea.placeholder = "Step Description";
+    descTextarea.name = "step_description";
+    descTextarea.setAttribute('data-field', 'step_description');
+    descTextarea.rows = 2;
+    descCell.appendChild(descTextarea);
+    row.appendChild(descCell);
+    // Actions cell
+    const actionCell = document.createElement("td");
+    const removeBtn = document.createElement("button");
+    removeBtn.textContent = "Remove";
+    removeBtn.className = "btn btn-danger btn-sm";
+    removeBtn.onclick = () => row.remove();
+    actionCell.appendChild(removeBtn);
+    row.appendChild(actionCell);
+    tbody.appendChild(row);
 }
 
 // Table Management
@@ -452,11 +475,9 @@ function setupTableButtons(block) {
             { name: 'Result', type: 'text', key: 'test_result' }
         ]
     };
-
     Object.entries(tableConfigs).forEach(([type, columns]) => {
         const addBtn = block.querySelector(`.add-${type}`);
         const tbody = block.querySelector(`.${type}-body`);
-        
         if (addBtn && tbody) {
             addBtn.addEventListener("click", () => {
                 addTableRow(tbody, columns);
@@ -467,24 +488,17 @@ function setupTableButtons(block) {
 
 function addTableRow(tbody, columns) {
     const row = document.createElement("tr");
-    
     columns.forEach(col => {
         const td = document.createElement("td");
-        const input = col.type === 'textarea' ? 
-            document.createElement("textarea") : 
-            document.createElement("input");
-        
+        const input = col.type === 'textarea' ? document.createElement("textarea") : document.createElement("input");
         input.className = "form-control";
         input.type = col.type;
         input.name = col.key;
         input.placeholder = col.name;
         input.setAttribute('data-field', col.key);
-        
         td.appendChild(input);
         row.appendChild(td);
     });
-
-    // Add remove button
     const actionTd = document.createElement("td");
     const removeBtn = document.createElement("button");
     removeBtn.textContent = "Remove";
@@ -492,7 +506,6 @@ function addTableRow(tbody, columns) {
     removeBtn.onclick = () => row.remove();
     actionTd.appendChild(removeBtn);
     row.appendChild(actionTd);
-
     tbody.appendChild(row);
 }
 
@@ -505,7 +518,6 @@ function setupDocumentationTables() {
 function setupTroubleshootingTable() {
     const addIssueBtn = document.querySelector('.add-troubleshooting');
     const troubleshootingBody = document.querySelector('.troubleshooting-body');
-
     if (addIssueBtn && troubleshootingBody) {
         addIssueBtn.addEventListener('click', () => {
             addTroubleshootingRow(troubleshootingBody);
@@ -516,7 +528,6 @@ function setupTroubleshootingTable() {
 function setupEnvironmentIDsTable() {
     const addEnvIdBtn = document.querySelector('.add-environment-id');
     const envIdsBody = document.querySelector('.environment-ids-body');
-    
     if (addEnvIdBtn && envIdsBody) {
         addEnvIdBtn.addEventListener('click', () => {
             addEnvironmentIdRow(envIdsBody);
@@ -526,13 +537,11 @@ function setupEnvironmentIDsTable() {
 
 function addTroubleshootingRow(tbody) {
     const row = document.createElement('tr');
-
     const columns = [
         { name: 'Error/Issue', type: 'textarea', key: 'error_issue' },
         { name: 'Cause', type: 'textarea', key: 'cause' },
         { name: 'Resolution', type: 'textarea', key: 'resolution' }
     ];
-
     columns.forEach(col => {
         const td = document.createElement('td');
         const input = document.createElement(col.type === 'textarea' ? 'textarea' : 'input');
@@ -544,8 +553,6 @@ function addTroubleshootingRow(tbody) {
         td.appendChild(input);
         row.appendChild(td);
     });
-
-    // Add remove button
     const actionTd = document.createElement('td');
     const removeBtn = document.createElement('button');
     removeBtn.textContent = 'Remove';
@@ -553,26 +560,20 @@ function addTroubleshootingRow(tbody) {
     removeBtn.onclick = () => row.remove();
     actionTd.appendChild(removeBtn);
     row.appendChild(actionTd);
-
     tbody.appendChild(row);
 }
 
 function addEnvironmentIdRow(tbody) {
     const row = document.createElement('tr');
-    
     const columns = [
         { name: 'Name', type: 'text', key: 'env_name' },
         { name: 'Notes', type: 'textarea', key: 'env_notes' },
         { name: 'Sandbox Value', type: 'textarea', key: 'sandbox_value' },
         { name: 'Production Value', type: 'textarea', key: 'production_value' }
     ];
-
     columns.forEach(col => {
         const td = document.createElement('td');
-        const input = col.type === 'textarea' ? 
-            document.createElement('textarea') : 
-            document.createElement('input');
-        
+        const input = col.type === 'textarea' ? document.createElement('textarea') : document.createElement('input');
         input.className = 'form-control';
         if (col.type !== 'textarea') {
             input.type = col.type;
@@ -580,16 +581,12 @@ function addEnvironmentIdRow(tbody) {
         input.name = col.key;
         input.placeholder = col.name;
         input.setAttribute('data-field', col.key);
-        
         if (col.type === 'textarea') {
             input.rows = 2;
         }
-        
         td.appendChild(input);
         row.appendChild(td);
     });
-
-    // Add remove button
     const actionTd = document.createElement('td');
     const removeBtn = document.createElement('button');
     removeBtn.textContent = 'Remove';
@@ -597,16 +594,14 @@ function addEnvironmentIdRow(tbody) {
     removeBtn.onclick = () => row.remove();
     actionTd.appendChild(removeBtn);
     row.appendChild(actionTd);
-
     tbody.appendChild(row);
 }
 
-// Navigation
+// Navigation functions
 function navigateToStep(step) {
     document.querySelectorAll(".wizard-step").forEach(section => {
         section.style.display = "none";
     });
-
     const targetStep = document.getElementById(`step-${step}`);
     if (targetStep) {
         targetStep.style.display = "block";
@@ -628,141 +623,46 @@ function updateNavigationButtons(step) {
     const prevButton = document.getElementById("prev-btn");
     const nextButton = document.getElementById("next-btn");
     const totalSteps = document.querySelectorAll(".wizard-step").length;
-
     if (prevButton) prevButton.disabled = step === 1;
     if (nextButton) nextButton.disabled = step === totalSteps;
 }
 
-function setupFieldButton(block) {
-    const addFieldBtn = block.querySelector(".add-field");
-    const fieldsBody = block.querySelector(".fields-body");
-    
-    if (addFieldBtn && fieldsBody) {
-        addFieldBtn.addEventListener("click", () => {
-            addFieldRow(fieldsBody);
-        });
-    }
-}
-
-function addFieldRow(tbody) {
-    const columns = [
-        { name: 'Field Name', type: 'text', key: 'field_name' },
-        { name: 'Field ID', type: 'text', key: 'field_id' },
-        { name: 'Field Type', type: 'text', key: 'field_type' },
-        { name: 'Field Description', type: 'textarea', key: 'field_description' }
-    ];
-
-    const row = document.createElement("tr");
-    
-    columns.forEach(col => {
-        const td = document.createElement("td");
-        const input = col.type === 'textarea' ? 
-            document.createElement("textarea") : 
-            document.createElement("input");
-        
-        input.className = "form-control";
-        if (input.tagName === 'INPUT') {
-            input.type = col.type;
-        }
-        input.name = col.key;
-        input.placeholder = col.name;
-        input.setAttribute('data-field', col.key);
-        td.appendChild(input);
-        row.appendChild(td);
-    });
-
-    // Add remove button
-    const actionTd = document.createElement("td");
-    const removeBtn = document.createElement("button");
-    removeBtn.textContent = "Remove";
-    removeBtn.className = "btn btn-danger btn-sm";
-    removeBtn.onclick = () => row.remove();
-    actionTd.appendChild(removeBtn);
-    row.appendChild(actionTd);
-
-    tbody.appendChild(row);
-}
-
-function addStepRow(tbody) {
-    const row = document.createElement("tr");
-    // Description cell
-    const descCell = document.createElement("td");
-    const descTextarea = document.createElement("textarea");
-    descTextarea.className = "form-control";
-    descTextarea.placeholder = "Step Description";
-    descTextarea.name = "step_description";
-    descTextarea.setAttribute('data-field', 'step_description');
-    descTextarea.rows = 2;
-    descCell.appendChild(descTextarea);
-    row.appendChild(descCell);
-
-    // Actions cell
-    const actionCell = document.createElement("td");
-    const removeBtn = document.createElement("button");
-    removeBtn.textContent = "Remove";
-    removeBtn.className = "btn btn-danger btn-sm";
-    removeBtn.onclick = () => row.remove();
-    actionCell.appendChild(removeBtn);
-    row.appendChild(actionCell);
-
-    tbody.appendChild(row);
-}
-
-function navigateStep(step) {
-    const steps = document.querySelectorAll(".wizard-step");
-    if (step < 1 || step > steps.length) return;
-    
-    document.querySelectorAll(".wizard-step").forEach(section => {
-        section.style.display = "none";
-    });
-
-    const targetStep = document.getElementById(`step-${step}`);
-    if (targetStep) {
-        targetStep.style.display = "block";
-    }
-
-    // Update button states
-    const prevButton = document.getElementById("prev-btn");
-    const nextButton = document.getElementById("next-btn");
-    if (prevButton) prevButton.disabled = step === 1;
-    if (nextButton) nextButton.disabled = step === steps.length;
-
-    // Update step links
-    updateStepLinks(step);
-}
-
-// Utility Functions
 function addDataAttributes(block, type) {
-    // Add data attributes to inputs for proper JSON serialization
     block.querySelectorAll('input, textarea, select').forEach(input => {
         if (!input.hasAttribute('data-field')) {
-            const fieldName = input.placeholder ? 
-                input.placeholder.toLowerCase().replace(/\s+/g, '_') :
-                input.name;
+            const fieldName = input.placeholder ? input.placeholder.toLowerCase().replace(/\s+/g, '_') : input.name;
             input.setAttribute('data-field', fieldName);
             input.name = fieldName;
         }
     });
-
-    // Add type identifier to the block
     block.setAttribute('data-block-type', type);
 }
 
 function clearDynamicBlocks() {
-    // Clear all dynamic block containers
-    document.getElementById('scripts-container').innerHTML = '';
-    document.getElementById('records-container').innerHTML = '';
-    document.getElementById('process-container').innerHTML = '';
+    const containerIds = [
+      'scripts-container',
+      'records-container',
+      'process-container',
+      'workflow-container',
+      'installation-process-body',
+      'rollback-process-body',
+      'configuration-process-body',
+      'unit-testing-body'
+    ];
+    containerIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.innerHTML = '';
+      }
+    });
 }
 
 function reloadDynamicBlocks() {
-    // Reinitialize all dynamic blocks
     initializeScriptSection();
     initializeCustomRecordSection();
     initializeProcessSection();
 }
 
-// Export functions for use in json_handler.js
 window.clearDynamicBlocks = clearDynamicBlocks;
 window.reloadDynamicBlocks = reloadDynamicBlocks;
 window.addNewScript = addNewScript;
@@ -775,3 +675,120 @@ window.addNewRollback = addNewRollback;
 window.setupRollbackBlock = setupRollbackBlock;
 window.addNewWorkflow = addNewWorkflow;
 window.setupWorkflowBlock = setupWorkflowBlock;
+
+// --- Missing Functions ---
+
+// Function to add a rollback block from the template
+function addNewRollback(container, template) {
+  const rollbackBlock = template.content.cloneNode(true).firstElementChild;
+  const uniqueId = `rollback-${Date.now()}`;
+  rollbackBlock.id = uniqueId;
+  setupRollbackBlock(rollbackBlock);
+  container.appendChild(rollbackBlock);
+}
+
+// Setup function for a rollback block
+function setupRollbackBlock(block) {
+  // Assuming rollback block remove button uses class "remove-rollback"
+  const removeRollbackBtn = block.querySelector(".remove-rollback");
+  if (removeRollbackBtn) {
+      removeRollbackBtn.addEventListener("click", () => block.remove());
+  }
+  addDataAttributes(block, 'rollback');
+}
+
+// Function to initialize the Workflow section
+function initializeWorkflowSection() {
+  const addWorkflowBtn = document.getElementById("add-workflow-btn");
+  const workflowContainer = document.getElementById("workflow-container");
+  const workflowTemplate = document.getElementById("workflow-block-template");
+  if (addWorkflowBtn && workflowContainer && workflowTemplate) {
+    addWorkflowBtn.addEventListener("click", () => {
+      addNewWorkflow(workflowContainer, workflowTemplate);
+    });
+  }
+}
+
+// Helper to add a new workflow block
+function addNewWorkflow(container, template) {
+  const workflowBlock = template.content.cloneNode(true).firstElementChild;
+  const uniqueId = `workflow-${Date.now()}`;
+  workflowBlock.id = uniqueId;
+  setupWorkflowBlock(workflowBlock);
+  container.appendChild(workflowBlock);
+}
+
+// Setup function for workflow block
+function setupWorkflowBlock(block) {
+    // Remove workflow button
+    const removeWorkflowBtn = block.querySelector(".remove-workflow");
+    if (removeWorkflowBtn) {
+        removeWorkflowBtn.addEventListener("click", () => block.remove());
+    }
+    // Setup add action button in workflow block
+    const addActionBtn = block.querySelector(".add-action");
+    const actionsBody = block.querySelector(".actions-body");
+    if (addActionBtn && actionsBody) {
+        addActionBtn.addEventListener("click", () => {
+            addActionRow(actionsBody);
+        });
+    }
+    addDataAttributes(block, 'workflow');
+}
+
+// Helper to add a new action row in a workflow block
+function addActionRow(tbody) {
+    const row = document.createElement("tr");
+    const columns = [
+        { name: 'Action', type: 'text', key: 'action' },
+        { name: 'State', type: 'text', key: 'state' },
+        { name: 'Details', type: 'textarea', key: 'details' }
+    ];
+    columns.forEach(col => {
+        const td = document.createElement("td");
+        let input;
+        if (col.type === 'textarea') {
+            input = document.createElement("textarea");
+            input.rows = 2;
+        } else {
+            input = document.createElement("input");
+            input.type = col.type;
+        }
+        input.className = "form-control";
+        input.name = col.key;
+        input.placeholder = col.name;
+        input.setAttribute('data-field', col.key);
+        td.appendChild(input);
+        row.appendChild(td);
+    });
+    const actionTd = document.createElement("td");
+    const removeBtn = document.createElement("button");
+    removeBtn.textContent = "Remove";
+    removeBtn.className = "btn btn-danger btn-sm";
+    removeBtn.onclick = () => row.remove();
+    actionTd.appendChild(removeBtn);
+    row.appendChild(actionTd);
+    tbody.appendChild(row);
+}
+
+// Function to set up the "Add Field" button in a custom record block
+function setupFieldButton(block) {
+  const addFieldBtn = block.querySelector(".add-field");
+  const fieldsBody = block.querySelector(".fields-body");
+  if (addFieldBtn && fieldsBody) {
+    addFieldBtn.addEventListener("click", () => {
+      addFieldRow(fieldsBody);
+    });
+  }
+}
+
+// Helper to add a new field row (for custom record fields)
+function addFieldRow(tbody) {
+  const columns = [
+    { name: 'Field Name', type: 'text', key: 'field_name' },
+    { name: 'Field ID', type: 'text', key: 'field_id' },
+    { name: 'Field Type', type: 'text', key: 'field_type' },
+    { name: 'Field Description', type: 'textarea', key: 'field_description' }
+  ];
+  addTableRow(tbody, columns);
+}

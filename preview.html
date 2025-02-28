@@ -4,14 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Script Deployment Document</title>
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-  />
-  <link
-    href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css"
-    rel="stylesheet"
-  />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" rel="stylesheet" />
   <style>
     /* Print-specific styles */
     @media print {
@@ -29,36 +23,16 @@
         width: 100%;
         padding: 20px 40px;
       }
-      .script-section {
+      .script-section, .script-header, .script-details, h4, h5, table, dl {
         break-inside: avoid;
       }
-      .script-header {
-        break-inside: avoid;
-      }
-      .script-details {
-        break-inside: auto;
-      }
-      h4, h5 {
-        break-after: avoid;
-      }
-      table {
-        break-inside: avoid;
-      }
-      dl {
-        break-inside: avoid;
-      }
-
       body {
-    font-size: 12px !important;
-  }
-  h1 {
-    font-size: 24px !important;
-  }
-  h2 {
-    font-size: 20px !important;
-  }
+        font-size: 12px !important;
+      }
+      h1 { font-size: 24px !important; }
+      h2 { font-size: 20px !important; }
     }
-    /* Updated color scheme */
+    /* Updated color scheme and clean layout */
     body {
       background: #fff;
       color: #01395A;
@@ -66,26 +40,16 @@
       line-height: 1.6;
       padding: 20px;
     }
-    h1, h2 {
-      color: #16A089;
-    }
-    h3, h4, h5, .subsection-title {
-      color: #01395A;
-    }
-    /* Existing styles */
+    h1, h2 { color: #16A089; }
+    h3, h4, h5, .subsection-title { color: #01395A; }
+    /* Initial Screen Styles */
     #initial-screen {
-      min-height: 400px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
       margin: 50px auto;
-      max-width: 600px;
+      max-width: 800px;
+      text-align: center;
     }
     .file-input-section {
       margin: 20px 0;
-      width: 100%;
       padding: 40px;
       border: 2px dashed #ccc;
       border-radius: 8px;
@@ -97,9 +61,13 @@
       border-color: #0d6efd;
       background: #f0f7ff;
     }
+    #sectionsTable, #detailsTable {
+      margin-top: 30px;
+    }
     #docContent {
       display: none;
     }
+    /* Header Section styling */
     .header-container {
       display: flex;
       align-items: center;
@@ -109,19 +77,14 @@
       flex: 0 0 auto;
       margin-right: 20px;
     }
-    .logo-section img {
-      max-width: 150px;
-      height: auto;
-    }
-    .cover-image {
-      flex: 1;
-    }
+    .logo-section img { max-width: 150px; height: auto; }
+    .cover-image { flex: 1; }
     .cover-image img {
       width: 100%;
       max-height: 300px;
       object-fit: cover;
       border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 0 10px rgba(0,0,0,0.15);
     }
     .document-header {
       margin-bottom: 3rem;
@@ -151,1022 +114,1396 @@
     }
     .table {
       margin-bottom: 2rem;
-    }
-    .table > :not(caption) > * > * {
-      padding: 0.75rem;
+      background: #ffffff;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
     .table th {
-      background-color: #f8f9fa;
-      font-weight: bold;
+      background-color: #16A089;
+      color: #ffffff;
+      border-bottom: 2px solid #0D695F;
     }
     .deployment-steps {
       padding-left: 1.2rem;
       margin-bottom: 2rem;
     }
-    .script-details {
-      margin-bottom: 2rem;
-    }
+    .script-details { margin-bottom: 2rem; }
     .info-box {
       background: #ffffff;
       border: 1px solid #dee2e6;
       border-radius: 4px;
       box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
-    .bg-primary {
-      background-color: #01395A !important;
-    }
+    .bg-primary { background-color: #01395A !important; }
     .script-section h5 {
       color: #01395A;
       border-bottom: 2px solid #16A089;
       padding-bottom: 0.5rem;
       margin-bottom: 1rem;
     }
-    .table {
-      background: #ffffff;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    .table thead th {
-      background-color: #16A089;
-      color: #ffffff;
-      border-bottom: 2px solid #0D695F;
-    }
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- File Input Section -->
+    <!-- First Page: File Input and Section Selection -->
     <div id="initial-screen">
+      <img src="https://appwrap.com/wp-content/uploads/2024/12/appwrap-logo.svg" alt="AppWrap Logo" class="img-fluid">
       <h1 class="mb-4">Script Deployment Document</h1>
-      <div
-        class="file-input-section"
-        onclick="document.getElementById('jsonFileInput').click()"
-      >
-        <p class="h5 mb-3">
-          Click or drag and drop to load deployment manifest
-        </p>
-        <p class="text-muted mb-3">
-          Select a JSON file to generate the formatted document
-        </p>
-        <input
-          type="file"
-          class="d-none"
-          id="jsonFileInput"
-          accept="application/json"
-        />
+      <div class="file-input-section" onclick="document.getElementById('jsonFileInput').click()">
+        <p class="h5 mb-3">Click or drag and drop to load deployment manifest</p>
+        <p class="text-muted mb-3">Select a JSON file to generate the formatted document</p>
+        <input type="file" class="d-none" id="jsonFileInput" accept="application/json" />
         <button class="btn btn-primary">Select File</button>
       </div>
+      <!-- Main Section Selection -->
+      <h2>Main Sections to Include</h2>
+      <table class="table table-bordered" id="sectionsTable">
+        <thead>
+          <tr>
+            <th style="width:20%;">Include</th>
+            <th>Section Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><input type="checkbox" id="section_header" checked /></td>
+            <td>Step 1: Project Information (Header)</td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" id="section_toc" checked /></td>
+            <td>Step 1: Table of Contents</td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" id="section_userStoriesFeatures" checked /></td>
+            <td>Step 2: Project Scope (User Stories, Features, Usage)</td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" id="section_configuration" checked /></td>
+            <td>Step 3/4: Playbook &amp; Configuration</td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" id="section_dependencies" checked /></td>
+            <td>Step 5: Dependencies</td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" id="section_scriptDetails" checked /></td>
+            <td>Step 6: Scripts</td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" id="section_customRecords" checked /></td>
+            <td>Step 7: Custom Records</td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" id="section_workflows" checked /></td>
+            <td>Step 8: Workflow</td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" id="section_customFields" checked /></td>
+            <td>Step 9: Custom Fields</td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" id="section_savedSearches" checked /></td>
+            <td>Step 9: Saved Searches</td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" id="section_templates" checked /></td>
+            <td>Step 9: Templates</td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" id="section_troubleshooting" checked /></td>
+            <td>Step 10: Troubleshooting</td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" id="section_checklist" checked /></td>
+            <td>Step 11: Deployment Checklist</td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" id="section_contacts" checked /></td>
+            <td>Step 12: Contact and License</td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" id="section_components" checked /></td>
+            <td>Step 13: Components</td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" id="page_breaks" checked /></td>
+            <td>Enable Page Breaks (if unchecked, sections will flow continuously)</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
-    <!-- Document Content -->
+    <!-- Document Content (Generated after JSON load) -->
     <div id="docContent"></div>
   </div>
 
   <script>
-  /*=================================
-    FILE & JSON LOADING
-  =================================*/
-  const dropZone = document.querySelector(".file-input-section");
-  const initialScreen = document.getElementById("initial-screen");
-  const docContent = document.getElementById("docContent");
+    /*=================================
+      FILE & JSON LOADING
+    =================================*/
+    const dropZone = document.querySelector(".file-input-section");
+    const initialScreen = document.getElementById("initial-screen");
+    const docContent = document.getElementById("docContent");
 
-  ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
-    dropZone.addEventListener(eventName, preventDefaults, false);
-    document.body.addEventListener(eventName, preventDefaults, false);
-  });
-  function preventDefaults(e) {
-    e.preventDefault();
-    e.stopPropagation();
-  }
-  ["dragenter", "dragover"].forEach((eventName) => {
-    dropZone.addEventListener(eventName, highlight, false);
-  });
-  ["dragleave", "drop"].forEach((eventName) => {
-    dropZone.addEventListener(eventName, unhighlight, false);
-  });
-  function highlight() {
-    dropZone.classList.add("border-primary", "bg-light");
-  }
-  function unhighlight() {
-    dropZone.classList.remove("border-primary", "bg-light");
-  }
-  function handleDrop(e) {
-    const dt = e.dataTransfer;
-    const file = dt.files[0];
-    if (file) {
-      handleFile(file);
+    ["dragenter", "dragover", "dragleave", "drop"].forEach(eventName => {
+      dropZone.addEventListener(eventName, preventDefaults, false);
+      document.body.addEventListener(eventName, preventDefaults, false);
+    });
+    function preventDefaults(e) {
+      e.preventDefault();
+      e.stopPropagation();
     }
-  }
-  dropZone.addEventListener("drop", handleDrop, false);
-  document.getElementById("jsonFileInput").addEventListener("change", function (e) {
-    const file = e.target.files[0];
-    if (file) handleFile(file);
-  });
-  
-  function handleFile(file) {
-    const reader = new FileReader();
-    reader.onload = function (event) {
-      try {
-        // Remove BOM if present
-        const fileContent = event.target.result.replace(/^\uFEFF/, "");
-        const data = JSON.parse(fileContent);
-        console.log("Parsed JSON data:", data);
-        displayDocument(data);
-        initialScreen.style.display = "none";
-        docContent.style.display = "block";
-      } catch (err) {
-        console.error("Error parsing JSON:", err);
-        alert("Error parsing JSON file. Please check the file format and try again.");
+    ["dragenter", "dragover"].forEach(eventName => {
+      dropZone.addEventListener(eventName, highlight, false);
+    });
+    ["dragleave", "drop"].forEach(eventName => {
+      dropZone.addEventListener(eventName, unhighlight, false);
+    });
+    function highlight() { dropZone.classList.add("border-primary", "bg-light"); }
+    function unhighlight() { dropZone.classList.remove("border-primary", "bg-light"); }
+    function handleDrop(e) {
+      const dt = e.dataTransfer;
+      const file = dt.files[0];
+      if (file) { handleFile(file); }
+    }
+    dropZone.addEventListener("drop", handleDrop, false);
+    document.getElementById("jsonFileInput").addEventListener("change", function (e) {
+      const file = e.target.files[0];
+      if (file) handleFile(file);
+    });
+    
+    function handleFile(file) {
+      const reader = new FileReader();
+      reader.onload = function (event) {
+        try {
+          const fileContent = event.target.result.replace(/^\uFEFF/, "");
+          const data = JSON.parse(fileContent);
+          console.log("Parsed JSON data:", data);
+          displayDocument(data);
+          initialScreen.style.display = "none";
+          docContent.style.display = "block";
+        } catch (err) {
+          console.error("Error parsing JSON:", err);
+          alert("Error parsing JSON file. Please check the file format and try again.");
+        }
+      };
+      reader.onerror = function () {
+        console.error("File reading error");
+        alert("Error reading file. Please try again.");
+      };
+      reader.readAsText(file);
+    }
+    
+    /*=================================
+      DOCUMENT GENERATION WITH USER SELECTION
+    =================================*/
+    function getSectionSelections() {
+      return {
+        // Main Sections
+        header: document.getElementById('section_header').checked,
+        toc: document.getElementById('section_toc').checked,
+        userStoriesFeatures: document.getElementById('section_userStoriesFeatures').checked,
+        configuration: document.getElementById('section_configuration').checked,
+        dependencies: document.getElementById('section_dependencies').checked,
+        scriptDetails: document.getElementById('section_scriptDetails').checked,
+        customRecords: document.getElementById('section_customRecords').checked,
+        workflows: document.getElementById('section_workflows').checked,
+        customFields: document.getElementById('section_customFields').checked,
+        savedSearches: document.getElementById('section_savedSearches').checked,
+        templates: document.getElementById('section_templates').checked,
+        troubleshooting: document.getElementById('section_troubleshooting').checked,
+        checklist: document.getElementById('section_checklist').checked,
+        contacts: document.getElementById('section_contacts').checked,
+        components: document.getElementById('section_components').checked,
+        // Extra option: Page Breaks Enabled
+        pageBreaks: document.getElementById('page_breaks').checked,
+        // Additional Details (set to false by default; can be enabled if needed)
+        step1_extra: false,
+        step2_summary: false,
+        step3_extra: false,
+        step4_extra: false,
+        step5_extra: false,
+        step6_versionHistory: true,
+        step7_extra: false,
+        step8_extra: false,
+        step9_fields_extra: false,
+        step9_templates_extra: false,
+        step9_searches_extra: false,
+        step10_extra: false,
+        step12_extra: false,
+        step13_extra: false
+      };
+    }
+    
+    function getCurrentDateString() {
+      const d = new Date();
+      return d.toISOString().slice(0, 10);
+    }
+    
+    // Helper function: Conditionally insert a page break based on selections
+    function insertPageBreak(selections) {
+      return selections.pageBreaks ? `<div class="page-break"></div>` : "";
+    }
+    
+    /*---------------------------
+      Main Document Generation
+    ----------------------------*/
+    function generateDocument(data) {
+      const selections = getSectionSelections();
+      let docHTML = "";
+      if (selections.header) {
+        docHTML += generateHeaderSection(data, selections) + insertPageBreak(selections);
       }
-    };
-    reader.onerror = function () {
-      console.error("File reading error");
-      alert("Error reading file. Please try again.");
-    };
-    reader.readAsText(file);
-  }
-
-  /*=================================
-    DOCUMENT GENERATION WITH SAFEGUARDS
-  =================================*/
-  function displayDocument(data) {
-    try {
-      docContent.innerHTML = generateDocument(data);
-    } catch (e) {
-      console.error("Error generating document:", e);
-      alert("An error occurred while generating the document. Please check the console for details.");
+      if (selections.toc) {
+        docHTML += generateTOC(data) + insertPageBreak(selections);
+      }
+      if (selections.userStoriesFeatures) {
+        docHTML += generateUserStoriesFeaturesSection(data, selections) + insertPageBreak(selections);
+      }
+      if (selections.configuration) {
+        docHTML += generateConfigurationSection(data, selections) + insertPageBreak(selections);
+      }
+      if (selections.dependencies) {
+        docHTML += generateDependenciesSection(data, selections) + insertPageBreak(selections);
+      }
+      if (selections.scriptDetails) {
+        docHTML += generateScriptDetailsSection(data, selections) + insertPageBreak(selections);
+      }
+      if (selections.customRecords) {
+        docHTML += generateCustomRecordsSectionNew(data, selections) + insertPageBreak(selections);
+      }
+      if (selections.workflows) {
+        docHTML += generateWorkflowsSection(data, selections) + insertPageBreak(selections);
+      }
+      if (selections.customFields) {
+        docHTML += generateCustomFieldsSection(data, selections) + insertPageBreak(selections);
+      }
+      if (selections.savedSearches) {
+        docHTML += generateSavedSearchesSection(data, selections) + insertPageBreak(selections);
+      }
+      if (selections.templates) {
+        docHTML += generateTemplatesSection(data, selections) + insertPageBreak(selections);
+      }
+      if (selections.troubleshooting) {
+        docHTML += generateTroubleshootingSection(data, selections) + insertPageBreak(selections);
+      }
+      if (selections.checklist) {
+        docHTML += generateChecklistSection(data) + insertPageBreak(selections);
+      }
+      if (selections.contacts) {
+        docHTML += generateContactsSection(data, selections) + insertPageBreak(selections);
+      }
+      if (selections.components) {
+        docHTML += generateComponentsSection(data, selections) + insertPageBreak(selections);
+      }
+      docHTML += `<div class="mt-5 text-center">
+          <p>
+            <strong>AppWrap, Inc.</strong> &emsp; (${getCurrentDateString()})<br>
+            Proprietary and Confidential to AppWrap, Inc.
+          </p>
+        </div>`;
+      return docHTML;
     }
-  }
-  function getCurrentDateString() {
-    const d = new Date();
-    return d.toISOString().slice(0, 10);
-  }
 
-  /*---------------------------
-    Main Document Generation
-  ----------------------------*/
-  function generateDocument(data) {
-    return `
-      ${generateHeaderSection(data)}
-      <div class="page-break"></div>
-      ${generateTOC(data)}
-      <div class="page-break"></div>
-      ${generateUserStoriesFeaturesSection(data)}
-      <div class="page-break"></div>
-      ${generateConfigurationSection(data)}
-      <div class="page-break"></div>
-      ${generateDependenciesSection(data)}
-      <div class="page-break"></div>
-      ${generateScriptDetailsSection(data)}
-      <div class="page-break"></div>
-      ${generateCustomRecordsSectionNew(data)}
-      <div class="page-break"></div>
-      ${generateWorkflowsSection(data)}
-      <div class="page-break"></div>
-      ${generateTroubleshootingSection(data)}
-      <div class="page-break"></div>
-      ${generateChecklistSection(data)}
-      <div class="page-break"></div>
-      ${generateContactsSection(data)}
-      <div class="mt-5 text-center">
-        <p>
-          <strong>AppWrap, Inc.</strong> &emsp; (${getCurrentDateString()})<br>
-          Proprietary and Confidential to AppWrap, Inc.
-        </p>
-      </div>
-    `;
-  }
+    function generateTOC(data) {
+      let tocHTML = `<div class="toc no-break">
+        <br>
+        <h2 class="section-title">Table of Contents</h2>
+        <ul>
+          <li>
+            1. User Stories and Features
+            <ul>
+              <li>User Stories</li>
+              <li>Features</li>
+              <li>Usage</li>
+            </ul>
+          </li>
+          <li>
+            2. Playbook &amp; Configuration
+            <ul>`;
+      const step3 = data["step-3"] || {};
+      if (step3.processes && step3.processes.length > 0) {
+        tocHTML += `<li>Processes
+                      <ul>`;
+        step3.processes.forEach((proc, i) => {
+          tocHTML += `<li>${proc.name || "Process " + (i + 1)}</li>`;
+        });
+        tocHTML += `</ul></li>`;
+      } else {
+        tocHTML += `<li>Processes: None</li>`;
+      }
+      if (step3.rollbacks && step3.rollbacks.length > 0) {
+        tocHTML += `<li>Rollbacks
+                      <ul>`;
+        step3.rollbacks.forEach((rb, i) => {
+          tocHTML += `<li>Rollback ${i + 1}</li>`;
+        });
+        tocHTML += `</ul></li>`;
+      } else {
+        tocHTML += `<li>Rollbacks: None</li>`;
+      }
+      tocHTML += `</ul></li>
+          <li>3. Configuration (Environment IDs)</li>
+          <li>4. Dependencies</li>
+          <li>5. Script Details`;
+      const step6 = data["step-6"] || {};
+      if (step6.scripts && step6.scripts.length > 0) {
+        tocHTML += `<ul>`;
+        step6.scripts.forEach((script, i) => {
+          tocHTML += `<li>${script.name || "Script " + (i + 1)}`;
+          if (script.libraries && script.libraries.length > 0) {
+            tocHTML += `<ul>`;
+            script.libraries.forEach(lib => {
+              tocHTML += `<li>Library: ${lib.library_name || ""}</li>`;
+            });
+            tocHTML += `</ul>`;
+          }
+          tocHTML += `</li>`;
+        });
+        tocHTML += `</ul>`;
+      }
+      tocHTML += `</li>
+          <li>6. Custom Records</li>
+          <li>7. Workflow`;
+      const step8 = data["step-8"] || {};
+      if (step8.workflows && step8.workflows.length > 0) {
+        tocHTML += `<ul>`;
+        step8.workflows.forEach((wf, i) => {
+          tocHTML += `<li>${wf.details || "Workflow " + (i + 1)}</li>`;
+        });
+        tocHTML += `</ul>`;
+      }
+      tocHTML += `</li>
+          <li>8. Custom Fields</li>
+          <li>9. Saved Searches</li>
+          <li>10. Templates</li>
+          <li>11. Troubleshooting</li>
+          <li>12. Deployment Checklist</li>
+          <li>13. Contact and License</li>
+          <li>14. Components</li>
+        </ul></div>`;
+      return tocHTML;
+    }
 
-  /*---------------------------
-    HEADER SECTION (Step 1)
-  ----------------------------*/
-  function generateHeaderSection(data) {
-    const step1 = data["step-1"] || {};
-    return `
-      <div class="document-header">
-        <div class="header-container">
-          <div class="logo-section">
-          
-          <img src="https://appwrap.com/wp-content/uploads/2024/12/appwrap-logo.svg" alt="AppWrap.Com Logo" />
-     
+    function generateDevelopersTable(developers) {
+      if (!developers || !developers.length)
+        return "<p>No developer information available.</p>";
+      return `
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Developer Name</th>
+              <th>Email</th>
+              <th>Note</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${developers.map(dev => `
+              <tr>
+                <td>${dev.developer_name || ""}</td>
+                <td>${dev.developer_email || ""}</td>
+                <td>${dev.developer_note || ""}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      `;
+    }
+
+    // Step 1: Header Section
+    function generateHeaderSection(data, selections) {
+      const step1 = data["step-1"] || {};
+      let headerHTML = `
+        <div class="document-header">
+          <div class="header-container">
+            <div class="logo-section">
+              <img src="https://appwrap.com/wp-content/uploads/2024/12/appwrap-logo.svg" alt="AppWrap.Com Logo" />
+            </div>
+          </div>
+          <div class="cover-image">
+            <img src="./cover.jpg" alt="Cover Image" />
+          </div>
+          <br>
+          <h1 class="text-start mb-4" style="font-size:42px;color:black">Script Deployment Document</h1>
+          <h2 class="text-start mb-5" style="font-size:30px; color: #01395A;">${step1.client || "Client Not Provided"}</h2>
+          <center>
+            <h1>${step1.project_name || "Project Name Not Provided"}</h1>
+          </center>
+          <br />
+          <div class="mx-auto mb-5" style="width:40%; height:3px; background-color:#01395A;"></div>
+          <div class="confidential-notice">
+            <p>
+              Any reproduction or distribution of any part of this document without prior written permission of AppWrap, Inc. is strictly prohibited.
+            </p>
+            <p>
+              The information included in this document is confidential and proprietary to AppWrap, Inc.
+            </p>
+          </div>
+          <div class="version-history no-break">
+            <br>
+            <h2 class="section-title">Document Version History</h2>
+            ${generateVersionHeader(step1)}
+            ${generateVersionHistory(step1["version-history-body"])}
           </div>
         </div>
-        <div class="cover-image">
-          <img src="./cover.jpg" alt="Cover Image" />
-        </div>
-        <br>
-        <h1 class="text-start mb-4" style="font-size:42px;color:black">Script Deployment Document</h1>
-        <h2 class="text-start mb-5" style="font-size:30px; color: #01395A;">${step1.client || "Client Not Provided"}</h2>
-        <center>
-          <h1>${step1.project_name || "Project Name Not Provided"}</h1>
-        </center>
-        <br />
-        <div class="mx-auto mb-5" style="width:40%; height:3px; background-color:#01395A;"></div>
-        <div class="confidential-notice">
-          <p>
-            Any reproduction or distribution of any part of this document without prior written permission of AppWrap, Inc. is strictly prohibited.
-          </p>
-          <p>
-            The information included in this document is confidential and proprietary to AppWrap, Inc.
-          </p>
-        </div>
-        <div class="version-history no-break">
-          <br>
-          <h2 class="section-title">Document Version History</h2>
-          ${generateVersionHeader(step1)}
-          ${generateVersionHistory(step1["version-history-body"])}
-        </div>
-      </div>
-    `;
-  }
-  function generateVersionHeader(step1) {
-    return `
-      <table class="table table-bordered">
-        <tbody>
-          <tr>
-            <td width="20%"><strong>Customer Name</strong></td>
-            <td width="30%">${step1.client || ""}</td>
-            <td width="20%"><strong>Date</strong></td>
-            <td width="30%">${step1.date || getCurrentDateString()}</td>
-          </tr>
-          <tr>
-            <td><strong>Script Title</strong></td>
-            <td>${step1.project_name || ""}</td>
-            <td><strong>Prepared By</strong></td>
-            <td>${step1.developer || "C. Dela Cruz"}</td>
-          </tr>
-        </tbody>
-      </table>
-    `;
-  }
-  function generateVersionHistory(versions) {
-    if (!versions || !versions.length) return "";
-    return `
-      <h5>Version History</h5>
-      <table class="table table-bordered mt-4">
-        <thead>
-          <tr>
-            <th>Version</th>
-            <th>Date</th>
-            <th>Change Summary</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${versions
-            .map(
-              (v) => `
-            <tr>
-              <td>${v.version || ""}</td>
-              <td>${v.date || getCurrentDateString()}</td>
-              <td>${v.change_summary || ""}</td>
-            </tr>
-          `
-            )
-            .join("")}
-        </tbody>
-      </table>
-    `;
-  }
-
-  /*---------------------------
-    TABLE OF CONTENTS
-  ----------------------------*/
-  function generateTOC(data) {
-    let tocHTML = `<div class="toc no-break">
-    <br>
-    <h2 class="section-title">Table of Contents</h2>
-    <ul>
-      <!-- Section 1: User Stories and Features -->
-      <li>
-        1. User Stories and Features
-        <ul>
-          <li>User Stories</li>
-          <li>Features</li>
-          <li>Usage</li>
-        </ul>
-      </li>
-      
-      <!-- Section 2: Playbook -->
-      <li>
-        2. Playbook
-        <ul>`;
-    const step3 = data["step-3"] || {};
-    if (step3.processes && step3.processes.length > 0) {
-      tocHTML += `<li>Processes
-                  <ul>`;
-      step3.processes.forEach((proc, i) => {
-        tocHTML += `<li>${proc.name || "Process " + (i + 1)}</li>`;
-      });
-      tocHTML += `</ul>
-                </li>`;
-    } else {
-      tocHTML += `<li>Processes: None</li>`;
+      `;
+      if (selections.step1_extra) {
+        headerHTML += `
+          <div class="mb-4">
+            <h3 class="subsection-title">Additional Project Information</h3>
+            <table class="table table-bordered">
+              <tbody>
+                <tr>
+                  <td><strong>Development Environment</strong></td>
+                  <td>${step1.development_environment || "N/A"}</td>
+                </tr>
+                <tr>
+                  <td><strong>Version</strong></td>
+                  <td>${step1.version || "N/A"}</td>
+                </tr>
+                <tr>
+                  <td><strong>Change Summary</strong></td>
+                  <td>${step1.change_summary || "N/A"}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        `;
+      }
+      return headerHTML;
     }
-    if (step3.rollbacks && step3.rollbacks.length > 0) {
-      tocHTML += `<li>Rollbacks
-                  <ul>`;
-      step3.rollbacks.forEach((rb, i) => {
-        tocHTML += `<li>Rollback ${i + 1}: ${rb.description || "No description"}</li>`;
-      });
-      tocHTML += `</ul>
-                </li>`;
-    } else {
-      tocHTML += `<li>Rollbacks: None</li>`;
-    }
-    tocHTML += `</ul>
-      </li>
-      
-      <!-- Section 3: Configuration (Environment IDs) -->
-      <li>3. Configuration (Environment IDs)</li>
-      
-      <!-- Section 4: Dependencies -->
-      <li>4. Dependencies</li>
-      
-      <!-- Section 5: Script Details -->
-      <li>5. Script Details`;
-    const step6 = data["step-6"] || {};
-    if (step6.scripts && step6.scripts.length > 0) {
-      tocHTML += `<ul>`;
-      step6.scripts.forEach((script, i) => {
-        tocHTML += `<li>${script.name || "Script " + (i + 1)}</li>`;
-      });
-      tocHTML += `</ul>`;
-    }
-    tocHTML += `</li>
-      
-      <!-- Section 6: Custom Records -->
-      <li>6. Custom Records`;
-    const step7 = data["step-7"] || {};
-    if (step7.customRecords && step7.customRecords.length > 0) {
-      tocHTML += `<ul>`;
-      step7.customRecords.forEach((record, i) => {
-        tocHTML += `<li>${record.name || "Record " + (i + 1)}</li>`;
-      });
-      tocHTML += `</ul>`;
-    }
-    tocHTML += `</li>
-      
-      <!-- Section 7: Workflow -->
-      <li>7. Workflow</li>
-      
-      <!-- Section 8: Troubleshooting -->
-      <li>8. Troubleshooting</li>
-      
-      <!-- Section 9: Deployment Checklist -->
-      <li>9. Deployment Checklist</li>
-      
-      <!-- Section 10: Contact and License -->
-      <li>10. Contact and License</li>
-    </ul></div>`;
-    return tocHTML;
-  }
-
-  /*---------------------------
-    USER STORIES & FEATURES (Step 2)
-  ----------------------------*/
-  function generateUserStoriesFeaturesSection(data) {
-    const step2 = data["step-2"] || {};
-    return `
-      <h2 class="section-title">1. User Stories and Features</h2>
-      <section class="no-break">
-        <h3 class="subsection-title">User Stories</h3>
-        ${generateUserStoriesTable(step2["user-stories-body"])}
-      </section>
-      <section class="no-break">
-        <h3 class="subsection-title">Features</h3>
-        ${generateFeaturesTable(step2["features-body"])}
-      </section>
-      <section class="no-break">
-        <h3 class="subsection-title">Usage</h3>
-        ${generateUsageTable(step2["usage-body"])}
-      </section>
-    `;
-  }
-  function generateUserStoriesTable(stories) {
-    if (!stories || !stories.length)
-      return "<p>No user stories specified.</p>";
-    return `
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th>Story ID</th>
-            <th>Story Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${stories
-            .map(
-              (s) => `
+    function generateVersionHeader(step1) {
+      return `
+        <table class="table table-bordered">
+          <tbody>
             <tr>
-              <td>${s.story_id || ""}</td>
-              <td>${s.story_description || ""}</td>
+              <td width="20%"><strong>Customer Name</strong></td>
+              <td width="30%">${step1.client || ""}</td>
+              <td width="20%"><strong>Date</strong></td>
+              <td width="30%">${step1.date || getCurrentDateString()}</td>
             </tr>
-          `
-            )
-            .join("")}
-        </tbody>
-      </table>
-    `;
-  }
-  function generateFeaturesTable(features) {
-    if (!features || !features.length)
-      return "<p>No features specified.</p>";
-    return `
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th>Feature Title</th>
-            <th>Feature Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${features
-            .map(
-              (f) => `
             <tr>
-              <td>${f.feature_title || ""}</td>
-              <td>${f.feature_description || ""}</td>
+              <td><strong>Script Title</strong></td>
+              <td>${step1.project_name || ""}</td>
+              <td><strong>Prepared By</strong></td>
+              <td>${step1.developer || "C. Dela Cruz"}</td>
             </tr>
-          `
-            )
-            .join("")}
-        </tbody>
-      </table>
-    `;
-  }
-  function generateUsageTable(usages) {
-    if (!usages || !usages.length)
-      return "<p>No usage scenarios specified.</p>";
-    return `
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th>Usage Title</th>
-            <th>Usage Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${usages
-            .map(
-              (u) => `
+          </tbody>
+        </table>
+      `;
+    }
+    function generateVersionHistory(versions) {
+      if (!versions || !versions.length) return "";
+      return `
+        <h5>Version History</h5>
+        <table class="table table-bordered mt-4">
+          <thead>
             <tr>
-              <td>${u.usage_title || ""}</td>
-              <td>${u.usage_description || ""}</td>
+              <th>Version</th>
+              <th>Date</th>
+              <th>Change Summary</th>
             </tr>
-          `
-            )
-            .join("")}
-        </tbody>
-      </table>
-    `;
-  }
-
-  /*---------------------------
-    CONFIGURATION SECTION (Step 3 & Step 4)
-  ----------------------------*/
-  function generateConfigurationSection(data) {
-    const step3 = data["step-3"] || {};
-    const step4 = data["step-4"] || {};
-    return `
-      <section class="no-break">
-        <br>
-        <h2 class="section-title">2. Playbook & Configuration</h2>
+          </thead>
+          <tbody>
+            ${versions
+              .map(v => `
+              <tr>
+                <td>${v.version || ""}</td>
+                <td>${v.date || getCurrentDateString()}</td>
+                <td>${v.change_summary || ""}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      `;
+    }
+    // Step 2: Project Scope
+    function generateUserStoriesFeaturesSection(data, selections) {
+      const step2 = data["step-2"] || {};
+      let sectionHTML = `<h2 class="section-title">1. User Stories and Features</h2>`;
+      if (selections.step2_summary) {
+        sectionHTML += `
+          <div class="mb-4">
+            <h3 class="subsection-title">Summary</h3>
+            <table class="table table-bordered">
+              <tbody>
+                <tr>
+                  <td><strong>Story ID</strong></td>
+                  <td>${step2.story_id || "N/A"}</td>
+                </tr>
+                <tr>
+                  <td><strong>Story Description</strong></td>
+                  <td>${step2.story_description || "N/A"}</td>
+                </tr>
+                <tr>
+                  <td><strong>Feature Title</strong></td>
+                  <td>${step2.feature_title || "N/A"}</td>
+                </tr>
+                <tr>
+                  <td><strong>Feature Description</strong></td>
+                  <td>${step2.feature_description || "N/A"}</td>
+                </tr>
+                <tr>
+                  <td><strong>Usage Title</strong></td>
+                  <td>${step2.usage_title || "N/A"}</td>
+                </tr>
+                <tr>
+                  <td><strong>Usage Description</strong></td>
+                  <td>${step2.usage_description || "N/A"}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        `;
+      }
+      sectionHTML += `
+        <section class="no-break">
+          <h3 class="subsection-title">User Stories</h3>
+          ${generateUserStoriesTable(step2["user-stories-body"])}
+        </section>
+        <section class="no-break">
+          <h3 class="subsection-title">Features</h3>
+          ${generateFeaturesTable(step2["features-body"])}
+        </section>
+        <section class="no-break">
+          <h3 class="subsection-title">Usage</h3>
+          ${generateUsageTable(step2["usage-body"])}
+        </section>
+      `;
+      return sectionHTML;
+    }
+    function generateUserStoriesTable(stories) {
+      if (!stories || !stories.length)
+        return "<p>No user stories specified.</p>";
+      return `
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Story ID</th>
+              <th>Story Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${stories.map(s => `
+              <tr>
+                <td>${s.story_id || ""}</td>
+                <td>${s.story_description || ""}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      `;
+    }
+    function generateFeaturesTable(features) {
+      if (!features || !features.length)
+        return "<p>No features specified.</p>";
+      return `
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Feature Title</th>
+              <th>Feature Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${features.map(f => `
+              <tr>
+                <td>${f.feature_title || ""}</td>
+                <td>${f.feature_description || ""}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      `;
+    }
+    function generateUsageTable(usages) {
+      if (!usages || !usages.length)
+        return "<p>No usage scenarios specified.</p>";
+      return `
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Usage Title</th>
+              <th>Usage Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${usages.map(u => `
+              <tr>
+                <td>${u.usage_title || ""}</td>
+                <td>${u.usage_description || ""}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      `;
+    }
+    // Step 3 & 4: Playbook & Configuration
+    function generateConfigurationSection(data, selections) {
+      const step3 = data["step-3"] || {};
+      const step4 = data["step-4"] || {};
+      let sectionHTML = `<h2 class="section-title">2. Playbook & Configuration</h2>`;
+      if (selections.step3_extra && step3.rollback_description) {
+        sectionHTML += `
+          <div class="mb-4">
+            <h3 class="subsection-title">Rollback Description</h3>
+            <p>${step3.rollback_description}</p>
+          </div>
+        `;
+      }
+      sectionHTML += `
         <h3 class="subsection-title">Deployment Processes</h3>
         ${generateProcesses(step3.processes)}
         <h3 class="subsection-title">Rollback Steps</h3>
         ${generateRollbacks(step3.rollbacks)}
-        <h3 class="subsection-title">Environment IDs</h3>
-        ${generateEnvironmentIds(step4["environment-ids-body"])}
-      </section>
-    `;
-  }
-  function generateProcesses(processes) {
-    if (!processes || !processes.length)
-      return "<p>No deployment processes specified.</p>";
-    return processes
-      .map(
-        (proc) => `
-      <div class="mb-4">
-        <h4>${proc.name || "Process"}</h4>
-        <ol class="deployment-steps">
-          ${
-            proc.steps && proc.steps.length
-              ? proc.steps
-                  .map(
-                    (step) =>
-                      `<li>${step.step_description || "Step description not provided"}</li>`
-                  )
-                  .join("")
+      `;
+      if (selections.step4_extra) {
+        sectionHTML += generateStep4Extra(step4);
+      }
+      sectionHTML += generateEnvironmentIds(step4["environment-ids-body"]);
+      return sectionHTML;
+    }
+    function generateProcesses(processes) {
+      if (!processes || !processes.length)
+        return "<p>No deployment processes specified.</p>";
+      return processes.map(proc => `
+        <div class="mb-4">
+          <h4>${proc.name || "Process"}</h4>
+          <ol class="deployment-steps">
+            ${proc.steps && proc.steps.length
+              ? proc.steps.map(step => `<li>${step.step_description || "Step description not provided"}</li>`).join("")
               : "<li>No steps defined.</li>"
-          }
-        </ol>
-      </div>
-    `
-      )
-      .join("");
-  }
-  function generateRollbacks(rollbacks) {
-    if (!rollbacks || !rollbacks.length)
-      return "<p>No rollback steps specified.</p>";
-    return `
-      <ul>
-        ${rollbacks
-          .map(
-            (rb, index) => `<li><strong>Rollback ${index + 1}:</strong> ${rb.description || "No description provided."}</li>`
-          )
-          .join("")}
-      </ul>
-    `;
-  }
-  function generateEnvironmentIds(envIds) {
-    if (!envIds || !envIds.length)
-      return "<p>No environment IDs specified.</p>";
-    return `
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th>Environment Name</th>
-            <th>Notes</th>
-            <th>Sandbox Value</th>
-            <th>Production Value</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${envIds
-            .map(
-              (env) => `
+            }
+          </ol>
+        </div>
+      `).join("");
+    }
+    function generateRollbacks(rollbacks) {
+      if (!rollbacks || !rollbacks.length)
+        return "<p>No rollback steps specified.</p>";
+      return `
+        <ul>
+          ${rollbacks.map((rb, index) => `<li><strong>Rollback ${index + 1}:</strong> ${rb.description || "No description provided."}</li>`).join("")}
+        </ul>
+      `;
+    }
+    function generateStep4Extra(step4) {
+      return `
+        <div class="mb-4">
+          <h3 class="subsection-title">Configuration Summary</h3>
+          <table class="table table-bordered">
+            <tbody>
+              <tr>
+                <td><strong>Environment Name</strong></td>
+                <td>${step4.env_name || "N/A"}</td>
+              </tr>
+              <tr>
+                <td><strong>Environment Notes</strong></td>
+                <td>${step4.env_notes || "N/A"}</td>
+              </tr>
+              <tr>
+                <td><strong>Sandbox Value</strong></td>
+                <td>${step4.sandbox_value || "N/A"}</td>
+              </tr>
+              <tr>
+                <td><strong>Production Value</strong></td>
+                <td>${step4.production_value || "N/A"}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+    function generateEnvironmentIds(envIds) {
+      if (!envIds || !envIds.length)
+        return "<p>No environment IDs specified.</p>";
+      return `
+        <table class="table table-bordered">
+          <thead>
             <tr>
-              <td>${env.env_name || ""}</td>
-              <td>${env.env_notes || ""}</td>
-              <td>${env.sandbox_value || ""}</td>
-              <td>${env.production_value || ""}</td>
+              <th>Environment Name</th>
+              <th>Notes</th>
+              <th>Sandbox Value</th>
+              <th>Production Value</th>
             </tr>
-          `
-            )
-            .join("")}
-        </tbody>
-      </table>
-    `;
-  }
-
-  /*---------------------------
-    DEPENDENCIES SECTION (Step 5)
-  ----------------------------*/
-  function generateDependenciesSection(data) {
-    const step5 = data["step-5"] || {};
-    return `
-      <section class="no-break">
-        <br>
-        <h2 class="section-title">4. Dependencies</h2>
+          </thead>
+          <tbody>
+            ${envIds.map(env => `
+              <tr>
+                <td>${env.env_name || ""}</td>
+                <td>${env.env_notes || ""}</td>
+                <td>${env.sandbox_value || ""}</td>
+                <td>${env.production_value || ""}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      `;
+    }
+    // Step 5: Dependencies
+    function generateDependenciesSection(data, selections) {
+      const step5 = data["step-5"] || {};
+      let sectionHTML = `<h2 class="section-title">4. Dependencies</h2>`;
+      if (selections.step5_extra) {
+        sectionHTML += `
+          <div class="mb-4">
+            <h3 class="subsection-title">Dependency Summary</h3>
+            <table class="table table-bordered">
+              <tbody>
+                <tr>
+                  <td><strong>Dependency Name</strong></td>
+                  <td>${step5.dependency_name || "N/A"}</td>
+                </tr>
+                <tr>
+                  <td><strong>Dependency Version</strong></td>
+                  <td>${step5.dependency_version || "N/A"}</td>
+                </tr>
+                <tr>
+                  <td><strong>Dependency License</strong></td>
+                  <td>${step5.dependency_license || "N/A"}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        `;
+      }
+      sectionHTML += `
         <h3 class="subsection-title">Deployment Dependencies</h3>
         ${generateDeploymentDependencies(step5["deployment-dependencies-body"])}
         <h3 class="subsection-title">Development Dependencies</h3>
         ${generateDevDependencies(step5["dev-dependencies-body"])}
-      </section>
-    `;
-  }
-  function generateDeploymentDependencies(deps) {
-    if (!deps || !deps.length)
-      return "<p>No deployment dependencies specified.</p>";
-    return `
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th>Dependency Name</th>
-            <th>Version</th>
-            <th>License</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${deps
-            .map(
-              (d) => `
+      `;
+      return sectionHTML;
+    }
+    function generateDeploymentDependencies(deps) {
+      if (!deps || !deps.length)
+        return "<p>No deployment dependencies specified.</p>";
+      return `
+        <table class="table table-bordered">
+          <thead>
             <tr>
-              <td>${d.dependency_name || ""}</td>
-              <td>${d.dependency_version || ""}</td>
-              <td>${d.dependency_license || ""}</td>
+              <th>Dependency Name</th>
+              <th>Version</th>
+              <th>License</th>
             </tr>
-          `
-            )
-            .join("")}
-        </tbody>
-      </table>
-    `;
-  }
-  function generateDevDependencies(deps) {
-    if (!deps || !deps.length)
-      return "<p>No development dependencies specified.</p>";
-    return `
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th>Dependency Name</th>
-            <th>Version</th>
-            <th>License</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${deps
-            .map(
-              (d) => `
+          </thead>
+          <tbody>
+            ${deps.map(d => `
+              <tr>
+                <td>${d.dependency_name || ""}</td>
+                <td>${d.dependency_version || ""}</td>
+                <td>${d.dependency_license || ""}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      `;
+    }
+    function generateDevDependencies(deps) {
+      if (!deps || !deps.length)
+        return "<p>No development dependencies specified.</p>";
+      return `
+        <table class="table table-bordered">
+          <thead>
             <tr>
-              <td>${d.dependency_name || ""}</td>
-              <td>${d.dependency_version || ""}</td>
-              <td>${d.dependency_license || ""}</td>
+              <th>Dependency Name</th>
+              <th>Version</th>
+              <th>License</th>
             </tr>
-          `
-            )
-            .join("")}
-        </tbody>
-      </table>
-    `;
-  }
-
-  /*---------------------------
-    SCRIPT DETAILS SECTION (Step 6)
-  ----------------------------*/
-  function generateScriptDetailsSection(data) {
-    const step6 = data["step-6"] || {};
-    if (!step6.scripts || !step6.scripts.length)
-      return "<section><br><h2 class='section-title'>5. Script Details</h2><p>No scripts specified.</p></section>";
-    return `
-      <section><br>
-        <h2 class="section-title">5. Script Details</h2>
-        ${step6.scripts
-          .map(
-            (script, index) => `
-          ${index > 0 ? '<div class="page-break"></div>' : ''}
-          ${generateScriptDetail(script)}
-        `
-          )
-          .join("")}
-      </section>
-    `;
-  }
-  function generateScriptDetail(sc) {
-    const details = sc.details || {};
-    return `
-      <div class="script-details mb-5">
-        <div class="script-header mb-4">
-          <h4 class="mb-3 p-2 bg-primary text-white">${sc.name || ""}</h4>
-          <div class="row">
-            <div class="col-md-6">
-              <div class="info-box p-3 mb-3">
-                <div class="d-flex mb-2">
-                  <strong class="me-2">Script ID:</strong>
-                  <span>${details.id || ""}</span>
+          </thead>
+          <tbody>
+            ${deps.map(d => `
+              <tr>
+                <td>${d.dependency_name || ""}</td>
+                <td>${d.dependency_version || ""}</td>
+                <td>${d.dependency_license || ""}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      `;
+    }
+    // Step 6: Scripts
+    function generateScriptDetailsSection(data, selections) {
+      const step6 = data["step-6"] || {};
+      if (!step6.scripts || !step6.scripts.length)
+        return "<section><br><h2 class='section-title'>5. Script Details</h2><p>No scripts specified.</p></section>";
+      return `
+        <section><br>
+          <h2 class="section-title">5. Script Details</h2>
+          ${step6.scripts.map((script, index) => `
+            ${index > 0 ? insertPageBreak(selections) : ''}
+            ${generateScriptDetail(script, selections)}
+          `).join("")}
+        </section>
+      `;
+    }
+    function generateScriptDetail(sc, selections) {
+      const details = sc.details || {};
+      let scriptHTML = `
+        <div class="script-details mb-5">
+          <div class="script-header mb-4">
+            <h4 class="mb-3 p-2 bg-primary text-white">${sc.name || ""}</h4>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="info-box p-3 mb-3">
+                  <div class="d-flex mb-2"><strong class="me-2">Script ID:</strong><span>${details.id || ""}</span></div>
+                  <div class="d-flex mb-2"><strong class="me-2">Type:</strong><span>${details.type || ""}</span></div>
                 </div>
-                <div class="d-flex mb-2">
-                  <strong class="me-2">Type:</strong>
-                  <span>${details.type || ""}</span>
+              </div>
+              <div class="col-md-6">
+                <div class="info-box p-3 mb-3">
+                  <div class="d-flex mb-2"><strong class="me-2">File Name:</strong><span>${details.fileName || ""}</span></div>
+                  <div class="d-flex mb-2"><strong class="me-2">Location:</strong><span>${details.location || ""}</span></div>
                 </div>
               </div>
             </div>
-            <div class="col-md-6">
-              <div class="info-box p-3 mb-3">
-                <div class="d-flex mb-2">
-                  <strong class="me-2">File Name:</strong>
-                  <span>${details.fileName || ""}</span>
-                </div>
-                <div class="d-flex mb-2">
-                  <strong class="me-2">Location:</strong>
-                  <span>${details.location || ""}</span>
-                </div>
+            <div class="info-box p-3 mb-3">
+              <strong class="d-block mb-2">Description</strong>
+              <p class="mb-0">${details.description || ""}</p>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <ul class="list-unstyled">
+                  <li>Standards: ${sc.checklists.standards ? '<i class="fas fa-check-circle text-success"></i>' : '<i class="fas fa-times-circle text-danger"></i>'}</li>
+                  <li>Disclaimer: ${sc.checklists.disclaimer ? '<i class="fas fa-check-circle text-success"></i>' : '<i class="fas fa-times-circle text-danger"></i>'}</li>
+                </ul>
+              </div>
+              <div class="col-md-6">
+                <ul class="list-unstyled">
+                  <li>Expectations: ${sc.checklists.expectations ? '<i class="fas fa-check-circle text-success"></i>' : '<i class="fas fa-times-circle text-danger"></i>'}</li>
+                  <li>ESLint: ${sc.checklists.eslint ? '<i class="fas fa-check-circle text-success"></i>' : '<i class="fas fa-times-circle text-danger"></i>'}</li>
+                </ul>
               </div>
             </div>
           </div>
-          <div class="info-box p-3 mb-3">
-            <strong class="d-block mb-2">Description</strong>
-            <p class="mb-0">${details.description || ""}</p>
+          <div class="script-section mb-5">
+            ${generateParameters(sc.parameters)}
           </div>
-          <div class="row">
-            <div class="col-md-6">
-              <ul class="list-unstyled">
-                <li>Standards: ${sc.checklists.standards ? '<i class="fas fa-check-circle text-success"></i>' : '<i class="fas fa-times-circle text-danger"></i>'}</li>
-                <li>Disclaimer: ${sc.checklists.disclaimer ? '<i class="fas fa-check-circle text-success"></i>' : '<i class="fas fa-times-circle text-danger"></i>'}</li>
-              </ul>
+          <div class="script-section mb-5">
+            ${generateEntryPoints(sc.entryPoints)}
+          </div>
+          <div class="script-section mb-5">
+            ${generateDeploymentRecords(sc.deploymentRecords)}
+          </div>
+          <div class="script-section mb-5">
+            ${generateLibraries(sc.libraries)}
+          </div>
+          <div class="script-section mb-5">
+            ${generateUnitTests(sc.unitTests)}
+          </div>
+      `;
+      if (selections.step6_versionHistory && sc.versionHistory) {
+        scriptHTML += `
+          <div class="script-section mb-5">
+            <h5>Version History</h5>
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Version</th>
+                  <th>Changes</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${sc.versionHistory.map(vh => `
+                  <tr>
+                    <td>${vh.version || ""}</td>
+                    <td>${vh.changes || ""}</td>
+                  </tr>
+                `).join("")}
+              </tbody>
+            </table>
+          </div>
+        `;
+      }
+      scriptHTML += `</div>`;
+      return scriptHTML;
+    }
+    // Updated generateParameters to display parameter value
+    function generateParameters(parameters) {
+      if (!parameters || !parameters.length) return "";
+      return `
+        <h5>Parameters</h5>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${parameters.map(p => `
+              <tr>
+                <td>${p.parameter_name || ""}</td>
+                <td>${p.parameter_value || ""}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      `;
+    }
+    function generateEntryPoints(entryPoints) {
+      if (!entryPoints || !entryPoints.length) return "";
+      return `
+        <h5>Entry Points</h5>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Entry Point Name</th>
+              <th>Function Name</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${entryPoints.map(ep => `
+              <tr>
+                <td>${ep.entry_point_name || ""}</td>
+                <td>${ep.function_name || ""}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      `;
+    }
+    function generateDeploymentRecords(records) {
+      if (!records || !records.length) return "";
+      return `
+        <h5>Deployment Records</h5>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Applied To</th>
+              <th>Deployment ID</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${records.map(r => `
+              <tr>
+                <td>${r.applied_to || ""}</td>
+                <td>${r.deployment_id || ""}</td>
+                <td>${r.deployment_notes || ""}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      `;
+    }
+    // Updated generateLibraries to use library_name and purpose
+    function generateLibraries(libraries) {
+      if (!libraries || !libraries.length) return "";
+      return `
+        <h5>Libraries</h5>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Library Name</th>
+              <th>Purpose</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${libraries.map(lib => `
+              <tr>
+                <td>${lib.library_name || ""}</td>
+                <td>${lib.purpose || ""}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      `;
+    }
+    function generateUnitTests(tests) {
+      if (!tests || !tests.length) return "";
+      return `
+        <h5>Unit Tests</h5>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Test Description</th>
+              <th>Test Result</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${tests.map(t => `
+              <tr>
+                <td>${t.test_description || ""}</td>
+                <td>${t.test_result || ""}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      `;
+    }
+    // Step 7: Custom Records
+    function generateCustomRecordsSectionNew(data, selections) {
+      const step7 = data["step-7"] || {};
+      if (!step7.customRecords || !step7.customRecords.length)
+        return "<section class='no-break'><h2 class='section-title'>6. Custom Records</h2><p>No custom records specified.</p></section>";
+      return `
+        <section class="no-break"><br>
+          <h2 class="section-title">6. Custom Records</h2>
+          ${step7.customRecords.map(record => `
+            <div class="script-details mb-4">
+              <h4 class="mb-3 p-2 bg-primary text-white">${record.name || ""}</h4>
+              ${selections.step7_extra && record.type ? `<p><strong>Record Type:</strong> ${record.type}</p>` : ""}
+              <dl>
+                <dt>Record ID</dt>
+                <dd>${record.id || ""}</dd>
+                <dt>Description</dt>
+                <dd>${record.description || ""}</dd>
+              </dl>
+              ${generateRecordFields(record.fields)}
             </div>
-            <div class="col-md-6">
-              <ul class="list-unstyled">
-                <li>Expectations: ${sc.checklists.expectations ? '<i class="fas fa-check-circle text-success"></i>' : '<i class="fas fa-times-circle text-danger"></i>'}</li>
-                <li>ESLint: ${sc.checklists.eslint ? '<i class="fas fa-check-circle text-success"></i>' : '<i class="fas fa-times-circle text-danger"></i>'}</li>
-              </ul>
-            </div>
+          `).join("")}
+        </section>
+      `;
+    }
+    function generateRecordFields(fields) {
+      if (!fields || !fields.length) return "";
+      return `
+        <h5>Fields</h5>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Field Name</th>
+              <th>Field ID</th>
+              <th>Field Type</th>
+              <th>Field Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${fields.map(f => `
+              <tr>
+                <td>${f.field_name || ""}</td>
+                <td>${f.field_id || ""}</td>
+                <td>${f.field_type || ""}</td>
+                <td>${f.field_description || ""}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      `;
+    }
+    // Step 8: Workflow
+    function generateWorkflowsSection(data, selections) {
+      const step8 = data["step-8"] || {};
+      let wfHTML = `<h2 class="section-title">7. Workflow</h2>`;
+      if (selections.step8_extra) {
+        wfHTML += `
+          <div class="mb-4">
+            <h3 class="subsection-title">Workflow Summary</h3>
+            <table class="table table-bordered">
+              <tbody>
+                <tr>
+                  <td><strong>Workflow Details</strong></td>
+                  <td>${step8.workflow_details || "N/A"}</td>
+                </tr>
+                <tr>
+                  <td><strong>Action</strong></td>
+                  <td>${step8.action || "N/A"}</td>
+                </tr>
+                <tr>
+                  <td><strong>State</strong></td>
+                  <td>${step8.state || "N/A"}</td>
+                </tr>
+                <tr>
+                  <td><strong>Details</strong></td>
+                  <td>${step8.details || "N/A"}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-        </div>
-        <div class="script-section mb-5">
-          ${generateParameters(sc.parameters)}
-        </div>
-        <div class="script-section mb-5">
-          ${generateEntryPoints(sc.entryPoints)}
-        </div>
-        <div class="script-section mb-5">
-          ${generateDeploymentRecords(sc.deploymentRecords)}
-        </div>
-        <div class="script-section mb-5">
-          ${generateLibraries(sc.libraries)}
-        </div>
-        <div class="script-section mb-5">
-          ${generateUnitTests(sc.unitTests)}
-        </div>
-      </div>
-    `;
-  }
-  function generateParameters(parameters) {
-    if (!parameters || !parameters.length) return "";
-    return `
-      <h5>Parameters</h5>
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>ID</th>
-            <th>Type</th>
-            <th>Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${parameters
-            .map(
-              (p) => `
-            <tr>
-              <td>${p.parameter_name || ""}</td>
-              <td>${p.parameter_id || ""}</td>
-              <td>${p.parameter_type || ""}</td>
-              <td>${p.parameter_description || ""}</td>
-            </tr>
-          `
-            )
-            .join("")}
-        </tbody>
-      </table>
-    `;
-  }
-  function generateEntryPoints(entryPoints) {
-    if (!entryPoints || !entryPoints.length) return "";
-    return `
-      <h5>Entry Points</h5>
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th>Entry Point Name</th>
-            <th>Function Name</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${entryPoints
-            .map(
-              (ep) => `
-            <tr>
-              <td>${ep.entry_point_name || ""}</td>
-              <td>${ep.function_name || ""}</td>
-            </tr>
-          `
-            )
-            .join("")}
-        </tbody>
-      </table>
-    `;
-  }
-  function generateDeploymentRecords(records) {
-    if (!records || !records.length) return "";
-    return `
-      <h5>Deployment Records</h5>
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th>Applied To</th>
-            <th>Deployment ID</th>
-            <th>Notes</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${records
-            .map(
-              (r) => `
-            <tr>
-              <td>${r.applied_to || ""}</td>
-              <td>${r.deployment_id || ""}</td>
-              <td>${r.deployment_notes || ""}</td>
-            </tr>
-          `
-            )
-            .join("")}
-        </tbody>
-      </table>
-    `;
-  }
-  function generateLibraries(libraries) {
-    if (!libraries || !libraries.length) return "";
-    return `
-      <h5>Libraries</h5>
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th>Library Name</th>
-            <th>File Name</th>
-            <th>Location</th>
-            <th>Purpose</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${libraries
-            .map(
-              (lib) => `
-            <tr>
-              <td>${lib.library_name || ""}</td>
-              <td>${lib.file_name || ""}</td>
-              <td>${lib.location || ""}</td>
-              <td>${lib.purpose || ""}</td>
-            </tr>
-          `
-            )
-            .join("")}
-        </tbody>
-      </table>
-    `;
-  }
-  function generateUnitTests(tests) {
-    if (!tests || !tests.length) return "";
-    return `
-      <h5>Unit Tests</h5>
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th>Test Description</th>
-            <th>Test Result</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${tests
-            .map(
-              (t) => `
-            <tr>
-              <td>${t.test_description || ""}</td>
-              <td>${t.test_result || ""}</td>
-            </tr>
-          `
-            )
-            .join("")}
-        </tbody>
-      </table>
-    `;
-  }
-
-  /*---------------------------
-    CUSTOM RECORDS SECTION (Step 7)
-  ----------------------------*/
-  function generateCustomRecordsSectionNew(data) {
-    const step7 = data["step-7"] || {};
-    if (!step7.customRecords || !step7.customRecords.length)
-      return "<section class='no-break'><h2 class='section-title'>6. Custom Records</h2><p>No custom records specified.</p></section>";
-    return `
-      <section class="no-break"><br>
-        <h2 class="section-title">6. Custom Records</h2>
-        ${step7.customRecords
-          .map(
-            (record) => `
-          <div class="script-details mb-4">
-            <h4 class="mb-3 p-2 bg-primary text-white">${record.name || ""}</h4>
-            <dl>
-              <dt>Record ID</dt>
-              <dd>${record.id || ""}</dd>
-              <dt>Description</dt>
-              <dd>${record.description || ""}</dd>
-            </dl>
-            ${generateRecordFields(record.fields)}
-          </div>
-        `
-          )
-          .join("")}
-      </section>
-    `;
-  }
-  function generateRecordFields(fields) {
-    if (!fields || !fields.length) return "";
-    return `
-      <h5>Fields</h5>
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th>Field Name</th>
-            <th>Field ID</th>
-            <th>Field Type</th>
-            <th>Field Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${fields
-            .map(
-              (f) => `
-            <tr>
-              <td>${f.field_name || ""}</td>
-              <td>${f.field_id || ""}</td>
-              <td>${f.field_type || ""}</td>
-              <td>${f.field_description || ""}</td>
-            </tr>
-          `
-            )
-            .join("")}
-        </tbody>
-      </table>
-    `;
-  }
-
-  /*---------------------------
-    WORKFLOW SECTION (Step 8)
-  ----------------------------*/
-  function generateWorkflowsSection(data) {
-    const step8 = data["step-8"] || {};
-    if (!step8.workflows || !step8.workflows.length)
-      return "<section class='no-break'><h2 class='section-title'>7. Workflow</h2><p>No workflows specified.</p></section>";
-    return `
-      <section class="no-break"><br>
-        <h2 class="section-title">7. Workflow</h2>
-        ${step8.workflows
-          .map(
-            (wf, index) => `
+        `;
+      }
+      wfHTML += step8.workflows && step8.workflows.length
+        ? step8.workflows.map((wf, index) => `
           <div class="script-details mb-4">
             <h4 class="mb-3 p-2 bg-primary text-white">Workflow ${index + 1}: ${wf.details || ""}</h4>
             ${generateWorkflowActions(wf.actions)}
           </div>
-        `
-          )
-          .join("")}
-      </section>
-    `;
-  }
-  function generateWorkflowActions(actions) {
-    if (!actions || !actions.length)
-      return "<p>No workflow actions defined.</p>";
-    return `
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th>Action</th>
-            <th>State</th>
-            <th>Details</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${actions
-            .map(
-              (a) => `
-            <tr>
-              <td>${a.action || ""}</td>
-              <td>${a.state || ""}</td>
-              <td>${a.details || ""}</td>
-            </tr>
-          `
-            )
-            .join("")}
-        </tbody>
-      </table>
-    `;
-  }
-
-  /*---------------------------
-    TROUBLESHOOTING SECTION (New - from Step 10)
-  ----------------------------*/
-  function generateTroubleshootingSection(data) {
-    const step10 = data["step-10"] || {};
-    if (!step10["troubleshooting-body"] || !step10["troubleshooting-body"].length)
-      return "<section class='no-break'><h2 class='section-title'>8. Troubleshooting</h2><p>No troubleshooting issues specified.</p></section>";
-    return `
-      <section class="no-break"><br>
-        <h2 class="section-title">8. Troubleshooting</h2>
+        `).join("")
+        : "<p>No workflows specified.</p>";
+      return wfHTML;
+    }
+    function generateWorkflowActions(actions) {
+      if (!actions || !actions.length)
+        return "<p>No workflow actions defined.</p>";
+      return `
         <table class="table table-bordered">
           <thead>
             <tr>
-              <th>Issue</th>
-              <th>Cause</th>
-              <th>Resolution</th>
+              <th>Action</th>
+              <th>State</th>
+              <th>Details</th>
             </tr>
           </thead>
           <tbody>
-            ${step10["troubleshooting-body"]
-              .map(
-                (issue) => `
+            ${actions.map(a => `
               <tr>
-                <td>${issue.error_issue || ""}</td>
-                <td>${issue.cause || ""}</td>
-                <td>${issue.resolution || ""}</td>
+                <td>${a.action || ""}</td>
+                <td>${a.state || ""}</td>
+                <td>${a.details || ""}</td>
               </tr>
-            `
-              )
-              .join("")}
+            `).join("")}
           </tbody>
         </table>
-      </section>
-    `;
-  }
-
-  /*---------------------------
-    DEPLOYMENT CHECKLIST (Now from Step 11)
-  ----------------------------*/
-  function generateChecklistSection(data) {
-    const step11 = data["step-11"] || {};
-    return `
-      <section class="no-break"><br>
+      `;
+    }
+    // Step 9: Custom Fields, Templates, Saved Searches
+    function generateCustomFieldsSection(data, selections) {
+      const step9 = data["step-9"] || {};
+      let fieldsHTML = `<h2 class="section-title">Custom Fields</h2>`;
+      if (selections.step9_fields_extra) {
+        fieldsHTML += `
+          <div class="mb-4">
+            <h3 class="subsection-title">Custom Fields Summary</h3>
+            <table class="table table-bordered">
+              <tbody>
+                <tr>
+                  <td><strong>Field Name</strong></td>
+                  <td>${step9.field_name || "N/A"}</td>
+                </tr>
+                <tr>
+                  <td><strong>Field ID</strong></td>
+                  <td>${step9.field_id || "N/A"}</td>
+                </tr>
+                <tr>
+                  <td><strong>Field Description</strong></td>
+                  <td>${step9.field_description || "N/A"}</td>
+                </tr>
+                <tr>
+                  <td><strong>Field Type</strong></td>
+                  <td>${step9.field_type || "N/A"}</td>
+                </tr>
+                <tr>
+                  <td><strong>Applies To</strong></td>
+                  <td>${step9.applies_to || "N/A"}</td>
+                </tr>
+                <tr>
+                  <td><strong>Searchable</strong></td>
+                  <td>${step9.searchable || "N/A"}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        `;
+      }
+      fieldsHTML += step9["custom-fields-body"] && step9["custom-fields-body"].length
+        ? generateFieldsTable(step9["custom-fields-body"])
+        : "<p>No custom fields specified.</p>";
+      return fieldsHTML;
+    }
+    function generateFieldsTable(fields) {
+      return `
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Field Name</th>
+              <th>Field ID</th>
+              <th>Description</th>
+              <th>Type</th>
+              <th>Applies To</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${fields.map(field => `
+              <tr>
+                <td>${field.field_name || ""}</td>
+                <td>${field.field_id || ""}</td>
+                <td>${field.field_description || ""}</td>
+                <td>${field.field_type || ""}</td>
+                <td>${field.applies_to || ""}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      `;
+    }
+    function generateSavedSearchesSection(data, selections) {
+      const step9 = data["step-9"] || {};
+      let searchesHTML = `<h2 class="section-title">Saved Searches</h2>`;
+      if (selections.step9_searches_extra) {
+        searchesHTML += `
+          <div class="mb-4">
+            <h3 class="subsection-title">Saved Searches Summary</h3>
+            <table class="table table-bordered">
+              <tbody>
+                <tr>
+                  <td><strong>Search Name</strong></td>
+                  <td>${step9.search_name || "N/A"}</td>
+                </tr>
+                <tr>
+                  <td><strong>Search ID</strong></td>
+                  <td>${step9.search_id || "N/A"}</td>
+                </tr>
+                <tr>
+                  <td><strong>Description</strong></td>
+                  <td>${step9.search_description || "N/A"}</td>
+                </tr>
+                <tr>
+                  <td><strong>Criteria</strong></td>
+                  <td>${step9.search_criteria || "N/A"}</td>
+                </tr>
+                <tr>
+                  <td><strong>Results</strong></td>
+                  <td>${step9.search_results || "N/A"}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        `;
+      }
+      searchesHTML += step9["saved-searches-body"] && step9["saved-searches-body"].length
+        ? generateSearchesTable(step9["saved-searches-body"])
+        : "<p>No saved searches specified.</p>";
+      return searchesHTML;
+    }
+    function generateSearchesTable(searches) {
+      return `
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Search Name</th>
+              <th>Search ID</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${searches.map(search => `
+              <tr>
+                <td>${search.search_name || ""}</td>
+                <td>${search.search_id || ""}</td>
+                <td>${search.search_description || ""}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      `;
+    }
+    function generateTemplatesSection(data, selections) {
+      const step9 = data["step-9"] || {};
+      let tmplHTML = `<h2 class="section-title">Templates</h2>`;
+      if (selections.step9_templates_extra) {
+        tmplHTML += `
+          <div class="mb-4">
+            <h3 class="subsection-title">Templates Summary</h3>
+            <table class="table table-bordered">
+              <tbody>
+                <tr>
+                  <td><strong>Template Name</strong></td>
+                  <td>${step9.template_name || "N/A"}</td>
+                </tr>
+                <tr>
+                  <td><strong>Template ID</strong></td>
+                  <td>${step9.template_id || "N/A"}</td>
+                </tr>
+                <tr>
+                  <td><strong>Template Type</strong></td>
+                  <td>${step9.template_type || "N/A"}</td>
+                </tr>
+                <tr>
+                  <td><strong>Description</strong></td>
+                  <td>${step9.template_description || "N/A"}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        `;
+      }
+      tmplHTML += step9["templates-body"] && step9["templates-body"].length
+        ? generateTemplatesTable(step9["templates-body"])
+        : "<p>No templates specified.</p>";
+      return tmplHTML;
+    }
+    function generateTemplatesTable(templates) {
+      return `
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Template Name</th>
+              <th>Template ID</th>
+              <th>Description</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${templates.map(t => `
+              <tr>
+                <td>${t.template_name || ""}</td>
+                <td>${t.template_id || ""}</td>
+                <td>${t.template_description || ""}</td>
+                <td>${t.template_type || ""}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      `;
+    }
+    // Step 10: Troubleshooting
+    function generateTroubleshootingSection(data, selections) {
+      const step10 = data["step-10"] || {};
+      let trHTML = `<h2 class="section-title">8. Troubleshooting</h2>`;
+      if (selections.step10_extra) {
+        trHTML += `
+          <div class="mb-4">
+            <h3 class="subsection-title">Troubleshooting Summary</h3>
+            <table class="table table-bordered">
+              <tbody>
+                <tr>
+                  <td><strong>Error/Issue</strong></td>
+                  <td>${step10.error_issue || "N/A"}</td>
+                </tr>
+                <tr>
+                  <td><strong>Cause</strong></td>
+                  <td>${step10.cause || "N/A"}</td>
+                </tr>
+                <tr>
+                  <td><strong>Resolution</strong></td>
+                  <td>${step10.resolution || "N/A"}</td>
+                </tr>
+                <tr>
+                  <td><strong>Prevention</strong></td>
+                  <td>${step10.prevention || "N/A"}</td>
+                </tr>
+                <tr>
+                  <td><strong>Impact</strong></td>
+                  <td>${step10.impact || "N/A"}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        `;
+      }
+      trHTML += step10["troubleshooting-body"] && step10["troubleshooting-body"].length
+        ? `
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Issue</th>
+                <th>Cause</th>
+                <th>Resolution</th>
+                <th>Prevention</th>
+                <th>Impact</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${step10["troubleshooting-body"].map(issue => `
+                <tr>
+                  <td>${issue.error_issue || ""}</td>
+                  <td>${issue.cause || ""}</td>
+                  <td>${issue.resolution || ""}</td>
+                  <td>${issue.prevention || ""}</td>
+                  <td>${issue.impact || ""}</td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        `
+        : "<p>No troubleshooting issues specified.</p>";
+      return trHTML;
+    }
+    // Step 11: Deployment Checklist
+    function generateChecklistSection(data) {
+      const step11 = data["step-11"] || {};
+      return `
         <h2 class="section-title">9. Deployment Checklist</h2>
         <table class="table table-bordered">
           <thead>
@@ -1210,18 +1547,52 @@
             </tr>
           </tbody>
         </table>
-      </section>
-    `;
-  }
-
-  /*---------------------------
-    CONTACT & LICENSE SECTION (Now from Step 12)
-  ----------------------------*/
-  function generateContactsSection(data) {
-    const step12 = data["step-12"] || {};
-    return `
-      <section class="no-break"><br>
-        <h2 class="section-title">10. Contact and License</h2>
+      `;
+    }
+    // Step 12: Contact and License
+    function generateContactsSection(data, selections) {
+      const step12 = data["step-12"] || {};
+      let contactHTML = `<h2 class="section-title">10. Contact and License</h2>`;
+      if (selections.step12_extra) {
+        contactHTML += `
+          <div class="mb-4">
+            <h3 class="subsection-title">Contact Summary</h3>
+            <table class="table table-bordered">
+              <tbody>
+                <tr>
+                  <td><strong>Developer Name</strong></td>
+                  <td>${step12.developer_name || "N/A"}</td>
+                </tr>
+                <tr>
+                  <td><strong>Developer Note</strong></td>
+                  <td>${step12.developer_note || "N/A"}</td>
+                </tr>
+                <tr>
+                  <td><strong>Developer Role</strong></td>
+                  <td>${step12.developer_role || "N/A"}</td>
+                </tr>
+                <tr>
+                  <td><strong>Responsibility</strong></td>
+                  <td>${step12.responsibility || "N/A"}</td>
+                </tr>
+                <tr>
+                  <td><strong>Functional Name</strong></td>
+                  <td>${step12.functional_name || "N/A"}</td>
+                </tr>
+                <tr>
+                  <td><strong>Functional Note</strong></td>
+                  <td>${step12.functional_note || "N/A"}</td>
+                </tr>
+                <tr>
+                  <td><strong>Functional Role</strong></td>
+                  <td>${step12.functional_role || "N/A"}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        `;
+      }
+      contactHTML += `
         <h3 class="subsection-title">Developers</h3>
         ${generateDevelopersTable(step12["developers-body"])}
         <h3 class="subsection-title">Functional Contacts</h3>
@@ -1232,76 +1603,118 @@
             <dd>${step12.license || ""}</dd>
           </dl>
         </div>
-      </section>
-    `;
-  }
-  function generateDevelopersTable(developers) {
-    if (!developers || !developers.length)
-      return "<p>No developer information available.</p>";
-    return `
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th>Developer Name</th>
-            <th>Email</th>
-            <th>Note</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${developers
-            .map(
-              (dev) => `
+      `;
+      return contactHTML;
+    }
+    function generateFunctionalTable(functionals) {
+      if (!functionals || !functionals.length)
+        return "<p>No functional contact information available.</p>";
+      return `
+        <table class="table table-bordered">
+          <thead>
             <tr>
-              <td>${dev.developer_name || ""}</td>
-              <td>${dev.developer_email || ""}</td>
-              <td>${dev.developer_note || ""}</td>
+              <th>Functional Name</th>
+              <th>Email</th>
+              <th>Note</th>
             </tr>
-          `
-            )
-            .join("")}
-        </tbody>
-      </table>
-    `;
-  }
-  function generateFunctionalTable(functionals) {
-    if (!functionals || !functionals.length)
-      return "<p>No functional contact information available.</p>";
-    return `
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th>Functional Name</th>
-            <th>Email</th>
-            <th>Note</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${functionals
-            .map(
-              (func) => `
-            <tr>
-              <td>${func.functional_name || ""}</td>
-              <td>${func.functional_email || ""}</td>
-              <td>${func.functional_note || ""}</td>
-            </tr>
-          `
-            )
-            .join("")}
-        </tbody>
-      </table>
-    `;
-  }
-  </script>
+          </thead>
+          <tbody>
+            ${functionals.map(func => `
+              <tr>
+                <td>${func.functional_name || ""}</td>
+                <td>${func.functional_email || ""}</td>
+                <td>${func.functional_note || ""}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      `;
+    }
+    // Step 13: Components
+    function generateComponentsSection(data, selections) {
+      const step13 = data["step-13"] || {};
+      let compHTML = `<h2 class="section-title">Components</h2>`;
+      if (selections.step13_extra) {
+        compHTML += `
+          <div class="mb-4">
+            <h3 class="subsection-title">Components Summary</h3>
+            <table class="table table-bordered">
+              <tbody>
+                <tr>
+                  <td><strong>Component Type</strong></td>
+                  <td>${step13.component_type || "N/A"}</td>
+                </tr>
+                <tr>
+                  <td><strong>Component Name</strong></td>
+                  <td>${step13.component_name || "N/A"}</td>
+                </tr>
+                <tr>
+                  <td><strong>Deployment Date</strong></td>
+                  <td>${step13.deployment_date || "N/A"}</td>
+                </tr>
+                <tr>
+                  <td><strong>Documentation Version</strong></td>
+                  <td>${step13.documentation_version || "N/A"}</td>
+                </tr>
+                <tr>
+                  <td><strong>Status</strong></td>
+                  <td>${step13.status || "N/A"}</td>
+                </tr>
+                <tr>
+                  <td><strong>Change Description</strong></td>
+                  <td>${step13.change_description || "N/A"}</td>
+                </tr>
+                <tr>
+                  <td><strong>Installation Method</strong></td>
+                  <td>${step13.installation_method || "N/A"}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        `;
+      }
+      compHTML += step13["components-body"] && step13["components-body"].length
+        ? `
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Component Type</th>
+                <th>Component Name</th>
+                <th>Deployment Date</th>
+                <th>Documentation Version</th>
+                <th>Status</th>
+                <th>Change Description</th>
+                <th>Installation Method</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${step13["components-body"].map(comp => `
+                <tr>
+                  <td>${comp.component_type || ""}</td>
+                  <td>${comp.component_name || ""}</td>
+                  <td>${comp.deployment_date || ""}</td>
+                  <td>${comp.documentation_version || ""}</td>
+                  <td>${comp.status || ""}</td>
+                  <td>${comp.change_description || ""}</td>
+                  <td>${comp.installation_method || ""}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        `
+        : "<p>No components specified.</p>";
+      return compHTML;
+    }
 
-  <script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-  ></script>
-  <script src="structure.js"></script>
-  <script src="structure_loader.js"></script>
-  <script src="json_handler.js"></script>
-  <script src="ui_interactions.js"></script>
-  <script src="form_validation.js"></script>
-  <script src="ui_tooltips.js"></script>
-  <script src="event_handlers.js"></script>
+    function displayDocument(data) {
+      try {
+        docContent.innerHTML = generateDocument(data);
+      } catch (e) {
+        console.error("Error generating document:", e);
+        alert("An error occurred while generating the document. Please check the console for details.");
+      }
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -1,0 +1,396 @@
+{
+  "step-1": {
+    "project_name": "Comprehensive Deployment Manifest",
+    "client": "AppWrap Enterprise",
+    "developer": "Chino Dela Cruz", 
+    "development_environment": "Sandbox_01",
+    "version": "v1.0.0",
+    "date": "2025-02-13",
+    "change_summary": "Updated Project",
+    "version-history-body": [
+      {
+        "version": "v0.9.0",
+        "date": "2025-02-01",
+        "change_summary": "Initial Version"
+      },
+      {
+        "version": "v1.0.0",
+        "date": "2025-02-13",
+        "change_summary": "Updated Project"
+      }
+    ]
+  },
+  "step-2": {
+    "story_id": "Create a Deployment Process Wizard",
+    "story_description": "As a user, I need a clear deployment process so I can execute tasks accurately.",
+    "feature_title": "Automated Process",
+    "feature_description": "Streamlines deployment tasks with automation.",
+    "usage_title": "Standard Usage",
+    "usage_description": "Deploy using the standard process flow.",
+    "user-stories-body": [
+      {
+        "story_id": "Create a Deployment Process Wizard",
+        "story_description": "As a user, I need a clear deployment process so I can execute tasks accurately."
+      }
+    ],
+    "features-body": [
+      {
+        "feature_title": "Automated Process",
+        "feature_description": "Streamlines deployment tasks with automation."
+      }
+    ],
+    "usage-body": [
+      {
+        "usage_title": "Standard Usage",
+        "usage_description": "Deploy using the standard process flow."
+      }
+    ]
+  },
+  "step-3": {
+    "description": "Set Scripts to Inactive",
+    "installation_image": "deployment.png",
+    "installationProcess": [
+      {
+        "description": "npm install",
+        "installation_image": ""
+      },
+      {
+        "description": "Install Bundle 12345",
+        "installation_image": "bundle_components.jpg"
+      }
+    ],
+    "rollbackProcess": [
+      {
+        "description": "Set Scripts to Inactive",
+        "installation_image": "deployment.png"
+      }
+    ]
+  },
+  "step-4": {
+    "description": "Configure Custom Record",
+    "installation_image": "Custom Record Default Values.png",
+    "env_name": "file.txt",
+    "env_notes": "Used as source of fields",
+    "sandbox_value": "File ID: 23453",
+    "production_value": "File ID: 45346",
+    "configurationProcess": [
+      {
+        "description": "Configure Script Parameters",
+        "installation_image": "parameter.png"
+      },
+      {
+        "description": "Configure Custom Record",
+        "installation_image": "Custom Record Default Values.png"
+      }
+    ],
+    "environment-ids-body": [
+      {
+        "env_name": "file.txt",
+        "env_notes": "Used as source of fields",
+        "sandbox_value": "File ID: 23453",
+        "production_value": "File ID: 45346"
+      }
+    ]
+  },
+  "step-5": {
+    "dependency_name": "SuiteCloud Unit Testing",
+    "dependency_version": "v1.4.1",
+    "dependency_license": "UPL, Version 1.0",
+    "deployment-dependencies-body": [
+      {
+        "dependency_name": "AppWrap_UtilityBelt",
+        "dependency_version": "v1.0",
+        "dependency_license": "Copyright 2023 AppWrap, Inc."
+      }
+    ],
+    "dev-dependencies-body": [
+      {
+        "dependency_name": "Node.js",
+        "dependency_version": "Latest Stable",
+        "dependency_license": "MIT License"
+      },
+      {
+        "dependency_name": "Jest",
+        "dependency_version": "v27.3.1",
+        "dependency_license": "MIT License"
+      },
+      {
+        "dependency_name": "SuiteCloud Unit Testing",
+        "dependency_version": "v1.4.1",
+        "dependency_license": "UPL, Version 1.0"
+      }
+    ]
+  },
+  "step-6": {
+    "scripts": [
+      {
+        "name": "AppWrap - Deployment Wizard UE",
+        "details": {
+          "id": "customscript_aw_depwiz_ue",
+          "type": "User Event",
+          "description": "Sample Script Description",
+          "fileName": "aw_depwiz_ue.js",
+          "location": "/SuiteScript/AppWrap/Wizard/"
+        },
+        "parameters": [
+          {
+            "parameter_name": "File ID",
+            "parameter_id": "_aw_dep_fileid",
+            "parameter_type": "integer",
+            "parameter_description": "Source File"
+          }
+        ],
+        "entryPoints": [
+          {
+            "entry_point_name": "beforeLoad",
+            "function_name": "initDeployment"
+          }
+        ],
+        "deploymentRecords": [
+          {
+            "applied_to": "Journal Entry",
+            "deployment_id": "customdeploy1",
+            "deployment_notes": "Deployed on JE forms."
+          }
+        ],
+        "versionHistory": [
+          {
+            "version": "1.0.0",
+            "date": "2025-02-04",
+            "change_summary": "Initial Script",
+            "commit_id": "None"
+          }
+        ],
+        "libraries": [
+          {
+            "library_name": "AppWrap_UtilityBelt",
+            "file_name": "AppWrap_UtilityBelt.js",
+            "location": "/SuiteScript/AppWrap/lib/",
+            "purpose": "Util"
+          }
+        ],
+        "unitTests": [],
+        "checklists": {
+          "standards": true,
+          "disclaimer": true,
+          "expectations": true,
+          "eslint": true
+        }
+      }
+    ]
+  },
+  "step-7": {
+    "customRecords": [
+      {
+        "name": "Wizard Config",
+        "id": "customrecord_depwizard",
+        "type": "customrecord_depwizard",
+        "description": "Primary configuration record for deployment.",
+        "fields": [
+          {
+            "field_name": "Name",
+            "field_id": "name",
+            "field_type": "Text",
+            "field_description": "Name"
+          },
+          {
+            "field_name": "Enable Wizard",
+            "field_id": "custfield_enable_wiz",
+            "field_type": "Checkbox",
+            "field_description": "Toggle Wizard"
+          }
+        ]
+      }
+    ]
+  },
+  "step-8": {
+    "workflow_details": "Deployment Wizard",
+    "action": "Add State 1",
+    "state": "custstate1",
+    "details": "Initial State that contains WFAs",
+    "table-data": [
+      {
+        "action": "Add State 1",
+        "state": "custstate1",
+        "details": "Initial State that contains WFAs"
+      }
+    ],
+    "workflows": [
+      {
+        "details": "Deployment Wizard",
+        "actions": [
+          {
+            "action": "Add State 1",
+            "state": "custstate1",
+            "details": "Initial State that contains WFAs"
+          }
+        ]
+      }
+    ]
+  },
+  "step-9": {
+    "field_name": "JE Wizard Source",
+    "field_id": "custbody_jewiz_src",
+    "field_type": "Record",
+    "field_description": "Custom Record Link",
+    "template_name": "wizard template",
+    "template_id": "custpdf_wiz",
+    "template_type": "AdvPDF",
+    "template_description": "For Printing",
+    "search_name": "AW - Enabled Wizards",
+    "search_id": "custsearch_aw_enabled_wiz",
+    "search_description": "List down Enabled Wizard Records",
+    "search_criteria": "TBA",
+    "search_results": "TBA",
+    "custom-fields-body": [
+      {
+        "field_name": "JE Wizard Source",
+        "field_id": "custbody_jewiz_src",
+        "field_type": "Record",
+        "field_description": "Custom Record Link"
+      }
+    ],
+    "templates-body": [
+      {
+        "template_name": "wizard template",
+        "template_id": "custpdf_wiz",
+        "template_type": "AdvPDF",
+        "template_description": "For Printing"
+      }
+    ],
+    "saved-searches-body": [
+      {
+        "search_name": "AW - Enabled Wizards",
+        "search_id": "custsearch_aw_enabled_wiz",
+        "search_description": "List down Enabled Wizard Records",
+        "search_criteria": "TBA",
+        "search_results": "TBA"
+      }
+    ]
+  },
+  "step-10": {
+    "error_issue": "Record Locking Error",
+    "cause": "Concurrent updates",
+    "resolution": "Implement record locking",
+    "test_description": "Validate rollback functionality",
+    "test_result": "Rollback process executed correctly.",
+    "troubleshooting-body": [
+      {
+        "error_issue": "Script Timeout",
+        "cause": "Long processing time",
+        "resolution": "Optimize script loops"
+      },
+      {
+        "error_issue": "Record Locking Error",
+        "cause": "Concurrent updates",
+        "resolution": "Implement record locking"
+      }
+    ],
+    "unitTesting": [
+      {
+        "test_description": "Verify deployment script triggers",
+        "test_result": "Deployment script triggered as expected."
+      },
+      {
+        "test_description": "Validate rollback functionality",
+        "test_result": "Rollback process executed correctly."
+      }
+    ]
+  },
+  "step-11": {
+    "production_version_backed_up": true,
+    "code_changes_documented": true,
+    "fields_records_listed": true,
+    "rollback_steps_defined": true,
+    "deployment_reviewed": true,
+    "tested_by_functional": true,
+    "tested_by_client": true,
+    "deployment_plan_approved": true
+  },
+  "step-12": {
+    "developer_name": "C. Dela Cruz",
+    "developer_note": "Main Developer",
+    "functional_name": "AppWrap Support",
+    "functional_note": "Task Requester",
+    "license": "          Copyright 2025 AppWrap, Inc. All Rights Reserved.\n                  ",
+    "developers-body": [
+      {
+        "developer_name": "C. Dela Cruz",
+        "developer_email": "cdelacruz@appwrap.tech",
+        "developer_note": "Main Developer"
+      }
+    ],
+    "functional-body": [
+      {
+        "functional_name": "AppWrap Support",
+        "functional_email": "support@appwrap.com",
+        "functional_note": "Task Requester"
+      }
+    ]
+  },
+  "step-13": {
+    "component_type": "Workflow",
+    "component_name": "Deployment Wizard",
+    "deployment_date": "2025-02-28",
+    "documentation_version": "v1",
+    "status": "Not Deployed",
+    "change_description": "None",
+    "installation_method": "SDF",
+    "components-body": [
+      {
+        "component_type": "Script",
+        "component_name": "AppWrap - Deployment Wizard UE",
+        "deployment_date": "2025-02-28",
+        "documentation_version": "v1",
+        "status": "Not Deployed",
+        "change_description": "None",
+        "installation_method": "Bundle 1234"
+      },
+      {
+        "component_type": "Custom Record",
+        "component_name": "Wizard Config",
+        "deployment_date": "2025-02-28",
+        "documentation_version": "v1",
+        "status": "Not Deployed",
+        "change_description": "None",
+        "installation_method": "Bundle 1234"
+      },
+      {
+        "component_type": "Custom Field",
+        "component_name": "JE Wizard Source",
+        "deployment_date": "2025-02-28",
+        "documentation_version": "v1",
+        "status": "Not Deployed",
+        "change_description": "None",
+        "installation_method": "Manual"
+      },
+      {
+        "component_type": "Template",
+        "component_name": "wizard template",
+        "deployment_date": "2025-02-28",
+        "documentation_version": "v1",
+        "status": "Not Deployed",
+        "change_description": "None",
+        "installation_method": "Copy to Account"
+      },
+      {
+        "component_type": "Saved Search",
+        "component_name": "AW - Enabled Wizards",
+        "deployment_date": "2025-02-28",
+        "documentation_version": "v1",
+        "status": "Not Deployed",
+        "change_description": "None",
+        "installation_method": "Manual"
+      },
+      {
+        "component_type": "Workflow",
+        "component_name": "Deployment Wizard",
+        "deployment_date": "2025-02-28",
+        "documentation_version": "v1",
+        "status": "Not Deployed",
+        "change_description": "None",
+        "installation_method": "SDF"
+      }
+    ]
+  }
+}
