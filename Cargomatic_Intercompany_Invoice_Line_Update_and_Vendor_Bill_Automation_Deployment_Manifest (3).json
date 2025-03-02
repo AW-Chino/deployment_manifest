@@ -1,0 +1,691 @@
+{
+  "step-1": {
+    "project_name": "Intercompany Invoice Line Update and Vendor Bill Automation",
+    "client": "Cargomatic",
+    "developer": "Chino Dela Cruz",
+    "development_environment": "4083091",
+    "version": "2.0.0",
+    "date": "2025-02-12",
+    "change_summary": "Added division support for vendor bills to enable proper classification of intercompany transactions within the organization's divisional structure. This enhancement allows for more granular financial reporting and ensures that intercompany transactions are correctly categorized in the general ledger by division.",
+    "version-history-body": [
+      {
+        "version": "1.0.0",
+        "date": "2025-01-08",
+        "change_summary": "Automates the end-to-end handling of intercompany transactions through two integrated scripts that work in sequence. The solution first standardizes invoice line items with appropriate items for correct GL impact while preserving original item information, then automatically generates corresponding vendor bills with configurable field mappings that respect subsidiary relationships. This initial version eliminates manual processing steps previously required after CSV imports, ensures consistent GL posting through standardized items, maintains proper transaction linkages for financial reporting, and includes flexible configuration options through custom records that define subsidiary relationships, field mappings, and item substitution rules—all with built-in status tracking and optional subsidiary filtering capabilities."
+      },
+      {
+        "version": "2.0.0",
+        "date": "2025-02-12",
+        "change_summary": "Added division support for vendor bills to enable proper classification of intercompany transactions within the organization's divisional structure. This enhancement allows for more granular financial reporting and ensures that intercompany transactions are correctly categorized in the general ledger by division."
+      }
+    ]
+  },
+  "step-2": {
+    "story_id": "Division Support",
+    "story_description": "Automatically assigns appropriate division to vendor bills and their line items based on configuration, ensuring proper classification of intercompany transactions.",
+    "feature_title": "Division Assignment",
+    "feature_description": "Assigns appropriate division to vendor bills and line items based on configuration",
+    "usage_title": "Division Assignment Process",
+    "usage_description": "Vendor bills are assigned the configured division for proper GL classification",
+    "user-stories-body": [
+      {
+        "story_id": "Intercompany Invoice Lines Update",
+        "story_description": "The script automates the standardization of invoice line items after CSV import to update invoice line items with standardized information, set default items based on subsidiary relationships, and prepare invoices for vendor bill creation."
+      },
+      {
+        "story_id": "Intercompany Vendor Bill",
+        "story_description": "Creates vendor bills automatically from processed invoices, maps invoice information to vendor bill fields, handles intercompany relationships, and sets standardized field values."
+      },
+      {
+        "story_id": "Division Support",
+        "story_description": "Automatically assigns appropriate division to vendor bills and their line items based on configuration, ensuring proper classification of intercompany transactions."
+      }
+    ],
+    "features-body": [
+      {
+        "feature_title": "Invoice Line Standardization",
+        "feature_description": "Automatically updates invoice line items with standardized information for proper GL impact"
+      },
+      {
+        "feature_title": "Vendor Bill Automation",
+        "feature_description": "Generates vendor bills from processed invoices following subsidiary relationship rules"
+      },
+      {
+        "feature_title": "Subsidiary-Specific Configurations",
+        "feature_description": "Supports different configurations based on subsidiary relationships"
+      },
+      {
+        "feature_title": "Field Mapping System",
+        "feature_description": "Flexible field mapping between invoices and vendor bills"
+      },
+      {
+        "feature_title": "Division Assignment",
+        "feature_description": "Assigns appropriate division to vendor bills and line items based on configuration"
+      }
+    ],
+    "usage-body": [
+      {
+        "usage_title": "CSV Import Process",
+        "usage_description": "Invoices are created through the CSV Import Tool, which is triggered by a scheduled script (run once daily)"
+      },
+      {
+        "usage_title": "Invoice Line Update Process",
+        "usage_description": "After invoices are imported, the Invoice Line Update script standardizes line items"
+      },
+      {
+        "usage_title": "Vendor Bill Creation Process",
+        "usage_description": "Once invoices are processed, vendor bills are automatically created based on configuration"
+      },
+      {
+        "usage_title": "Division Assignment Process",
+        "usage_description": "Vendor bills are assigned the configured division for proper GL classification"
+      }
+    ]
+  },
+  "step-3": {
+    "description": "Restore previous script version",
+    "steps": "Replace aw_intercompany vendor automation.js with v1.0.0",
+    "installationProcess": [
+      {
+        "description": "Create custom records for configuration",
+        "steps": "Intercompany Main Settings (customrecord_aw_intercompany_invoice),Subsidiary Line Settings (recmachcustrecord_inv_parent),Vendor Bill Fields - Overall (customrecord_aw_interco_vbfields_all),Vendor Bill Fields - Subsidiary Based (customrecord_aw_interco_vbfields_sub)"
+      },
+      {
+        "description": "Deploy saved searches",
+        "steps": "Invoice Line Update Saved Search,Vendor Bill Creation Saved Search"
+      },
+      {
+        "description": "Deploy scripts",
+        "steps": "Upload script files to File Cabinet,Create Script records with proper APIs and types,Create Script Deployments with proper parameters"
+      },
+      {
+        "description": "Configure NetSuite Custom Records",
+        "steps": "Configure Intercompany Main Settings,Set up Subsidiary Line Settings,Define Field Mappings,Configure Division assignments"
+      }
+    ],
+    "rollbackProcess": [
+      {
+        "description": "Disable script deployments",
+        "steps": "Set status to 'Not Scheduled'"
+      },
+      {
+        "description": "Remove custom record instances if needed",
+        "steps": "Make inactive custom record entries"
+      },
+      {
+        "description": "Document any data changes made",
+        "steps": "Record affected transactions"
+      },
+      {
+        "description": "Restore previous script version",
+        "steps": "Replace aw_intercompany vendor automation.js with v1.0.0"
+      }
+    ]
+  },
+  "step-4": {
+    "env_name": "NA Location",
+    "env_notes": "Default location for vendor bills",
+    "sandbox_value": "107",
+    "production_value": "318",
+    "environment-ids-body": [
+      {
+        "env_name": "Saved Search - Invoice Line Update",
+        "env_notes": "Used to find invoices for processing",
+        "sandbox_value": "customsearch_aw_invline_update",
+        "production_value": "customsearch_aw_invline_update"
+      },
+      {
+        "env_name": "Saved Search - Vendor Bill Creation",
+        "env_notes": "Used to find processed invoices ready for vendor bill creation",
+        "sandbox_value": "customsearch_aw_ivb_inv_src",
+        "production_value": "customsearch_aw_ivb_inv_src"
+      },
+      {
+        "env_name": "NA Location",
+        "env_notes": "Default location for vendor bills",
+        "sandbox_value": "107",
+        "production_value": "318"
+      }
+    ]
+  },
+  "step-5": {
+    "dependency_name": "N/A",
+    "dependency_version": "N/A",
+    "dependency_license": "N/A",
+    "deployment-dependencies-body": [
+      {
+        "dependency_name": "N/A",
+        "dependency_version": "N/A",
+        "dependency_license": "N/A"
+      }
+    ],
+    "dev-dependencies-body": [
+      {
+        "dependency_name": "N/A",
+        "dependency_version": "N/A",
+        "dependency_license": "N/A"
+      }
+    ]
+  },
+  "step-6": {
+    "scripts": [
+      {
+        "name": "AppWrap - Invoice Line Update",
+        "details": {
+          "id": "customscript_aw_invline_update_mr",
+          "type": "MapReduceScript",
+          "description": "This script standardizes intercompany invoice line items imported via CSV. It identifies invoices through configurable saved searches, replaces line items with default items based on subsidiary/customer combinations while preserving original item information, marks processed invoices with status flags, and prepares them for vendor bill creation. The script supports optional subsidiary filtering for targeted processing",
+          "fileName": "aw_intercompany invoice line update.js",
+          "location": "/SuiteScripts/"
+        },
+        "parameters": [
+          {
+            "parameter_name": "Default Setting",
+            "parameter_id": "custscript_invline_default",
+            "parameter_type": "List/Record",
+            "parameter_description": "Specifies which configuration record to use for processing invoice lines"
+          },
+          {
+            "parameter_name": "Filter Subsidiary",
+            "parameter_id": "custscript_invline_sub",
+            "parameter_type": "List/Record",
+            "parameter_description": "Optional filter to process only specific subsidiary's invoices"
+          }
+        ],
+        "entryPoints": [
+          {
+            "entry_point_name": "getInputData",
+            "function_name": "getInputData"
+          },
+          {
+            "entry_point_name": "map",
+            "function_name": "map"
+          }
+        ],
+        "deploymentRecords": [
+          {
+            "applied_to": "Script",
+            "deployment_id": "customdeploy_aw_invline_update_mr_wee",
+            "deployment_notes": "Daily deployment for West End Express subsidiary"
+          }
+        ],
+        "versionHistory": [
+          {
+            "version": "1.0.0",
+            "date": "2024-09-30",
+            "change_summary": "Initial version",
+            "commit_id": "None"
+          }
+        ],
+        "libraries": [],
+        "unitTests": [],
+        "checklists": {
+          "standards": true,
+          "disclaimer": true,
+          "expectations": true,
+          "eslint": true
+        }
+      },
+      {
+        "name": "AppWrap - Intercompany Vendor Bills",
+        "details": {
+          "id": "customscript_aw_interco_vb_process",
+          "type": "MapReduceScript",
+          "description": "This script automates the creation of intercompany vendor bills from processed invoices. It identifies eligible invoices through saved searches, creates vendor bills with the correct subsidiary/vendor relationships, maps fields from invoice to vendor bill according to configurable mappings (both global and subsidiary-specific), sets standard values for approval status and department, establishes transaction linkage, and includes detailed logging of processing results.",
+          "fileName": "aw_intercompany vendor automation.js",
+          "location": "/SuiteScripts/AppWrap - Vendor Automation/"
+        },
+        "parameters": [
+          {
+            "parameter_name": "Default Setting",
+            "parameter_id": "custscript_aw_interco_settingid",
+            "parameter_type": "List/Record",
+            "parameter_description": "Links to the master configuration record for vendor bill creation"
+          },
+          {
+            "parameter_name": "Subsidiary (Optional)",
+            "parameter_id": "custscript_aw_interco_sub",
+            "parameter_type": "List/Record",
+            "parameter_description": "Optional filter to create vendor bills for specific subsidiary only"
+          },
+          {
+            "parameter_name": "Default NA Location",
+            "parameter_id": "custscript_na_loc",
+            "parameter_type": "List/Record",
+            "parameter_description": "Sets the default location for all vendor bills"
+          }
+        ],
+        "entryPoints": [
+          {
+            "entry_point_name": "getInputData",
+            "function_name": "getInputData"
+          },
+          {
+            "entry_point_name": "map",
+            "function_name": "map"
+          },
+          {
+            "entry_point_name": "summarize",
+            "function_name": "summarize"
+          }
+        ],
+        "deploymentRecords": [
+          {
+            "applied_to": "Script",
+            "deployment_id": "customdeploy_aw_interco_vb_process_wee",
+            "deployment_notes": "Single run deployment for West End Express subsidiary"
+          }
+        ],
+        "versionHistory": [
+          {
+            "version": "1.0.0",
+            "date": "2024-09-30",
+            "change_summary": "Initial version",
+            "commit_id": "None"
+          },
+          {
+            "version": "1.1.0",
+            "date": "2025-02-12",
+            "change_summary": "Added Division support",
+            "commit_id": "None"
+          }
+        ],
+        "libraries": [],
+        "unitTests": [],
+        "checklists": {
+          "standards": true,
+          "disclaimer": true,
+          "expectations": true,
+          "eslint": true
+        }
+      }
+    ]
+  },
+  "step-7": {
+    "customRecords": [
+      {
+        "name": "Intercompany Main Settings",
+        "id": "customrecord_aw_intercompany_invoice",
+        "type": "customrecordtype",
+        "description": "Primary configuration hub that links saved searches, subsidiary settings, and field mappings. This record defines which saved searches are used to identify invoices for processing and serves as the central point of reference for all subsidiary relationships and field mappings.",
+        "fields": [
+          {
+            "field_name": "Invoice Line Saved Search",
+            "field_id": "custrecord_invline_ss",
+            "field_type": "Select",
+            "field_description": "Saved search used to find invoices for line update"
+          },
+          {
+            "field_name": "Vendor Bill Saved Search",
+            "field_id": "custrecord_intercompany_vb_search",
+            "field_type": "Select",
+            "field_description": "Saved search used to find invoices for vendor bill creation"
+          }
+        ]
+      },
+      {
+        "name": "Intercompany Subsidiary Line Settings",
+        "id": "customrecord_invline_parent",
+        "type": "customrecordtype",
+        "description": "Defines the relationships between subsidiaries for intercompany transactions. This record maps source subsidiaries to target subsidiaries, specifies which items should be used for invoices and vendor bills, and identifies the appropriate vendors for bill creation based on subsidiary and customer combinations.",
+        "fields": [
+          {
+            "field_name": "Invoice Subsidiary",
+            "field_id": "custrecord_invline_setting_sub",
+            "field_type": "Select",
+            "field_description": "Source subsidiary where the invoice originates"
+          },
+          {
+            "field_name": "Invoice Customer",
+            "field_id": "custrecord_invline_billto",
+            "field_type": "Select",
+            "field_description": "Customer entity in the invoice"
+          },
+          {
+            "field_name": "Invoice - Item Name Number",
+            "field_id": "custrecord_invline_setting_item",
+            "field_type": "Select",
+            "field_description": "Default item for invoice lines"
+          },
+          {
+            "field_name": "Vendor Subsidiary",
+            "field_id": "custrecord_invline_setting_vsub",
+            "field_type": "Select",
+            "field_description": "Subsidiary where vendor bill will be created"
+          },
+          {
+            "field_name": "Bill Vendor",
+            "field_id": "custrecord_invline_repven",
+            "field_type": "Select",
+            "field_description": "Vendor for bill creation"
+          },
+          {
+            "field_name": "Vendor Bill - Item Name Number",
+            "field_id": "custrecord_vbline_setting_item",
+            "field_type": "Select",
+            "field_description": "Item to be used in vendor bill lines"
+          },
+          {
+            "field_name": "Division",
+            "field_id": "custrecord_invline_division",
+            "field_type": "Select",
+            "field_description": "Division to be assigned to vendor bills and line items"
+          },
+          {
+            "field_name": "Record Parent",
+            "field_id": "custrecord_inv_parent",
+            "field_type": "Select",
+            "field_description": "Link to parent Intercompany Main Settings record"
+          }
+        ]
+      },
+      {
+        "name": "Vendor Bill Fields (Overall)",
+        "id": "customrecord_aw_interco_vbfields_all",
+        "type": "customrecordtype",
+        "description": "Establishes standard field mappings that apply to all vendor bills regardless of subsidiary. This record supports both header and line-level field mappings and includes special variable substitution using {fieldname} syntax for dynamic values.",
+        "fields": [
+          {
+            "field_name": "Intercompany Bill Field",
+            "field_id": "custrecord_aw_interco_all_bf",
+            "field_type": "Text",
+            "field_description": "Target field on vendor bill"
+          },
+          {
+            "field_name": "Intercompany Invoice Field",
+            "field_id": "custrecord_aw_interco_all_if",
+            "field_type": "Text",
+            "field_description": "Source field on invoice"
+          },
+          {
+            "field_name": "Parent Record",
+            "field_id": "custrecord_aw_interco_all_par",
+            "field_type": "Select",
+            "field_description": "Link to parent Intercompany Main Settings record"
+          },
+          {
+            "field_name": "Header Field",
+            "field_id": "custrecord_aw_interco_all_header",
+            "field_type": "Checkbox",
+            "field_description": "Indicates if field appears in header or line items"
+          }
+        ]
+      },
+      {
+        "name": "Vendor Bill Fields (Subsidiary Based)",
+        "id": "customrecord_aw_interco_vbfields_sub",
+        "type": "customrecordtype",
+        "description": "Provides subsidiary-specific field mappings that override standard mappings when applicable. This record allows for customized field handling based on the source subsidiary, enabling different business rules for different subsidiaries.",
+        "fields": [
+          {
+            "field_name": "Subsidiary Applicable",
+            "field_id": "custrecord_aw_interco_sub_id",
+            "field_type": "Select",
+            "field_description": "Subsidiary this mapping applies to"
+          },
+          {
+            "field_name": "Intercompany Bill Field",
+            "field_id": "custrecord_aw_interco_sub_bf",
+            "field_type": "Text",
+            "field_description": "Target field on vendor bill"
+          },
+          {
+            "field_name": "Intercompany Invoice Field",
+            "field_id": "custrecord_aw_interco_sub_if",
+            "field_type": "Text",
+            "field_description": "Source field on invoice"
+          },
+          {
+            "field_name": "Parent Record",
+            "field_id": "custrecord_aw_interco_sub_par",
+            "field_type": "Select",
+            "field_description": "Link to parent Intercompany Main Settings record"
+          },
+          {
+            "field_name": "Header Field",
+            "field_id": "custrecord_aw_interco_sub_header",
+            "field_type": "Checkbox",
+            "field_description": "Indicates if field appears in header or line items"
+          }
+        ]
+      }
+    ]
+  },
+  "step-8": {
+    "workflows": [
+      {
+        "details": "",
+        "actions": [
+          {
+            "action": "",
+            "state": "",
+            "details": ""
+          },
+          {
+            "action": "",
+            "state": "",
+            "details": ""
+          },
+          {
+            "action": "",
+            "state": "",
+            "details": ""
+          },
+          {
+            "action": "",
+            "state": "",
+            "details": ""
+          }
+        ]
+      }
+    ]
+  },
+  "step-9": {
+    "field_name": "Intercompany Invoice Lines Updated",
+    "field_id": "custbody_ivb_mr_invline_upd",
+    "field_type": "CHECKBOX",
+    "field_description": "Flag indicating invoice lines have been updated",
+    "search_name": "[Vendor Automation] Imported Intercompany Invoice Search",
+    "search_id": "customsearch_aw_ivb_inv_src",
+    "search_description": "List Down Invoices for Intercompany Vendor Bill Creation",
+    "search_criteria": "Type: Invoice, Status: Open, Main Line: True",
+    "search_results": "Internal ID, Subsidiary",
+    "custom-fields-body": [
+      {
+        "field_name": "Invoice Line Update Status",
+        "field_id": "custbody_invline_update_status",
+        "field_type": "RICHTEXT",
+        "field_description": "Status message for invoice line update process"
+      },
+      {
+        "field_name": "Intercompany Invoice Lines Updated",
+        "field_id": "custbody_ivb_mr_invline_upd",
+        "field_type": "CHECKBOX",
+        "field_description": "Flag indicating invoice lines have been updated"
+      }
+    ],
+    "saved-searches-body": [
+      {
+        "search_name": "[Invoice Line Update] Imported Intercompany Invoice Search",
+        "search_id": "customsearch_aw_invline_update",
+        "search_description": "Finds invoices requiring line item update",
+        "search_criteria": "Type: Invoice, Status: Open, Main Line: False",
+        "search_results": "Internal ID, Document Number, Subsidiary, Line Item"
+      },
+      {
+        "search_name": "[Vendor Automation] Imported Intercompany Invoice Search",
+        "search_id": "customsearch_aw_ivb_inv_src",
+        "search_description": "List Down Invoices for Intercompany Vendor Bill Creation",
+        "search_criteria": "Type: Invoice, Status: Open, Main Line: True",
+        "search_results": "Internal ID, Subsidiary"
+      }
+    ]
+  },
+  "step-10": {
+    "error_issue": "Missing Division",
+    "cause": "Division not configured in subsidiary settings",
+    "resolution": "Configure the Division field in the Intercompany Subsidiary Line Settings record",
+    "troubleshooting-body": [
+      {
+        "error_issue": "Missing Default Item",
+        "cause": "No matching subsidiary/customer configuration",
+        "resolution": "Check Subsidiary Line Settings configuration for the specific subsidiary and customer combination"
+      },
+      {
+        "error_issue": "Vendor Approval Error",
+        "cause": "Vendor pending for approval or rejected",
+        "resolution": "Ensure vendors are approved before running the script"
+      },
+      {
+        "error_issue": "Field Mapping Errors",
+        "cause": "Incorrect field references in mapping records",
+        "resolution": "Verify field IDs in Vendor Bill Field mapping records"
+      },
+      {
+        "error_issue": "Missing Division",
+        "cause": "Division not configured in subsidiary settings",
+        "resolution": "Configure the Division field in the Intercompany Subsidiary Line Settings record"
+      }
+    ]
+  },
+  "step-11": {
+    "production_version_backed_up": true,
+    "code_changes_documented": true,
+    "fields_records_listed": true,
+    "rollback_steps_defined": true,
+    "deployment_reviewed": true,
+    "tested_by_functional": true,
+    "tested_by_client": true,
+    "deployment_plan_approved": true
+  },
+  "step-12": {
+    "developer_name": "Chino Dela Cruz",
+    "developer_email": "cdelacruz@appwrap.tech",
+    "developer_note": "Main Developer",
+    "functional_name": "Juan Meneses",
+    "functional_email": "jmeneses@appwrap.tech",
+    "functional_note": "Main Functional",
+    "license": "Copyright 2025 AppWrap, Inc. All Rights Reserved.",
+    "developers-body": [
+      {
+        "developer_name": "Chino Dela Cruz",
+        "developer_email": "cdelacruz@appwrap.tech",
+        "developer_note": "Main Developer"
+      }
+    ],
+    "functional-body": [
+      {
+        "functional_name": "Juan Meneses",
+        "functional_email": "jmeneses@appwrap.tech",
+        "functional_note": "Main Functional"
+      }
+    ]
+  },
+  "step-13": {
+    "component_type": "Custom Field",
+    "component_name": "Intercompany Invoice Lines Updated",
+    "deployment_date": "2025-03-01",
+    "status": "Not Deployed",
+    "components-body": [
+      {
+        "component_type": "Script",
+        "component_name": "AppWrap - Invoice Line Update",
+        "deployment_date": "2025-01-07",
+        "documentation_version": "v1.0.0",
+        "status": "No Change",
+        "change_description": "N/A",
+        "installation_method": "N/A"
+      },
+      {
+        "component_type": "Script",
+        "component_name": "AppWrap - Intercompany Vendor Bills",
+        "deployment_date": "2025-02-28",
+        "documentation_version": "v2.0.0",
+        "status": "Modified",
+        "change_description": "Added division support",
+        "installation_method": "Copy to Account"
+      },
+      {
+        "component_type": "Custom Record",
+        "component_name": "Intercompany Main Settings",
+        "deployment_date": "2025-01-07",
+        "documentation_version": "v1.0.0",
+        "status": "No Change",
+        "change_description": "N/A",
+        "installation_method": "N/A"
+      },
+      {
+        "component_type": "Custom Record",
+        "component_name": "Intercompany Subsidiary Line Settings",
+        "deployment_date": "2025-02-28",
+        "documentation_version": "v2.0.0",
+        "status": "Modified",
+        "change_description": "Added Division field",
+        "installation_method": "Manual Field Addition"
+      },
+      {
+        "component_type": "Custom Record",
+        "component_name": "Vendor Bill Fields (Overall)",
+        "deployment_date": "2025-01-07",
+        "documentation_version": "v1.0.0",
+        "status": "No Change",
+        "change_description": "N/A",
+        "installation_method": "N/A"
+      },
+      {
+        "component_type": "Custom Record",
+        "component_name": "Vendor Bill Fields (Subsidiary Based)",
+        "deployment_date": "2025-01-07",
+        "documentation_version": "v1.0.0",
+        "status": "No Change",
+        "change_description": "N/A",
+        "installation_method": "N/A"
+      },
+      {
+        "component_type": "Saved Search",
+        "component_name": "[Invoice Line Update] Imported Intercompany Invoice Search",
+        "deployment_date": "2025-01-07",
+        "documentation_version": "v1.0.0",
+        "status": "No Change",
+        "change_description": "N/A",
+        "installation_method": "N/A"
+      },
+      {
+        "component_type": "Saved Search",
+        "component_name": "[Vendor Automation] Imported Intercompany Invoice Search",
+        "deployment_date": "2025-01-07",
+        "documentation_version": "v1.0.0",
+        "status": "No Change",
+        "change_description": "N/A",
+        "installation_method": "N/A"
+      },
+      {
+        "component_type": "Custom Field",
+        "component_name": "Division (on Intercompany Subsidiary Line Settings)",
+        "deployment_date": "2025-02-28",
+        "documentation_version": "v2.0.0",
+        "status": "New",
+        "change_description": "New field to support division assignment",
+        "installation_method": "Manual Field Addition"
+      },
+      {
+        "component_type": "Custom Field",
+        "component_name": "Invoice Line Update Status",
+        "deployment_date": "2025-03-01",
+        "documentation_version": "",
+        "status": "Not Deployed",
+        "change_description": "",
+        "installation_method": ""
+      },
+      {
+        "component_type": "Custom Field",
+        "component_name": "Intercompany Invoice Lines Updated",
+        "deployment_date": "2025-03-01",
+        "documentation_version": "",
+        "status": "Not Deployed",
+        "change_description": "",
+        "installation_method": ""
+      }
+    ]
+  }
+}

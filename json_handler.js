@@ -9,9 +9,11 @@ function attachJSONHandlers() {
         saveJSON();
     });
     document.getElementById("loadBtn")?.addEventListener("click", function () {
+        console.log("loadBtn clicked");
         document.getElementById("jsonLoadInput")?.click();
     });
     document.getElementById("jsonLoadInput")?.addEventListener("change", function (e) {
+        console.log("jsonLoadInput changed");
         const file = e.target.files[0];
         if (!file) return;
         const reader = new FileReader();

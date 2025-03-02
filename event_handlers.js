@@ -30,28 +30,28 @@ function initializeSections() {
 
 // Installation Process Section
 function initializeInstallationProcessSection() {
-    const btn = document.getElementById("add-installation-process-btn");
-    const tbody = document.getElementById("installation-process-body");
+    var btn = document.getElementById("add-installation-process-btn");
+    var tbody = document.getElementById("installation-process-body");
     if (btn && tbody) {
-        btn.addEventListener("click", () => {
-            const stepNumber = tbody.querySelectorAll("tr").length + 1;
-            const row = document.createElement("tr");
+        btn.addEventListener("click", function() {
+            var stepNumber = tbody.querySelectorAll("tr").length + 1;
+            var row = document.createElement("tr");
             // Auto-number Step
-            const stepCell = document.createElement("td");
+            var stepCell = document.createElement("td");
             stepCell.textContent = stepNumber;
             row.appendChild(stepCell);
             // Description
-            const descCell = document.createElement("td");
-            const descInput = document.createElement("input");
-            descInput.type = "text";
+            var descCell = document.createElement("td");
+            var descInput = document.createElement("textarea");
             descInput.className = "form-control";
             descInput.name = "description";
             descInput.placeholder = "Enter description";
+            descInput.rows = 2;
             descCell.appendChild(descInput);
             row.appendChild(descCell);
             // Image Filename
-            const imageCell = document.createElement("td");
-            const imageInput = document.createElement("input");
+            var imageCell = document.createElement("td");
+            var imageInput = document.createElement("input");
             imageInput.type = "text";
             imageInput.className = "form-control";
             imageInput.name = "installation_image";
@@ -59,8 +59,8 @@ function initializeInstallationProcessSection() {
             imageCell.appendChild(imageInput);
             row.appendChild(imageCell);
             // Action: Remove Button
-            const actionCell = document.createElement("td");
-            const removeBtn = document.createElement("button");
+            var actionCell = document.createElement("td");
+            var removeBtn = document.createElement("button");
             removeBtn.textContent = "Remove";
             removeBtn.className = "btn btn-danger btn-sm";
             removeBtn.addEventListener("click", function() {
@@ -76,33 +76,33 @@ function initializeInstallationProcessSection() {
 
 // Rollback Process Section
 function initializeRollbackProcessSection() {
-    const btn = document.getElementById("add-rollback-process-btn");
-    const tbody = document.getElementById("rollback-process-body");
+    var btn = document.getElementById("add-rollback-process-btn");
+    var tbody = document.getElementById("rollback-process-body");
     if (btn && tbody) {
-        btn.addEventListener("click", () => {
-            const stepNumber = tbody.querySelectorAll("tr").length + 1;
-            const row = document.createElement("tr");
-            const stepCell = document.createElement("td");
+        btn.addEventListener("click", function() {
+            var stepNumber = tbody.querySelectorAll("tr").length + 1;
+            var row = document.createElement("tr");
+            var stepCell = document.createElement("td");
             stepCell.textContent = stepNumber;
             row.appendChild(stepCell);
-            const descCell = document.createElement("td");
-            const descInput = document.createElement("input");
-            descInput.type = "text";
+            var descCell = document.createElement("td");
+            var descInput = document.createElement("textarea");
             descInput.className = "form-control";
             descInput.name = "description";
             descInput.placeholder = "Enter description";
+            descInput.rows = 2;
             descCell.appendChild(descInput);
             row.appendChild(descCell);
-            const imageCell = document.createElement("td");
-            const imageInput = document.createElement("input");
+            var imageCell = document.createElement("td");
+            var imageInput = document.createElement("input");
             imageInput.type = "text";
             imageInput.className = "form-control";
             imageInput.name = "installation_image";
             imageInput.placeholder = "Enter image filename";
             imageCell.appendChild(imageInput);
             row.appendChild(imageCell);
-            const actionCell = document.createElement("td");
-            const removeBtn = document.createElement("button");
+            var actionCell = document.createElement("td");
+            var removeBtn = document.createElement("button");
             removeBtn.textContent = "Remove";
             removeBtn.className = "btn btn-danger btn-sm";
             removeBtn.addEventListener("click", function() {
@@ -115,36 +115,35 @@ function initializeRollbackProcessSection() {
         });
     }
 }
-
 // Configuration Process Section
 function initializeConfigurationProcessSection() {
-    const btn = document.getElementById("add-configuration-process-btn");
-    const tbody = document.getElementById("configuration-process-body");
+    var btn = document.getElementById("add-configuration-process-btn");
+    var tbody = document.getElementById("configuration-process-body");
     if (btn && tbody) {
-        btn.addEventListener("click", () => {
-            const stepNumber = tbody.querySelectorAll("tr").length + 1;
-            const row = document.createElement("tr");
-            const stepCell = document.createElement("td");
+        btn.addEventListener("click", function() {
+            var stepNumber = tbody.querySelectorAll("tr").length + 1;
+            var row = document.createElement("tr");
+            var stepCell = document.createElement("td");
             stepCell.textContent = stepNumber;
             row.appendChild(stepCell);
-            const descCell = document.createElement("td");
-            const descInput = document.createElement("input");
-            descInput.type = "text";
+            var descCell = document.createElement("td");
+            var descInput = document.createElement("textarea");
             descInput.className = "form-control";
             descInput.name = "description";
             descInput.placeholder = "Enter description";
+            descInput.rows = 2;
             descCell.appendChild(descInput);
             row.appendChild(descCell);
-            const imageCell = document.createElement("td");
-            const imageInput = document.createElement("input");
+            var imageCell = document.createElement("td");
+            var imageInput = document.createElement("input");
             imageInput.type = "text";
             imageInput.className = "form-control";
             imageInput.name = "installation_image";
             imageInput.placeholder = "Enter image filename";
             imageCell.appendChild(imageInput);
             row.appendChild(imageCell);
-            const actionCell = document.createElement("td");
-            const removeBtn = document.createElement("button");
+            var actionCell = document.createElement("td");
+            var removeBtn = document.createElement("button");
             removeBtn.textContent = "Remove";
             removeBtn.className = "btn btn-danger btn-sm";
             removeBtn.addEventListener("click", function() {
@@ -159,40 +158,108 @@ function initializeConfigurationProcessSection() {
 }
 
 // Unit Test Section in Documentation
+/**
+ * AppWrap Code Disclaimer
+ * This code is part of the AppWrap application framework.
+ * Unauthorized use, modification, or distribution is prohibited.
+ * All rights reserved. AppWrap Inc.
+ * 
+ * @NApiVersion 2.0
+ * @NScriptType ClientScript
+ * @NModuleScope Public
+ * @author Chino Delal Cruz
+ * @date 03/02/2025
+ * @version 1.0
+ */
+
+/**
+ * Initializes the unit test section in the documentation by setting up event listeners
+ * for adding and removing unit test rows in the table.
+ * @function
+ * @return {void}
+ */
 function initializeUnitTestSection() {
-    const btn = document.querySelector(".add-unit-test");
-    const tbody = document.getElementById("unit-testing-body");
+    var btn = document.querySelector(".add-unit-test");
+    var tbody = document.getElementById("unit-testing-body");
+    
     if (btn && tbody) {
-        btn.addEventListener("click", () => {
-            const row = document.createElement("tr");
-            const testDescCell = document.createElement("td");
-            const testDescInput = document.createElement("textarea");
-            testDescInput.className = "form-control";
-            testDescInput.name = "test_description";
-            testDescInput.placeholder = "Enter test description";
-            testDescInput.rows = 2;
-            testDescCell.appendChild(testDescInput);
-            row.appendChild(testDescCell);
-            const testResultCell = document.createElement("td");
-            const testResultInput = document.createElement("input");
-            testResultInput.type = "text";
-            testResultInput.className = "form-control";
-            testResultInput.name = "test_result";
-            testResultInput.placeholder = "Enter test result";
-            testResultCell.appendChild(testResultInput);
-            row.appendChild(testResultCell);
-            const actionCell = document.createElement("td");
-            const removeBtn = document.createElement("button");
+        btn.addEventListener("click", function() {
+            var row = document.createElement("tr");
+            
+            // Business Process cell
+            var processCell = document.createElement("td");
+            var processInput = document.createElement("textarea");
+            processInput.className = "form-control";
+            processInput.name = "test_process";
+            processInput.placeholder = "Enter business process";
+            processInput.rows = 2;
+            processCell.appendChild(processInput);
+            row.appendChild(processCell);
+            
+            // Expected Result cell
+            var expectedCell = document.createElement("td");
+            var expectedInput = document.createElement("textarea");
+            expectedInput.className = "form-control";
+            expectedInput.name = "test_expected";
+            expectedInput.placeholder = "Enter expected result";
+            expectedInput.rows = 2;
+            expectedCell.appendChild(expectedInput);
+            row.appendChild(expectedCell);
+            
+            // Actual Result cell
+            var actualCell = document.createElement("td");
+            var actualInput = document.createElement("textarea");
+            actualInput.className = "form-control";
+            actualInput.name = "test_actual";
+            actualInput.placeholder = "Enter actual result";
+            actualInput.rows = 2;
+            actualCell.appendChild(actualInput);
+            row.appendChild(actualCell);
+            
+            // Pass/Fail cell
+            var statusCell = document.createElement("td");
+            var statusSelect = document.createElement("select");
+            statusSelect.className = "form-control";
+            statusSelect.name = "test_status";
+            
+            var passOption = document.createElement("option");
+            passOption.value = "Pass";
+            passOption.textContent = "Pass";
+            
+            var failOption = document.createElement("option");
+            failOption.value = "Fail";
+            failOption.textContent = "Fail";
+            
+            statusSelect.appendChild(passOption);
+            statusSelect.appendChild(failOption);
+            statusCell.appendChild(statusSelect);
+            row.appendChild(statusCell);
+            
+            // Comments cell
+            var commentsCell = document.createElement("td");
+            var commentsInput = document.createElement("textarea");
+            commentsInput.className = "form-control";
+            commentsInput.name = "test_comments";
+            commentsInput.placeholder = "Enter comments";
+            commentsInput.rows = 2;
+            commentsCell.appendChild(commentsInput);
+            row.appendChild(commentsCell);
+            
+            // Action cell (for remove button)
+            var actionCell = document.createElement("td");
+            var removeBtn = document.createElement("button");
             removeBtn.textContent = "Remove";
             removeBtn.className = "btn btn-danger btn-sm";
-            removeBtn.addEventListener("click", () => row.remove());
+            removeBtn.addEventListener("click", function() {
+                row.remove();
+            });
             actionCell.appendChild(removeBtn);
             row.appendChild(actionCell);
+            
             tbody.appendChild(row);
         });
     }
 }
-
 // Helper: Renumber table rows in a tbody
 function renumberTableRows(tbody) {
     const rows = tbody.querySelectorAll("tr");
@@ -211,7 +278,7 @@ function initializeRegularTables() {
         { name: 'Change Summary', type: 'textarea', key: 'change_summary' }
     ]);
     attachAddHandler('add-user-story', 'user-stories-body', [
-        { name: 'ID', type: 'text', key: 'story_id' },
+        { name: 'Title', type: 'text', key: 'story_id' },
         { name: 'Description', type: 'textarea', key: 'story_description' }
     ]);
     attachAddHandler('add-feature', 'features-body', [
@@ -225,12 +292,14 @@ function initializeRegularTables() {
     attachAddHandler('add-deployment-dependency', 'deployment-dependencies-body', [
         { name: 'Dependency Name', type: 'text', key: 'dependency_name' },
         { name: 'Dependency Version', type: 'text', key: 'dependency_version' },
-        { name: 'Dependency License', type: 'text', key: 'dependency_license' }
+        { name: 'Dependency License', type: 'text', key: 'dependency_license' },
+        { name: 'Link', type: 'text', key: 'dependency_link' }
     ]);
     attachAddHandler('add-dev-dependency', 'dev-dependencies-body', [
         { name: 'Dependency Name', type: 'text', key: 'dependency_name' },
         { name: 'Dependency Version', type: 'text', key: 'dependency_version' },
-        { name: 'Dependency License', type: 'text', key: 'dependency_license' }
+        { name: 'Dependency License', type: 'text', key: 'dependency_license' },
+        { name: 'Link', type: 'text', key: 'dependency_link' }
     ]);
     attachAddHandler('add-custom-field', 'custom-fields-body', [
         { name: 'Custom Field Name', type: 'text', key: 'field_name' },
@@ -321,18 +390,38 @@ function initializeScriptSection() {
 function setupTabNavigation(block) {
     const tabs = block.querySelectorAll(".tab-button");
     const panels = block.querySelectorAll(".tab-panel");
+
     tabs.forEach(tab => {
         tab.addEventListener("click", function() {
+            // Remove 'active' from all tabs & panels in this block
             tabs.forEach(t => t.classList.remove("active"));
             panels.forEach(p => p.classList.remove("active"));
-            this.classList.add("active");
-            const targetPanel = block.querySelector(`#${this.dataset.tab}`);
+
+            // Add 'active' to the clicked tab
+            tab.classList.add("active");
+
+            // Get the data-tab value, find the matching panel
+            const target = tab.getAttribute("data-tab");
+            const targetPanel = block.querySelector(`.tab-panel[data-tab="${target}"]`);
             if (targetPanel) {
                 targetPanel.classList.add("active");
             }
         });
     });
 }
+
+
+function setupScriptBlock(block) {
+    const removeScriptBtn = block.querySelector(".remove-script");
+    if (removeScriptBtn) {
+        removeScriptBtn.addEventListener("click", () => block.remove());
+    }
+    // Important: attach the tab logic
+    setupTabNavigation(block);
+    setupTableButtons(block);
+    addDataAttributes(block, "script");
+}
+
 
 function addNewScript(container, template) {
     const scriptBlock = template.content.cloneNode(true).firstElementChild;
@@ -456,7 +545,8 @@ function setupTableButtons(block) {
         'deployment-records': [
             { name: 'Applied To', type: 'text', key: 'applied_to' },
             { name: 'ID', type: 'text', key: 'deployment_id' },
-            { name: 'Deployment Notes', type: 'textarea', key: 'deployment_notes' }
+            { name: 'Deployment Notes', type: 'textarea', key: 'deployment_notes' },
+            { name: 'Screenshot', type: 'text', key: 'deployment_img' }
         ],
         'version-history': [
             { name: 'Version', type: 'text', key: 'version' },
@@ -470,10 +560,10 @@ function setupTableButtons(block) {
             { name: 'Location', type: 'text', key: 'location' },
             { name: 'Purpose', type: 'text', key: 'purpose' }
         ],
-        'unit-tests': [
-            { name: 'Description', type: 'textarea', key: 'test_description' },
-            { name: 'Result', type: 'text', key: 'test_result' }
-        ]
+     //   'unit-tests': [
+     //       { name: 'Description', type: 'textarea', key: 'test_description' },
+    //        { name: 'Result', type: 'text', key: 'test_result' }
+      //  ]
     };
     Object.entries(tableConfigs).forEach(([type, columns]) => {
         const addBtn = block.querySelector(`.add-${type}`);

@@ -100,7 +100,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="https://htmlpreview.github.io/?https://github.com/AW-Chino/deployment_manifest/blob/main/instruction.html" target="_blank">
+          <a class="nav-link" href="https://htmlpreview.github.io/?https://github.com/AW-Chino/deployment_manifest/blob/main/readme.html" target="_blank">
             <i class="fa fa-info-circle"></i> 
             Instruction
           </a>
@@ -191,7 +191,7 @@
                 <table class="table" id="user-stories-table">
                   <thead>
                     <tr>
-                      <th>ID</th>
+                      <th>Title</th>
                       <th>Description</th>
                       <th>Action</th>
                     </tr>
@@ -327,6 +327,7 @@
                       <th>Dependency Name</th>
                       <th>Dependency Version</th>
                       <th>Dependency License</th>
+                      <th>Link</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -342,6 +343,7 @@
                       <th>Dependency Name</th>
                       <th>Dependency Version</th>
                       <th>Dependency License</th>
+                      <th>Link</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -471,9 +473,12 @@
                 <table class="table" id="unit-testing-table">
                   <thead>
                     <tr>
-                      <th>Test Description</th>
-                      <th>Result</th>
-                      <th>Action</th>
+                      <th>BUSINESS PROCESS</th>
+                      <th>EXPECTED RESULT</th>
+                      <th>ACTUAL RESULT</th>
+                      <th>PASS/FAIL </th>
+                      <th>COMMENTS</th>
+                      <th>Actions</th>
                     </tr>
                   </thead>
                   <tbody class="unit-testing-body" id="unit-testing-body"></tbody>
@@ -601,36 +606,105 @@
   <template id="script-block-template">
     <div class="script-block border p-3 mb-3" data-block-type="script">
       <div class="d-flex justify-content-between align-items-center mb-3">
-        <input type="text" class="form-control w-50" name="script_name" data-field="script_name" placeholder="Enter script name">
-        <button type="button" class="btn btn-danger remove-script">Remove Script</button>
+        <input
+          type="text"
+          class="form-control w-50"
+          name="script_name"
+          data-field="script_name"
+          placeholder="Enter script name"
+        />
+        <button type="button" class="btn btn-danger remove-script">
+          Remove Script
+        </button>
       </div>
-      <div class="script-tabs"></div>
+  
+      <!-- NEW: Tab Buttons for This Script -->
+      <div class="script-tabs mb-3">
+        <button type="button" class="tab-button active" data-tab="details">
+          Details
+        </button>
+        <button type="button" class="tab-button" data-tab="parameters">
+          Parameters
+        </button>
+        <button type="button" class="tab-button" data-tab="entrypoints">
+          Entrypoints
+        </button>
+        <button type="button" class="tab-button" data-tab="deployment-records">
+          Deployment Records
+        </button>
+        <button type="button" class="tab-button" data-tab="version-history">
+          Version History
+        </button>
+        <button type="button" class="tab-button" data-tab="libraries">
+          Libraries
+        </button>
+      <!-- <button type="button" class="tab-button" data-tab="unit-tests">
+          Unit Tests
+        </button>-->
+        <button type="button" class="tab-button" data-tab="checklists">
+          Checklists
+        </button>
+      </div>
+  
+      <!-- Tab Panels: use data-tab to match buttons above. Remove the IDs or make them unique. -->
       <div class="tab-content mt-3">
-        <div id="details" class="tab-panel active">
+        <!-- Make 'details' active by default -->
+        <div class="tab-panel active" data-tab="details">
           <div class="form-group">
             <label>Script Details</label>
             <div class="row">
               <div class="col-md-6 mb-3">
-                <input type="text" class="form-control" name="script_id" data-field="script_id" placeholder="Script ID">
+                <input
+                  type="text"
+                  class="form-control"
+                  name="script_id"
+                  data-field="script_id"
+                  placeholder="Script ID"
+                />
               </div>
               <div class="col-md-6 mb-3">
-                <input type="text" class="form-control" name="script_type" data-field="script_type" placeholder="Script Type">
+                <input
+                  type="text"
+                  class="form-control"
+                  name="script_type"
+                  data-field="script_type"
+                  placeholder="Script Type"
+                />
               </div>
             </div>
             <div class="mb-3">
-              <textarea class="form-control" rows="3" name="script_description" data-field="script_description" placeholder="Script Description"></textarea>
+              <textarea
+                class="form-control"
+                rows="3"
+                name="script_description"
+                data-field="script_description"
+                placeholder="Script Description"
+              ></textarea>
             </div>
             <div class="row">
               <div class="col-md-6 mb-3">
-                <input type="text" class="form-control" name="file_name" data-field="file_name" placeholder="File Name">
+                <input
+                  type="text"
+                  class="form-control"
+                  name="file_name"
+                  data-field="file_name"
+                  placeholder="File Name"
+                />
               </div>
               <div class="col-md-6 mb-3">
-                <input type="text" class="form-control" name="location" data-field="location" placeholder="Location">
+                <input
+                  type="text"
+                  class="form-control"
+                  name="location"
+                  data-field="location"
+                  placeholder="Location"
+                />
               </div>
             </div>
           </div>
         </div>
-        <div id="parameters" class="tab-panel">
+  
+        <div class="tab-panel" data-tab="parameters">
           <button class="btn btn-secondary add-parameters mb-3">Add Parameter</button>
           <table class="table">
             <thead>
@@ -645,7 +719,8 @@
             <tbody class="parameters-body"></tbody>
           </table>
         </div>
-        <div id="entrypoints" class="tab-panel">
+  
+        <div class="tab-panel" data-tab="entrypoints">
           <button class="btn btn-secondary add-entrypoints mb-3">Add Entry Point</button>
           <table class="table">
             <thead>
@@ -658,22 +733,29 @@
             <tbody class="entrypoints-body"></tbody>
           </table>
         </div>
-        <div id="deployment-records" class="tab-panel">
-          <button class="btn btn-secondary add-deployment-records mb-3">Add Deployment Record</button>
+  
+        <div class="tab-panel" data-tab="deployment-records">
+          <button class="btn btn-secondary add-deployment-records mb-3">
+            Add Deployment Record
+          </button>
           <table class="table">
             <thead>
               <tr>
                 <th>Applied To</th>
                 <th>ID</th>
                 <th>Deployment Notes</th>
+                <th>Image</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody class="deployment-records-body"></tbody>
           </table>
         </div>
-        <div id="version-history" class="tab-panel">
-          <button class="btn btn-secondary add-version-history mb-3">Add Version</button>
+  
+        <div class="tab-panel" data-tab="version-history">
+          <button class="btn btn-secondary add-version-history mb-3">
+            Add Version
+          </button>
           <table class="table">
             <thead>
               <tr>
@@ -687,7 +769,8 @@
             <tbody class="version-history-body"></tbody>
           </table>
         </div>
-        <div id="libraries" class="tab-panel">
+  
+        <div class="tab-panel" data-tab="libraries">
           <button class="btn btn-secondary add-libraries mb-3">Add Library</button>
           <table class="table">
             <thead>
@@ -702,7 +785,8 @@
             <tbody class="libraries-body"></tbody>
           </table>
         </div>
-        <div id="unit-tests" class="tab-panel">
+  
+        <div class="tab-panel" data-tab="unit-tests">
           <button class="btn btn-secondary add-unit-tests mb-3">Add Unit Test</button>
           <table class="table">
             <thead>
@@ -715,50 +799,84 @@
             <tbody class="unit-tests-body"></tbody>
           </table>
         </div>
-        <div id="checklists" class="tab-panel">
+  
+        <div class="tab-panel" data-tab="checklists">
           <div class="form-check mb-2">
-            <input type="checkbox" class="form-check-input" id="standards" name="standards" data-field="standards">
-            <label class="form-check-label" for="standards">Project upholds AppWrap's Deployment Standards and Best Practices</label>
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="standards"
+              name="standards"
+              data-field="standards"
+            />
+            <label class="form-check-label" for="standards">
+              Project upholds AppWrap's Deployment Standards and Best Practices
+            </label>
           </div>
           <div class="form-check mb-2">
-            <input type="checkbox" class="form-check-input" id="disclaimer" name="disclaimer" data-field="disclaimer">
-            <label class="form-check-label" for="disclaimer">Scripts include AppWrap's Code Disclaimer and Header</label>
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="disclaimer"
+              name="disclaimer"
+              data-field="disclaimer"
+            />
+            <label class="form-check-label" for="disclaimer">
+              Scripts include AppWrap's Code Disclaimer and Header
+            </label>
           </div>
           <div class="form-check mb-2">
-            <input type="checkbox" class="form-check-input" id="expectations" name="expectations" data-field="expectations">
-            <label class="form-check-label" for="expectations">Contributors adhere to AppWrap's Developer and Technical Resources Expectations</label>
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="expectations"
+              name="expectations"
+              data-field="expectations"
+            />
+            <label class="form-check-label" for="expectations">
+              Contributors adhere to AppWrap's Developer and Technical Resources
+              Expectations
+            </label>
           </div>
           <div class="form-check mb-2">
-            <input type="checkbox" class="form-check-input" id="eslint" name="eslint" data-field="eslint">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="eslint"
+              name="eslint"
+              data-field="eslint"
+            />
             <label class="form-check-label" for="eslint">Eslint Checked</label>
           </div>
         </div>
       </div>
     </div>
+    <hr />
   </template>
+  
+
 
   <!-- Custom Record Template -->
   <template id="custom-record-template">
     <div class="custom-record-block border p-3 mb-3" data-block-type="record">
-      <div class="d-flex justify-content-between align-items-center mb-3">
-        <input type="text" class="form-control w-50" name="record_name" data-field="record_name" placeholder="Enter record name">
+      <div class="d-flex justify-content-between align-items-right mb-3">
         <button type="button" class="btn btn-danger remove-record">Remove Record</button>
       </div>
       <div class="form-group">
         <div class="row">
           <div class="col-md-6 mb-3">
-            <input type="text" class="form-control" name="record_id" data-field="record_id" placeholder="Record ID">
+            <input type="text" class="form-control" name="record_name" data-field="record_name" placeholder="Enter record name">
           </div>
           <div class="col-md-6 mb-3">
-            <input type="text" class="form-control" name="record_type" data-field="record_type" placeholder="Record Type">
+            <input type="text" class="form-control" name="record_id" data-field="record_id" placeholder="Record ID">
           </div>
+         <!-- <div class="col-md-6 mb-3">
+            <input type="text" class="form-control" name="record_type" data-field="record_type" placeholder="Record Type">
+          </div>-->
         </div>
         <div class="mb-3">
           <textarea class="form-control" rows="3" name="record_description" data-field="record_description" placeholder="Record Description"></textarea>
         </div>
-      </div>
-      <div class="record-tabs">
-        <button class="tab-button active" data-tab="fields">Fields</button>
       </div>
       <div class="tab-content mt-3">
         <div id="fields" class="tab-panel active">
@@ -1028,10 +1146,6 @@
     // Make the function globally available
     window.refreshComponents = refreshComponents;
   </script>
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        attachJSONHandlers();
-    });
-  </script>
+
 </body>
 </html>

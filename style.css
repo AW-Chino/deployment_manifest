@@ -25,6 +25,10 @@ body {
     z-index: 1000;
 }
 
+.text-primary {
+    color: #01395A; /* Secondary color */
+}
+
 .sidebar-header {
     padding: 1.5rem;
     background: #16A089; /* Secondary color */
@@ -60,6 +64,15 @@ body {
     color: #ffffff;
     background: #0D695F;
 }
+/* Hide all tab-panels by default, unless they have .active */
+.tab-panel {
+    display: none;
+  }
+  
+  .tab-panel.active {
+    display: block;
+  }
+  
 
 .sidebar .nav-link.active {
     color: #ffffff;

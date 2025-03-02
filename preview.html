@@ -107,6 +107,10 @@
       color: #fff;
       background-color: #01395A;
     }
+
+    .text-script { color: #01395A !important; }
+
+
     .subsection-title {
       font-size: 16px;
       font-weight: bold;
@@ -139,6 +143,10 @@
       border-bottom: 2px solid #16A089;
       padding-bottom: 0.5rem;
       margin-bottom: 1rem;
+    }
+    /* No-wrap for version and date columns in version history */
+    .nowrap {
+      white-space: nowrap;
     }
   </style>
 </head>
@@ -218,11 +226,16 @@
           </tr>
           <tr>
             <td><input type="checkbox" id="section_contacts" checked /></td>
-            <td>Step 12: Contact and License</td>
+            <td>Step 12: Contacts</td>
           </tr>
           <tr>
             <td><input type="checkbox" id="section_components" checked /></td>
             <td>Step 13: Components</td>
+          </tr>
+          <!-- NEW: License after components -->
+          <tr>
+            <td><input type="checkbox" id="section_license" checked /></td>
+            <td>Step 14: License</td>
           </tr>
           <tr>
             <td><input type="checkbox" id="page_breaks" checked /></td>
@@ -314,9 +327,10 @@
         checklist: document.getElementById('section_checklist').checked,
         contacts: document.getElementById('section_contacts').checked,
         components: document.getElementById('section_components').checked,
+        license: document.getElementById('section_license').checked,
         // Extra option: Page Breaks Enabled
         pageBreaks: document.getElementById('page_breaks').checked,
-        // Additional Details (set to false by default; can be enabled if needed)
+        // Additional toggles
         step1_extra: false,
         step2_summary: false,
         step3_extra: false,
@@ -395,6 +409,10 @@
       if (selections.components) {
         docHTML += generateComponentsSection(data, selections) + insertPageBreak(selections);
       }
+      // NEW: Step 14 License (after components)
+      if (selections.license) {
+        docHTML += generateLicenseSection(data)// + insertPageBreak(selections);
+      }
       docHTML += `<div class="mt-5 text-center">
           <p>
             <strong>AppWrap, Inc.</strong> &emsp; (${getCurrentDateString()})<br>
@@ -404,6 +422,9 @@
       return docHTML;
     }
 
+    /*---------------------------------------
+      Updated Table of Contents (Step 14)
+    ----------------------------------------*/
     function generateTOC(data) {
       let tocHTML = `<div class="toc no-break">
         <br>
@@ -420,26 +441,13 @@
           <li>
             2. Playbook &amp; Configuration
             <ul>`;
+      // We’ll attempt to build out some small dynamic sub-items if desired.
       const step3 = data["step-3"] || {};
-      if (step3.processes && step3.processes.length > 0) {
-        tocHTML += `<li>Processes
-                      <ul>`;
-        step3.processes.forEach((proc, i) => {
-          tocHTML += `<li>${proc.name || "Process " + (i + 1)}</li>`;
-        });
-        tocHTML += `</ul></li>`;
-      } else {
-        tocHTML += `<li>Processes: None</li>`;
+      if (step3.installationProcess && step3.installationProcess.length > 0) {
+        tocHTML += `<li>Deployment Process</li>`;
       }
-      if (step3.rollbacks && step3.rollbacks.length > 0) {
-        tocHTML += `<li>Rollbacks
-                      <ul>`;
-        step3.rollbacks.forEach((rb, i) => {
-          tocHTML += `<li>Rollback ${i + 1}</li>`;
-        });
-        tocHTML += `</ul></li>`;
-      } else {
-        tocHTML += `<li>Rollbacks: None</li>`;
+      if (step3.rollbackProcess && step3.rollbackProcess.length > 0) {
+        tocHTML += `<li>Rollback Steps</li>`;
       }
       tocHTML += `</ul></li>
           <li>3. Configuration (Environment IDs)</li>
@@ -463,23 +471,15 @@
       }
       tocHTML += `</li>
           <li>6. Custom Records</li>
-          <li>7. Workflow`;
-      const step8 = data["step-8"] || {};
-      if (step8.workflows && step8.workflows.length > 0) {
-        tocHTML += `<ul>`;
-        step8.workflows.forEach((wf, i) => {
-          tocHTML += `<li>${wf.details || "Workflow " + (i + 1)}</li>`;
-        });
-        tocHTML += `</ul>`;
-      }
-      tocHTML += `</li>
+          <li>7. Workflow</li>
           <li>8. Custom Fields</li>
           <li>9. Saved Searches</li>
           <li>10. Templates</li>
           <li>11. Troubleshooting</li>
           <li>12. Deployment Checklist</li>
-          <li>13. Contact and License</li>
+          <li>13. Contacts</li>
           <li>14. Components</li>
+          <li>15. License</li>
         </ul></div>`;
       return tocHTML;
     }
@@ -591,6 +591,10 @@
         </table>
       `;
     }
+    /* 
+      Added no-wrap to Version & Date columns,
+      and included Date from JSON if present.
+    */
     function generateVersionHistory(versions) {
       if (!versions || !versions.length) return "";
       return `
@@ -598,8 +602,8 @@
         <table class="table table-bordered mt-4">
           <thead>
             <tr>
-              <th>Version</th>
-              <th>Date</th>
+              <th class="nowrap">Version</th>
+              <th class="nowrap">Date</th>
               <th>Change Summary</th>
             </tr>
           </thead>
@@ -607,8 +611,8 @@
             ${versions
               .map(v => `
               <tr>
-                <td>${v.version || ""}</td>
-                <td>${v.date || getCurrentDateString()}</td>
+                <td class="nowrap">${v.version || ""}</td>
+                <td class="nowrap">${v.date || getCurrentDateString()}</td>
                 <td>${v.change_summary || ""}</td>
               </tr>
             `).join("")}
@@ -616,6 +620,7 @@
         </table>
       `;
     }
+
     // Step 2: Project Scope
     function generateUserStoriesFeaturesSection(data, selections) {
       const step2 = data["step-2"] || {};
@@ -737,6 +742,7 @@
         </table>
       `;
     }
+
     // Step 3 & 4: Playbook & Configuration
     function generateConfigurationSection(data, selections) {
       const step3 = data["step-3"] || {};
@@ -750,11 +756,15 @@
           </div>
         `;
       }
+      /* 
+        Changed to read from step3.installationProcess 
+        and step3.rollbackProcess 
+      */
       sectionHTML += `
-        <h3 class="subsection-title">Deployment Processes</h3>
-        ${generateProcesses(step3.processes)}
+        <h3 class="subsection-title">Deployment Process</h3>
+        ${generateInstallationProcess(step3.installationProcess)}
         <h3 class="subsection-title">Rollback Steps</h3>
-        ${generateRollbacks(step3.rollbacks)}
+        ${generateRollbacks(step3.rollbackProcess)}
       `;
       if (selections.step4_extra) {
         sectionHTML += generateStep4Extra(step4);
@@ -762,27 +772,40 @@
       sectionHTML += generateEnvironmentIds(step4["environment-ids-body"]);
       return sectionHTML;
     }
-    function generateProcesses(processes) {
-      if (!processes || !processes.length)
+    // NEW: function to handle installationProcess
+    function generateInstallationProcess(installationProcess) {
+      if (!installationProcess || !installationProcess.length)
         return "<p>No deployment processes specified.</p>";
-      return processes.map(proc => `
+      return installationProcess.map(proc => `
         <div class="mb-4">
-          <h4>${proc.name || "Process"}</h4>
+          <strong>${proc.description || "Process"}</strong>
           <ol class="deployment-steps">
-            ${proc.steps && proc.steps.length
-              ? proc.steps.map(step => `<li>${step.step_description || "Step description not provided"}</li>`).join("")
-              : "<li>No steps defined.</li>"
+            ${
+              proc.steps
+                ? proc.steps.split(',').map(step => `<li>${step.trim()}</li>`).join("")
+                : "<li>No steps defined.</li>"
             }
           </ol>
         </div>
       `).join("");
     }
-    function generateRollbacks(rollbacks) {
-      if (!rollbacks || !rollbacks.length)
+    function generateRollbacks(rollbackProcess) {
+      if (!rollbackProcess || !rollbackProcess.length)
         return "<p>No rollback steps specified.</p>";
       return `
         <ul>
-          ${rollbacks.map((rb, index) => `<li><strong>Rollback ${index + 1}:</strong> ${rb.description || "No description provided."}</li>`).join("")}
+          ${rollbackProcess.map((rb, index) => {
+            let rollbackSteps = "";
+            if (rb.steps) {
+              rollbackSteps = rb.steps.split(',').map(s => `<li>${s.trim()}</li>`).join("");
+            }
+            return `
+              <li>
+                <strong>Rollback ${index + 1}:</strong> ${rb.description || "No description provided."}
+                <ol class="deployment-steps">${rollbackSteps}</ol>
+              </li>
+            `;
+          }).join("")}
         </ul>
       `;
     }
@@ -839,6 +862,7 @@
         </table>
       `;
     }
+
     // Step 5: Dependencies
     function generateDependenciesSection(data, selections) {
       const step5 = data["step-5"] || {};
@@ -922,6 +946,7 @@
         </table>
       `;
     }
+
     // Step 6: Scripts
     function generateScriptDetailsSection(data, selections) {
       const step6 = data["step-6"] || {};
@@ -942,8 +967,12 @@
       let scriptHTML = `
         <div class="script-details mb-5">
           <div class="script-header mb-4">
-            <h4 class="mb-3 p-2 bg-primary text-white">${sc.name || ""}</h4>
+            <h3 class="mb-1 p-2 text-script">${sc.name || ""}</h3>
             <div class="row">
+               <div class="p-3 mb-3">
+              <strong class="d-block mb-2">Description</strong>
+              <p class="mb-0">${details.description || ""}</p>
+            </div>
               <div class="col-md-6">
                 <div class="info-box p-3 mb-3">
                   <div class="d-flex mb-2"><strong class="me-2">Script ID:</strong><span>${details.id || ""}</span></div>
@@ -957,10 +986,8 @@
                 </div>
               </div>
             </div>
-            <div class="info-box p-3 mb-3">
-              <strong class="d-block mb-2">Description</strong>
-              <p class="mb-0">${details.description || ""}</p>
-            </div>
+           
+            <!--
             <div class="row">
               <div class="col-md-6">
                 <ul class="list-unstyled">
@@ -974,7 +1001,7 @@
                   <li>ESLint: ${sc.checklists.eslint ? '<i class="fas fa-check-circle text-success"></i>' : '<i class="fas fa-times-circle text-danger"></i>'}</li>
                 </ul>
               </div>
-            </div>
+            </div>-->
           </div>
           <div class="script-section mb-5">
             ${generateParameters(sc.parameters)}
@@ -996,18 +1023,21 @@
         scriptHTML += `
           <div class="script-section mb-5">
             <h5>Version History</h5>
+            <!-- Added date column + no-wrap styling -->
             <table class="table table-bordered">
               <thead>
                 <tr>
-                  <th>Version</th>
+                  <th class="nowrap">Version</th>
+                  <th class="nowrap">Date</th>
                   <th>Changes</th>
                 </tr>
               </thead>
               <tbody>
                 ${sc.versionHistory.map(vh => `
                   <tr>
-                    <td>${vh.version || ""}</td>
-                    <td>${vh.changes || ""}</td>
+                    <td class="nowrap">${vh.version || ""}</td>
+                    <td class="nowrap">${vh.date || getCurrentDateString()}</td>
+                    <td>${vh.change_summary || ""}</td>
                   </tr>
                 `).join("")}
               </tbody>
@@ -1018,29 +1048,39 @@
       scriptHTML += `</div>`;
       return scriptHTML;
     }
-    // Updated generateParameters to display parameter value
+    // Updated generateParameters to display default text if no param value
     function generateParameters(parameters) {
-      if (!parameters || !parameters.length) return "";
-      return `
-        <h5>Parameters</h5>
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Value</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${parameters.map(p => `
+  if (!parameters || !parameters.length) return "";
+
+  return `
+    <h5>Parameters</h5>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>ID</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${parameters
+          .map(
+            (p) => `
               <tr>
                 <td>${p.parameter_name || ""}</td>
-                <td>${p.parameter_value || ""}</td>
+                <td>${p.parameter_id || ""}</td>
+                <td>${p.parameter_type || ""}</td>
+                <td>${p.parameter_description || ""}</td>
               </tr>
-            `).join("")}
-          </tbody>
-        </table>
-      `;
-    }
+            `
+          )
+          .join("")}
+      </tbody>
+    </table>
+  `;
+}
+
     function generateEntryPoints(entryPoints) {
       if (!entryPoints || !entryPoints.length) return "";
       return `
@@ -1087,7 +1127,6 @@
         </table>
       `;
     }
-    // Updated generateLibraries to use library_name and purpose
     function generateLibraries(libraries) {
       if (!libraries || !libraries.length) return "";
       return `
@@ -1132,6 +1171,7 @@
         </table>
       `;
     }
+
     // Step 7: Custom Records
     function generateCustomRecordsSectionNew(data, selections) {
       const step7 = data["step-7"] || {};
@@ -1143,7 +1183,6 @@
           ${step7.customRecords.map(record => `
             <div class="script-details mb-4">
               <h4 class="mb-3 p-2 bg-primary text-white">${record.name || ""}</h4>
-              ${selections.step7_extra && record.type ? `<p><strong>Record Type:</strong> ${record.type}</p>` : ""}
               <dl>
                 <dt>Record ID</dt>
                 <dd>${record.id || ""}</dd>
@@ -1182,6 +1221,7 @@
         </table>
       `;
     }
+
     // Step 8: Workflow
     function generateWorkflowsSection(data, selections) {
       const step8 = data["step-8"] || {};
@@ -1247,6 +1287,7 @@
         </table>
       `;
     }
+
     // Step 9: Custom Fields, Templates, Saved Searches
     function generateCustomFieldsSection(data, selections) {
       const step9 = data["step-9"] || {};
@@ -1437,6 +1478,7 @@
         </table>
       `;
     }
+
     // Step 10: Troubleshooting
     function generateTroubleshootingSection(data, selections) {
       const step10 = data["step-10"] || {};
@@ -1500,6 +1542,7 @@
         : "<p>No troubleshooting issues specified.</p>";
       return trHTML;
     }
+
     // Step 11: Deployment Checklist
     function generateChecklistSection(data) {
       const step11 = data["step-11"] || {};
@@ -1549,10 +1592,11 @@
         </table>
       `;
     }
-    // Step 12: Contact and License
+
+    // Step 12: Contacts (No License here anymore)
     function generateContactsSection(data, selections) {
       const step12 = data["step-12"] || {};
-      let contactHTML = `<h2 class="section-title">10. Contact and License</h2>`;
+      let contactHTML = `<h2 class="section-title">10. Contacts</h2>`;
       if (selections.step12_extra) {
         contactHTML += `
           <div class="mb-4">
@@ -1597,12 +1641,6 @@
         ${generateDevelopersTable(step12["developers-body"])}
         <h3 class="subsection-title">Functional Contacts</h3>
         ${generateFunctionalTable(step12["functional-body"])}
-        <div class="script-details mb-4">
-          <dl>
-            <dt>License</dt>
-            <dd>${step12.license || ""}</dd>
-          </dl>
-        </div>
       `;
       return contactHTML;
     }
@@ -1630,10 +1668,11 @@
         </table>
       `;
     }
+
     // Step 13: Components
     function generateComponentsSection(data, selections) {
       const step13 = data["step-13"] || {};
-      let compHTML = `<h2 class="section-title">Components</h2>`;
+      let compHTML = `<h2 class="section-title">11. Components</h2>`;
       if (selections.step13_extra) {
         compHTML += `
           <div class="mb-4">
@@ -1704,6 +1743,22 @@
         `
         : "<p>No components specified.</p>";
       return compHTML;
+    }
+
+    // NEW: Step 14: License after Components
+    function generateLicenseSection(data) {
+      const step12 = data["step-12"] || {};
+      // Default to 2025 if no license is found
+      const licenseText = step12.license || "Copyright 2025 AppWrap, Inc. All Rights Reserved.";
+      return `
+        <h2 class="section-title">12. License</h2>
+        <div class="script-details mb-4">
+          <dl>
+            <dt>License</dt>
+            <dd>${licenseText}</dd>
+          </dl>
+        </div>
+      `;
     }
 
     function displayDocument(data) {
