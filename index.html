@@ -279,21 +279,13 @@
               </div>
               <div class="mt-4">
                 <h5>Configuration Process</h5>
-                <button type="button" id="add-configuration-process-btn" class="btn btn-primary">
-                  <i class="fas fa-plus"></i> Add Configuration Process Step
+                <!-- Button to add a new configuration group -->
+                <button type="button" id="add-configuration-group-btn" class="btn btn-primary">
+                  <i class="fas fa-plus"></i> Add Configuration Group
                 </button>
                 <br><br>
-                <table class="table" id="configuration-process-table">
-                  <thead>
-                    <tr>
-                      <th>Step #</th>
-                      <th>Description</th>
-                      <th>Image Filename</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody class="configuration-process-body" id="configuration-process-body"></tbody>
-                </table>
+                <!-- Container for all configuration groups -->
+                <div id="configuration-groups-container"></div>
               </div>
               <div class="mt-4">
                 <h5>Environment Specific IDs</h5>
@@ -312,7 +304,7 @@
                 </table>
               </div>
             </section>
-
+            
             <!-- Step 5: Dependencies -->
             <section id="step-5" class="wizard-step" style="display: none;">
               <div class="section-header">
@@ -360,6 +352,7 @@
                   <i class="fas fa-plus"></i> Add Script
                 </button>
               </div>
+
               <div id="scripts-container">
                 <!-- Dynamically added script blocks will appear here -->
               </div>
@@ -406,6 +399,7 @@
                       <th>Field ID</th>
                       <th>Field Type</th>
                       <th>Description</th>
+                      <th>Applies To</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -422,6 +416,7 @@
                       <th>ID</th>
                       <th>Type</th>
                       <th>Description</th>
+                      <th>Applies To</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -605,6 +600,8 @@
   <!-- Script Block Template -->
   <template id="script-block-template">
     <div class="script-block border p-3 mb-3" data-block-type="script">
+  <hr class="section-separator">
+
       <div class="d-flex justify-content-between align-items-center mb-3">
         <input
           type="text"
@@ -854,11 +851,37 @@
     <hr />
   </template>
   
+<!-- New Configuration Group Template -->
+<template id="configuration-group-template">
+  <div class="configuration-group-block card mb-3">
+    <div class="card-header">
+      <input type="text" class="form-control border-0" name="configuration_group_name" data-field="configuration_group_name" placeholder="Configuration Group Name">
+    </div>
+    <div class="card-body">
+      <textarea class="form-control mb-2" name="configuration_group_description" data-field="configuration_group_description" placeholder="Group Description" rows="2"></textarea>
+      <!-- Table for configuration steps in this group -->
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Step #</th>
+            <th>Description</th>
+            <th>Image Filename</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody class="configuration-steps-body"></tbody>
+      </table>
+      <button type="button" class="btn btn-primary add-configuration-step">Add Configuration Step</button>
+    </div>
+  </div>
+</template>
+
 
 
   <!-- Custom Record Template -->
   <template id="custom-record-template">
     <div class="custom-record-block border p-3 mb-3" data-block-type="record">
+      <hr class="section-separator">
       <div class="d-flex justify-content-between align-items-right mb-3">
         <button type="button" class="btn btn-danger remove-record">Remove Record</button>
       </div>
@@ -898,30 +921,95 @@
     </div>
   </template>
 
-  <!-- Workflow Block Template -->
-  <template id="workflow-block-template">
-    <div class="workflow-block border p-3 mb-3" data-block-type="workflow">
-      <div class="d-flex justify-content-between align-items-center mb-3">
-        <input type="text" class="form-control w-50" name="workflow_details" data-field="workflow_details" placeholder="Enter workflow details">
-        <button type="button" class="btn btn-danger remove-workflow">Remove Workflow</button>
+<!-- Updated Workflow Block Template -->
+<template id="workflow-block-template">
+  <div class="workflow-block card mb-3" data-block-type="workflow">
+      <hr class="section-separator">
+      <!-- Card Header with Remove Button -->
+    <div class="card-header d-flex justify-content-end align-items-center">
+      <button type="button" class="btn btn-danger btn-sm remove-workflow">Remove Workflow</button>
+    </div>
+    <!-- Card Body with Additional Fields and States Container -->
+    <div class="card-body">
+      <div class="mb-3 row">
+        <div class="col-md-6">
+          <input type="text" class="form-control border-0 p-0" name="workflow_name" data-field="workflow_name" placeholder="Enter Workflow Name">
+        </div>
+        <div class="col-md-6">
+          <input type="text" class="form-control" name="workflow_id" data-field="workflow_id" placeholder="Enter Workflow ID">
+        </div>
       </div>
       <div class="mb-3">
-        <h5>Actions</h5>
-        <button class="btn btn-secondary add-action mb-3">Add Action</button>
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Action</th>
-              <th>State</th>
-              <th>Details</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody class="actions-body"></tbody>
-        </table>
+        <textarea class="form-control" name="workflow_description" data-field="workflow_description" placeholder="Enter Workflow Description" rows="2"></textarea>
+      </div>
+      <div class="mb-3">
+        <textarea class="form-control" name="workflow_notes" data-field="workflow_notes" placeholder="Enter Workflow Notes" rows="2"></textarea>
+      </div>
+      <!-- Container for nested state blocks -->
+      <div class="states-container mb-3"></div>
+      <button type="button" class="btn btn-primary add-state">Add New State</button>
+    </div>
+  </div>
+</template>
+
+
+
+<!-- New State Block Template -->
+<template id="state-block-template">
+  <div class="state-block border p-3 mb-3" data-block-type="state">
+      <hr class="section-separator2">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <input type="text" class="form-control w-50" name="state_name" data-field="state_name" placeholder="Enter state name">
+      <button type="button" class="btn btn-danger remove-state">Remove State</button>
+    </div>
+    <div class="state-tabs mb-3">
+      <button type="button" class="tab-button active" data-tab="state-details">State Details</button>
+      <button type="button" class="tab-button" data-tab="transitions">Transitions</button>
+      <button type="button" class="tab-button" data-tab="actions">Actions</button>
+    </div>
+    <div class="tab-content mt-3">
+      <!-- State Details Tab -->
+      <div class="tab-panel active" data-tab="state-details">
+         <input type="text" class="form-control mb-2" name="state_id" data-field="state_id" placeholder="Enter state ID">
+         <textarea class="form-control mb-2" name="state_description" data-field="state_description" placeholder="Enter state description" rows="2"></textarea>
+         <textarea class="form-control" name="state_notes" data-field="state_notes" placeholder="Enter state notes (rules, etc)" rows="2"></textarea>
+      </div>
+      <!-- Transitions Tab -->
+      <div class="tab-panel" data-tab="transitions">
+         <button type="button" class="btn btn-secondary add-transition mb-3">Add Transition</button>
+         <table class="table">
+           <thead>
+             <tr>
+               <th>Transition Name</th>
+               <th>Target State</th>
+               <th>Conditions</th>
+               <th>Notes</th>
+               <th>Action</th>
+             </tr>
+           </thead>
+           <tbody class="transitions-body"></tbody>
+         </table>
+      </div>
+      <!-- Actions Tab -->
+      <div class="tab-panel" data-tab="actions">
+         <button type="button" class="btn btn-secondary add-action mb-3">Add Action</button>
+         <table class="table">
+           <thead>
+             <tr>
+               <th>Action Name</th>
+               <th>Trigger</th>
+               <th>Details</th>
+               <th>Action</th>
+             </tr>
+           </thead>
+           <tbody class="actions-body"></tbody>
+         </table>
       </div>
     </div>
-  </template>
+  </div>
+</template>
+
+
 
   <!-- Bootstrap JS, jQuery -->
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -981,13 +1069,7 @@
       tbody.appendChild(row);
     }
     
-    function renumberInstallationRows() {
-      const tbody = document.getElementById('installation-body');
-      const rows = tbody.querySelectorAll('tr');
-      rows.forEach((row, index) => {
-        row.cells[0].textContent = index + 1;
-      });
-    }
+ 
     
     // Refresh Components dynamic block: scan deployable component names from various sections and add new rows if not already present.
     function refreshComponents() {
@@ -1145,6 +1227,7 @@
 
     // Make the function globally available
     window.refreshComponents = refreshComponents;
+
   </script>
 
 </body>

@@ -2,7 +2,7 @@
   "step-1": {
     "project_name": "Comprehensive Deployment Manifest",
     "client": "AppWrap Enterprise",
-    "developer": "Chino Dela Cruz", 
+    "developer": "Chino Dela Cruz",
     "development_environment": "Sandbox_01",
     "version": "v1.0.0",
     "date": "2025-02-13",
@@ -22,7 +22,7 @@
   },
   "step-2": {
     "story_id": "Create a Deployment Process Wizard",
-    "story_description": "As a user, I need a clear deployment process so I can execute tasks accurately.",
+    "story_description": "As a user, I need a clear deployment process to execute tasks accurately.",
     "feature_title": "Automated Process",
     "feature_description": "Streamlines deployment tasks with automation.",
     "usage_title": "Standard Usage",
@@ -30,7 +30,7 @@
     "user-stories-body": [
       {
         "story_id": "Create a Deployment Process Wizard",
-        "story_description": "As a user, I need a clear deployment process so I can execute tasks accurately."
+        "story_description": "As a user, I need a clear deployment process to execute tasks accurately."
       }
     ],
     "features-body": [
@@ -47,77 +47,100 @@
     ]
   },
   "step-3": {
-    "description": "Set Scripts to Inactive",
-    "installation_image": "deployment.png",
+    "description": "Rollback to previous version",
+    "installation_image": "https://www.netsuite.com/portal/assets/img/products-redwood/erp/thmb-1100-erp.png",
     "installationProcess": [
       {
         "description": "npm install",
-        "installation_image": ""
+        "installation_image": "https://www.netsuite.com/portal/assets/img/products-redwood/erp/thmb-1100-erp.png"
       },
       {
         "description": "Install Bundle 12345",
-        "installation_image": "bundle_components.jpg"
+        "installation_image": "https://www.netsuite.com/portal/assets/img/products-redwood/erp/thmb-1100-erp.png"
       }
     ],
     "rollbackProcess": [
       {
-        "description": "Set Scripts to Inactive",
-        "installation_image": "deployment.png"
+        "description": "Rollback to previous version",
+        "installation_image": "https://www.netsuite.com/portal/assets/img/products-redwood/erp/thmb-1100-erp.png"
       }
     ]
   },
   "step-4": {
-    "description": "Configure Custom Record",
-    "installation_image": "Custom Record Default Values.png",
-    "env_name": "file.txt",
-    "env_notes": "Used as source of fields",
+    "configuration_group_name": "General System Configuration",
+    "configuration_group_description": "Configure general system parameters.",
+    "description": "Set system parameters",
+    "installation_image": "https://www.netsuite.com/portal/assets/img/products-redwood/erp/thmb-1100-erp.png",
+    "env_name": "CustomRecordFile",
+    "env_notes": "Used for field source",
     "sandbox_value": "File ID: 23453",
     "production_value": "File ID: 45346",
-    "configurationProcess": [
+    "table-data": [
       {
-        "description": "Configure Script Parameters",
-        "installation_image": "parameter.png"
-      },
-      {
-        "description": "Configure Custom Record",
-        "installation_image": "Custom Record Default Values.png"
+        "description": "Set system parameters",
+        "installation_image": "https://www.netsuite.com/portal/assets/img/products-redwood/erp/thmb-1100-erp.png"
       }
     ],
     "environment-ids-body": [
       {
-        "env_name": "file.txt",
-        "env_notes": "Used as source of fields",
+        "env_name": "CustomRecordFile",
+        "env_notes": "Used for field source",
         "sandbox_value": "File ID: 23453",
         "production_value": "File ID: 45346"
+      }
+    ],
+    "configurationProcess": [
+      {
+        "group_name": "Custom Record Configuration",
+        "group_description": "Configure settings specific to the custom record.",
+        "steps": [
+          {
+            "description": "Set custom record defaults",
+            "installation_image": "https://www.netsuite.com/portal/assets/img/products-redwood/erp/thmb-1100-erp.png"
+          },
+          {
+            "description": "Map record fields",
+            "installation_image": "https://www.netsuite.com/portal/assets/img/products-redwood/erp/thmb-1100-erp.png"
+          }
+        ]
+      },
+      {
+        "group_name": "General System Configuration",
+        "group_description": "Configure general system parameters.",
+        "steps": [
+          {
+            "description": "Set system parameters",
+            "installation_image": "https://www.netsuite.com/portal/assets/img/products-redwood/erp/thmb-1100-erp.png"
+          }
+        ]
       }
     ]
   },
   "step-5": {
-    "dependency_name": "SuiteCloud Unit Testing",
-    "dependency_version": "v1.4.1",
-    "dependency_license": "UPL, Version 1.0",
+    "dependency_name": "Jest",
+    "dependency_version": "v27.3.1",
+    "dependency_license": "MIT License",
+    "dependency_link": "https://jestjs.io",
     "deployment-dependencies-body": [
       {
         "dependency_name": "AppWrap_UtilityBelt",
         "dependency_version": "v1.0",
-        "dependency_license": "Copyright 2023 AppWrap, Inc."
+        "dependency_license": "Copyright 2023 AppWrap, Inc.",
+        "dependency_link": "https://appwrap.com/utilitybelt"
       }
     ],
     "dev-dependencies-body": [
       {
         "dependency_name": "Node.js",
         "dependency_version": "Latest Stable",
-        "dependency_license": "MIT License"
+        "dependency_license": "MIT License",
+        "dependency_link": "https://nodejs.org"
       },
       {
         "dependency_name": "Jest",
         "dependency_version": "v27.3.1",
-        "dependency_license": "MIT License"
-      },
-      {
-        "dependency_name": "SuiteCloud Unit Testing",
-        "dependency_version": "v1.4.1",
-        "dependency_license": "UPL, Version 1.0"
+        "dependency_license": "MIT License",
+        "dependency_link": "https://jestjs.io"
       }
     ]
   },
@@ -128,7 +151,7 @@
         "details": {
           "id": "customscript_aw_depwiz_ue",
           "type": "User Event",
-          "description": "Sample Script Description",
+          "description": "Script to handle deployment wizard events.",
           "fileName": "aw_depwiz_ue.js",
           "location": "/SuiteScript/AppWrap/Wizard/"
         },
@@ -137,7 +160,7 @@
             "parameter_name": "File ID",
             "parameter_id": "_aw_dep_fileid",
             "parameter_type": "integer",
-            "parameter_description": "Source File"
+            "parameter_description": "Source File ID"
           }
         ],
         "entryPoints": [
@@ -158,7 +181,7 @@
             "version": "1.0.0",
             "date": "2025-02-04",
             "change_summary": "Initial Script",
-            "commit_id": "None"
+            "commit_id": "abc123"
           }
         ],
         "libraries": [
@@ -166,7 +189,7 @@
             "library_name": "AppWrap_UtilityBelt",
             "file_name": "AppWrap_UtilityBelt.js",
             "location": "/SuiteScript/AppWrap/lib/",
-            "purpose": "Util"
+            "purpose": "Utility functions"
           }
         ],
         "unitTests": [],
@@ -184,14 +207,13 @@
       {
         "name": "Wizard Config",
         "id": "customrecord_depwizard",
-        "type": "customrecord_depwizard",
         "description": "Primary configuration record for deployment.",
         "fields": [
           {
             "field_name": "Name",
             "field_id": "name",
             "field_type": "Text",
-            "field_description": "Name"
+            "field_description": "Record Name"
           },
           {
             "field_name": "Enable Wizard",
@@ -204,25 +226,96 @@
     ]
   },
   "step-8": {
-    "workflow_details": "Deployment Wizard",
-    "action": "Add State 1",
-    "state": "custstate1",
-    "details": "Initial State that contains WFAs",
+    "workflow_name": "Deployment Wizard",
+    "workflow_id": "wf-001",
+    "workflow_description": "Workflow for deploying changes to production.",
+    "workflow_notes": "Ensure proper rollback and testing are implemented.",
+    "state_name": "Deployment",
+    "state_id": "state-003",
+    "state_description": "Deploy to production environment.",
+    "state_notes": "Monitor deployment closely.",
+    "transition_name": "To Deployment",
+    "target_state": "Deployment",
+    "conditions": "Functional tests successful",
+    "notes": "Ensure no regression issues.",
+    "action_name": "Notify Operations",
+    "trigger": "On Enter",
+    "details": "Send notification that deployment is complete.",
     "table-data": [
       {
-        "action": "Add State 1",
-        "state": "custstate1",
-        "details": "Initial State that contains WFAs"
+        "action_name": "Notify Operations",
+        "trigger": "On Enter",
+        "details": "Send notification that deployment is complete."
       }
     ],
     "workflows": [
       {
-        "details": "Deployment Wizard",
-        "actions": [
+        "workflow_id": "wf-001",
+        "workflow_name": "Deployment Wizard",
+        "workflow_description": "Workflow for deploying changes to production.",
+        "workflow_notes": "Ensure proper rollback and testing are implemented.",
+        "states": [
           {
-            "action": "Add State 1",
-            "state": "custstate1",
-            "details": "Initial State that contains WFAs"
+            "state_name": "Initialization",
+            "details": {
+              "state_id": "state-001",
+              "state_description": "Begin the deployment process.",
+              "state_notes": "No prerequisites required."
+            },
+            "transitions": [
+              {
+                "transition_name": "To Testing",
+                "target_state": "Testing",
+                "conditions": "All unit tests pass",
+                "notes": "Proceed if all tests are successful."
+              }
+            ],
+            "actions": [
+              {
+                "action_name": "Send Start Notification",
+                "trigger": "On Enter",
+                "details": "Notify team that deployment has started."
+              }
+            ]
+          },
+          {
+            "state_name": "Testing",
+            "details": {
+              "state_id": "state-002",
+              "state_description": "Conduct functional tests.",
+              "state_notes": "Record test outcomes and validate results."
+            },
+            "transitions": [
+              {
+                "transition_name": "To Deployment",
+                "target_state": "Deployment",
+                "conditions": "Functional tests successful",
+                "notes": "Ensure no regression issues."
+              }
+            ],
+            "actions": [
+              {
+                "action_name": "Log Test Results",
+                "trigger": "On Exit",
+                "details": "Record all test outcomes in system log."
+              }
+            ]
+          },
+          {
+            "state_name": "Deployment",
+            "details": {
+              "state_id": "state-003",
+              "state_description": "Deploy to production environment.",
+              "state_notes": "Monitor deployment closely."
+            },
+            "transitions": [],
+            "actions": [
+              {
+                "action_name": "Notify Operations",
+                "trigger": "On Enter",
+                "details": "Send notification that deployment is complete."
+              }
+            ]
           }
         ]
       }
@@ -232,68 +325,79 @@
     "field_name": "JE Wizard Source",
     "field_id": "custbody_jewiz_src",
     "field_type": "Record",
-    "field_description": "Custom Record Link",
-    "template_name": "wizard template",
+    "field_description": "Custom Record Link for JE Wizard",
+    "template_name": "Wizard Template",
     "template_id": "custpdf_wiz",
     "template_type": "AdvPDF",
-    "template_description": "For Printing",
+    "template_description": "Template for printing wizard reports",
     "search_name": "AW - Enabled Wizards",
     "search_id": "custsearch_aw_enabled_wiz",
-    "search_description": "List down Enabled Wizard Records",
-    "search_criteria": "TBA",
-    "search_results": "TBA",
+    "search_description": "List of enabled wizard records",
+    "search_criteria": "https://www.netsuite.com/portal/assets/img/products-redwood/erp/thmb-1100-erp.png",
+    "search_results": "https://www.netsuite.com/portal/assets/img/products-redwood/erp/thmb-1100-erp.png",
     "custom-fields-body": [
       {
         "field_name": "JE Wizard Source",
         "field_id": "custbody_jewiz_src",
         "field_type": "Record",
-        "field_description": "Custom Record Link"
+        "field_description": "Custom Record Link for JE Wizard",
+        "applies_to": "Journal Entry"
       }
     ],
     "templates-body": [
       {
-        "template_name": "wizard template",
+        "template_name": "Wizard Template",
         "template_id": "custpdf_wiz",
         "template_type": "AdvPDF",
-        "template_description": "For Printing"
+        "template_description": "Template for printing wizard reports",
+        "applies_to": "Journal Entry"
       }
     ],
     "saved-searches-body": [
       {
         "search_name": "AW - Enabled Wizards",
         "search_id": "custsearch_aw_enabled_wiz",
-        "search_description": "List down Enabled Wizard Records",
-        "search_criteria": "TBA",
-        "search_results": "TBA"
+        "search_description": "List of enabled wizard records",
+        "search_criteria": "https://www.netsuite.com/portal/assets/img/products-redwood/erp/thmb-1100-erp.png",
+        "search_results": "https://www.netsuite.com/portal/assets/img/products-redwood/erp/thmb-1100-erp.png"
       }
     ]
   },
   "step-10": {
     "error_issue": "Record Locking Error",
     "cause": "Concurrent updates",
-    "resolution": "Implement record locking",
-    "test_description": "Validate rollback functionality",
-    "test_result": "Rollback process executed correctly.",
+    "resolution": "Implement proper record locking",
+    "business_process": "Execute rollback process",
+    "expected_result": "Rollback reverts changes",
+    "actual_result": "Rollback executed correctly",
+    "pass_fail": "Pass",
+    "comments": "No issues encountered",
     "troubleshooting-body": [
       {
         "error_issue": "Script Timeout",
-        "cause": "Long processing time",
-        "resolution": "Optimize script loops"
+        "cause": "Inefficient loop in script",
+        "resolution": "Optimize loop logic"
       },
       {
         "error_issue": "Record Locking Error",
         "cause": "Concurrent updates",
-        "resolution": "Implement record locking"
+        "resolution": "Implement proper record locking"
       }
     ],
     "unitTesting": [
       {
-        "test_description": "Verify deployment script triggers",
-        "test_result": "Deployment script triggered as expected."
+        "business_process": "Trigger deployment script",
+        "expected_result": "Script triggers without error",
+        "actual_result": "Script triggered as expected",
+        "pass_fail": "Pass",
+        "comments": "Initial test successful"
       },
       {
-        "test_description": "Validate rollback functionality",
-        "test_result": "Rollback process executed correctly."
+        "business_process": "Execute rollback process",
+        "expected_result": "Rollback reverts changes",
+        "actual_result": "Rollback executed correctly",
+        "pass_fail": "Pass",
+        "comments": "No issues encountered"
       }
     ]
   },
@@ -308,14 +412,16 @@
     "deployment_plan_approved": true
   },
   "step-12": {
-    "developer_name": "C. Dela Cruz",
+    "developer_name": "Chino Dela Cruz",
+    "developer_email": "cdelacruz@appwrap.tech",
     "developer_note": "Main Developer",
     "functional_name": "AppWrap Support",
+    "functional_email": "support@appwrap.com",
     "functional_note": "Task Requester",
-    "license": "          Copyright 2025 AppWrap, Inc. All Rights Reserved.\n                  ",
+    "license": "Copyright 2025 AppWrap, Inc. All Rights Reserved.",
     "developers-body": [
       {
-        "developer_name": "C. Dela Cruz",
+        "developer_name": "Chino Dela Cruz",
         "developer_email": "cdelacruz@appwrap.tech",
         "developer_note": "Main Developer"
       }
@@ -329,10 +435,10 @@
     ]
   },
   "step-13": {
-    "component_type": "Workflow",
-    "component_name": "Deployment Wizard",
-    "deployment_date": "2025-02-28",
-    "documentation_version": "v1",
+    "component_type": "Saved Search",
+    "component_name": "AW - Enabled Wizards",
+    "deployment_date": "2025-03-02",
+    "documentation_version": "v2",
     "status": "Not Deployed",
     "change_description": "None",
     "installation_method": "SDF",
@@ -356,37 +462,37 @@
         "installation_method": "Bundle 1234"
       },
       {
-        "component_type": "Custom Field",
-        "component_name": "JE Wizard Source",
-        "deployment_date": "2025-02-28",
-        "documentation_version": "v1",
-        "status": "Not Deployed",
-        "change_description": "None",
-        "installation_method": "Manual"
-      },
-      {
-        "component_type": "Template",
-        "component_name": "wizard template",
-        "deployment_date": "2025-02-28",
-        "documentation_version": "v1",
-        "status": "Not Deployed",
-        "change_description": "None",
-        "installation_method": "Copy to Account"
-      },
-      {
-        "component_type": "Saved Search",
-        "component_name": "AW - Enabled Wizards",
-        "deployment_date": "2025-02-28",
-        "documentation_version": "v1",
-        "status": "Not Deployed",
-        "change_description": "None",
-        "installation_method": "Manual"
-      },
-      {
         "component_type": "Workflow",
         "component_name": "Deployment Wizard",
         "deployment_date": "2025-02-28",
         "documentation_version": "v1",
+        "status": "Not Deployed",
+        "change_description": "None",
+        "installation_method": "SDF"
+      },
+      {
+        "component_type": "Custom Field",
+        "component_name": "JE Wizard Source",
+        "deployment_date": "2025-03-02",
+        "documentation_version": "v2",
+        "status": "Not Deployed",
+        "change_description": "None",
+        "installation_method": "SDF"
+      },
+      {
+        "component_type": "Template",
+        "component_name": "Wizard Template",
+        "deployment_date": "2025-03-02",
+        "documentation_version": "v2",
+        "status": "Not Deployed",
+        "change_description": "None",
+        "installation_method": "SDF"
+      },
+      {
+        "component_type": "Saved Search",
+        "component_name": "AW - Enabled Wizards",
+        "deployment_date": "2025-03-02",
+        "documentation_version": "v2",
         "status": "Not Deployed",
         "change_description": "None",
         "installation_method": "SDF"

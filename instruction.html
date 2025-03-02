@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Deployment Manifest Instructions</title>
-  <!-- (Optional) Bootstrap for styling -->
+  <!-- Bootstrap for styling -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <style>
     body {
@@ -34,15 +34,33 @@
     .copy-btn {
       margin-bottom: 1rem;
     }
+    .section-header {
+      background-color: #e9ecef;
+      padding: 10px 15px;
+      margin-top: 20px;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+    .instruction-note {
+      background-color: #fff3cd;
+      padding: 10px 15px;
+      margin: 10px 0;
+      border-left: 4px solid #ffc107;
+      border-radius: 4px;
+    }
   </style>
 </head>
 <body>
 
 <div class="container">
-    <img src="https://appwrap.com/wp-content/uploads/2024/12/appwrap-logo.svg" alt="AppWrap Logo" class="img-fluid">
-    <h1>Deployment Manifest Instructions</h1>
+    <img src="https://appwrap.com/wp-content/uploads/2024/12/appwrap-logo.svg" alt="AppWrap Logo" class="img-fluid mb-4">
+    <h1>NetSuite Deployment Manifest Generator</h1>
+    <div class="instruction-note">
+        <p>This tool generates standardized JSON manifests for NetSuite deployments. Follow the structure below to ensure your deployment documentation meets AppWrap's quality standards.</p>
+    </div>
   <button id="copyButton" class="btn btn-primary copy-btn">Copy Instructions</button>
 
+  <div class="section-header">Instructions</div>
   <pre id="instructions">
 You are provided with detailed project and script information for a NetSuite deployment. Using that information, produce a JSON manifest matching the following structure and rules:
 
@@ -123,14 +141,30 @@ You are provided with detailed project and script information for a NetSuite dep
    - Script/record IDs must follow NetSuite naming conventions (e.g., `customscript_`, `customrecord_`)
    - Provide meaningful version histories and change summaries
 
-4. **Required Fields**:
+4. **Script Standards**:
+   - All SuiteScript code must adhere to SuiteScript 2.0 standards
+   - Avoid using ES6 features like let, template literals, and arrow functions
+   - Include the AppWrap Code Disclaimer in all scripts
+   - Follow NetSuite best practices for record access and script optimization
+
+5. **Required Fields**:
    - `project_name`
    - `client`
    - `developer` (defaults to `"C. Dela Cruz"`)
    - `development_environment`
    - `license`
 
-5. **Please Return**:
+6. **Workflow Documentation**:
+   - Each workflow should include states, transitions, and actions
+   - Document entry conditions and exit actions for each state
+   - Include workflow ID and deployment records
+
+7. **Custom Records and Fields**:
+   - Document all custom records and their fields
+   - Include field types, IDs and descriptions
+   - Note record dependencies and relationships
+
+8. **Return Format**:
    - A single JSON object matching the above structure
    - **No additional text**; only valid JSON.
 
@@ -457,7 +491,7 @@ Below is a sample JSON as reference:
     "developer_note": "Main Developer",
     "functional_name": "AppWrap Support",
     "functional_note": "Task Requester",
-    "license": "          Copyright 2025 AppWrap, Inc. All Rights Reserved.\n                  ",
+    "license": "Copyright 2025 AppWrap, Inc. All Rights Reserved.",
     "developers-body": [
       {
         "developer_name": "C. Dela Cruz",
@@ -542,7 +576,7 @@ Below is a sample JSON as reference:
   </pre>
 </div>
 
-<!-- (Optional) Bootstrap Bundle JS -->
+<!-- Bootstrap Bundle JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
   const copyButton = document.getElementById('copyButton');

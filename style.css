@@ -73,6 +73,19 @@ body {
     display: block;
   }
   
+  /* New Separator Style */
+.section-separator {
+    border: none;
+    height: 4px;
+    background-color: #EDA205; /* Tertiary color for high contrast */
+    margin: 1.5rem 0;
+}
+.section-separator2 {
+    border: none;
+    height: 4px;
+    background-color: #16A089; /* Secondary color for high contrast */
+    margin: 1.5rem 0;
+}
 
 .sidebar .nav-link.active {
     color: #ffffff;

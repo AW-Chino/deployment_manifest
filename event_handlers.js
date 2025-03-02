@@ -3,8 +3,75 @@
 document.addEventListener("DOMContentLoaded", function () {
     attachEventListeners();
     initializeSections();
+    initializeConfigurationProcessGroups(); 
+    attachConfigurationStepListener(); 
     navigateToStep(1);
 });
+
+
+
+function addConfigurationStepRow(tbody) {
+    // Calculate the step number based on the current number of rows
+    const stepNumber = tbody.querySelectorAll("tr").length + 1;
+    const row = document.createElement("tr");
+  
+    // Create auto-numbering cell
+    const stepCell = document.createElement("td");
+    stepCell.textContent = stepNumber;
+    row.appendChild(stepCell);
+  
+    // Create the Description cell
+    const descCell = document.createElement("td");
+    const descInput = document.createElement("textarea");
+    descInput.className = "form-control";
+    descInput.name = "description";
+    descInput.placeholder = "Enter description";
+    descInput.rows = 2;
+    descCell.appendChild(descInput);
+    row.appendChild(descCell);
+  
+    // Create the Image Filename cell
+    const imageCell = document.createElement("td");
+    const imageInput = document.createElement("input");
+    imageInput.type = "text";
+    imageInput.className = "form-control";
+    imageInput.name = "installation_image";
+    imageInput.placeholder = "Enter image filename";
+    imageCell.appendChild(imageInput);
+    row.appendChild(imageCell);
+  
+    // Create the Action cell with a Remove button
+    const actionCell = document.createElement("td");
+    const removeBtn = document.createElement("button");
+    removeBtn.textContent = "Remove";
+    removeBtn.className = "btn btn-danger btn-sm";
+    removeBtn.addEventListener("click", function() {
+      row.remove();
+      renumberTableRows(tbody);
+    });
+    actionCell.appendChild(removeBtn);
+    row.appendChild(actionCell);
+  
+    // Append the new row to the table body
+    tbody.appendChild(row);
+  }
+  
+  // Attach a click event listener for configuration step buttons
+  function attachConfigurationStepListener() {
+    document.addEventListener("click", function(e) {
+      if (e.target && e.target.classList.contains("add-configuration-step")) {
+        const groupBlock = e.target.closest(".configuration-group-block");
+        if (groupBlock) {
+          const tbody = groupBlock.querySelector(".configuration-steps-body");
+          if (tbody) {
+            addConfigurationStepRow(tbody);
+          }
+        }
+      }
+    });
+  }
+  
+  
 
 function initializeSections() {
     // Initialize dynamic block sections
@@ -305,7 +372,8 @@ function initializeRegularTables() {
         { name: 'Custom Field Name', type: 'text', key: 'field_name' },
         { name: 'Field ID', type: 'text', key: 'field_id' },
         { name: 'Field Type', type: 'text', key: 'field_type' },
-        { name: 'Field Description', type: 'textarea', key: 'field_description' }
+        { name: 'Field Description', type: 'textarea', key: 'field_description' },//add applies to
+        { name: 'Applies To', type: 'text', key: 'applies_to' }
     ]);
     attachAddHandler('add-template', 'templates-body', [
         { name: 'Template Name', type: 'text', key: 'template_name' },
@@ -787,17 +855,95 @@ function setupRollbackBlock(block) {
   addDataAttributes(block, 'rollback');
 }
 
-// Function to initialize the Workflow section
+// Update initializeWorkflowSection to use the new workflow template
 function initializeWorkflowSection() {
-  const addWorkflowBtn = document.getElementById("add-workflow-btn");
-  const workflowContainer = document.getElementById("workflow-container");
-  const workflowTemplate = document.getElementById("workflow-block-template");
-  if (addWorkflowBtn && workflowContainer && workflowTemplate) {
-    addWorkflowBtn.addEventListener("click", () => {
-      addNewWorkflow(workflowContainer, workflowTemplate);
-    });
+    const addWorkflowBtn = document.getElementById("add-workflow-btn");
+    const workflowContainer = document.getElementById("workflow-container");
+    const workflowTemplate = document.getElementById("workflow-block-template");
+    if (addWorkflowBtn && workflowContainer && workflowTemplate) {
+      addWorkflowBtn.addEventListener("click", () => {
+        const workflowBlock = workflowTemplate.content.cloneNode(true).firstElementChild;
+        const uniqueId = `workflow-${Date.now()}`;
+        workflowBlock.id = uniqueId;
+        setupWorkflowBlock(workflowBlock);
+        workflowContainer.appendChild(workflowBlock);
+      });
+    }
   }
-}
+  
+  // Updated setupWorkflowBlock to include adding state blocks
+  function setupWorkflowBlock(block) {
+    // Remove workflow button
+    const removeWorkflowBtn = block.querySelector(".remove-workflow");
+    if (removeWorkflowBtn) {
+      removeWorkflowBtn.addEventListener("click", () => block.remove());
+    }
+    
+    // Setup the Add State button
+    const addStateBtn = block.querySelector(".add-state");
+    const statesContainer = block.querySelector(".states-container");
+    const stateTemplate = document.getElementById("state-block-template");
+    if (addStateBtn && statesContainer && stateTemplate) {
+      addStateBtn.addEventListener("click", () => {
+        const stateBlock = stateTemplate.content.cloneNode(true).firstElementChild;
+        const uniqueId = `state-${Date.now()}`;
+        stateBlock.id = uniqueId;
+        setupStateBlock(stateBlock);
+        statesContainer.appendChild(stateBlock);
+      });
+    }
+    
+    // (Optional) Setup additional workflow-specific event handlers here
+    addDataAttributes(block, 'workflow');
+  }
+  
+  
+  // New function to setup a state block's tab navigation and dynamic rows
+  function setupStateBlock(block) {
+     const removeStateBtn = block.querySelector(".remove-state");
+     if (removeStateBtn) {
+         removeStateBtn.addEventListener("click", () => block.remove());
+     }
+     // Setup tab navigation for the state block
+     const tabs = block.querySelectorAll(".state-tabs .tab-button");
+     const panels = block.querySelectorAll(".tab-content .tab-panel");
+     tabs.forEach(tab => {
+       tab.addEventListener("click", function() {
+         tabs.forEach(t => t.classList.remove("active"));
+         panels.forEach(p => p.classList.remove("active"));
+         tab.classList.add("active");
+         const target = tab.getAttribute("data-tab");
+         const targetPanel = block.querySelector(`.tab-panel[data-tab="${target}"]`);
+         if (targetPanel) targetPanel.classList.add("active");
+       });
+     });
+     // Attach event handlers for adding transition rows
+     const addTransitionBtn = block.querySelector(".add-transition");
+     const transitionsBody = block.querySelector(".transitions-body");
+     if(addTransitionBtn && transitionsBody) {
+        addTransitionBtn.addEventListener("click", () => {
+            addTableRow(transitionsBody, [
+               { name: 'Transition Name', type: 'text', key: 'transition_name' },
+               { name: 'Target State', type: 'text', key: 'target_state' },
+               { name: 'Conditions', type: 'textarea', key: 'conditions' },
+               { name: 'Notes', type: 'textarea', key: 'notes' }
+            ]);
+        });
+     }
+     // Attach event handlers for adding action rows
+     const addActionBtn = block.querySelector(".add-action");
+     const actionsBody = block.querySelector(".actions-body");
+     if(addActionBtn && actionsBody) {
+        addActionBtn.addEventListener("click", () => {
+            addTableRow(actionsBody, [
+               { name: 'Action Name', type: 'text', key: 'action_name' },
+               { name: 'Trigger', type: 'text', key: 'trigger' },
+               { name: 'Details', type: 'textarea', key: 'details' }
+            ]);
+        });
+     }
+  }
+  
 
 // Helper to add a new workflow block
 function addNewWorkflow(container, template) {
@@ -808,24 +954,19 @@ function addNewWorkflow(container, template) {
   container.appendChild(workflowBlock);
 }
 
-// Setup function for workflow block
-function setupWorkflowBlock(block) {
-    // Remove workflow button
-    const removeWorkflowBtn = block.querySelector(".remove-workflow");
-    if (removeWorkflowBtn) {
-        removeWorkflowBtn.addEventListener("click", () => block.remove());
-    }
-    // Setup add action button in workflow block
-    const addActionBtn = block.querySelector(".add-action");
-    const actionsBody = block.querySelector(".actions-body");
-    if (addActionBtn && actionsBody) {
-        addActionBtn.addEventListener("click", () => {
-            addActionRow(actionsBody);
-        });
-    }
-    addDataAttributes(block, 'workflow');
-}
 
+function initializeConfigurationProcessGroups() {
+    document.getElementById("add-configuration-group-btn")?.addEventListener("click", () => {
+      const container = document.getElementById("configuration-groups-container");
+      const groupTemplate = document.getElementById("configuration-group-template");
+      if (container && groupTemplate) {
+        const groupBlock = groupTemplate.content.cloneNode(true).firstElementChild;
+        container.appendChild(groupBlock);
+      }
+    });
+  }
+  
+  
 // Helper to add a new action row in a workflow block
 function addActionRow(tbody) {
     const row = document.createElement("tr");
