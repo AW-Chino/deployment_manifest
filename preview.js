@@ -10,9 +10,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function generateInstallationProcessSection(data, selections) {
     const step3 = data["step-3"] || {};
-    let html = `<h2 class="section-title">Installation Process</h2>`;
+     
+    let html = `<div class="page-break"></div><h2 class="section-title">Installation Process</h2>`;
     if (step3.installationProcess && step3.installationProcess.length) {
-      html += `<table class="table table-bordered">
+      html += `<table class="table">
                  <thead>
                    <tr>
                      <th>Step #</th>
