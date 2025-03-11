@@ -380,7 +380,7 @@ document.addEventListener("DOMContentLoaded", function () {
           <div class="configuration-group-block mb-4">
             <h3 class="text-script">Configuration Group ${i + 1}: ${group.group_name || "Unnamed Group"}</h3>
             <p>${group.group_description || ""}</p>
-            <table class="table table-bordered">
+            <table class="table">
               <thead>
                 <tr>
                   <th nowrap>Step #</th>
@@ -391,7 +391,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 ${
                   group.steps && group.steps.length
                     ? group.steps.map((step, idx) => `
-                        <tr>
+                        <tr class="no-break">
                           <td>${idx + 1}</td>
                           <td>
                             <div>${step.description || ""}</div>
