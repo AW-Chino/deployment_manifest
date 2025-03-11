@@ -7,6 +7,61 @@ document.addEventListener("DOMContentLoaded", function () {
     setupFileInput();
   });
   
+
+  function generateInstallationProcessSection(data, selections) {
+    const step3 = data["step-3"] || {};
+    let html = `<h2 class="section-title">Installation Process</h2>`;
+    if (step3.installationProcess && step3.installationProcess.length) {
+      html += `<table class="table table-bordered">
+                 <thead>
+                   <tr>
+                     <th>Step #</th>
+                     <th>Description</th>
+                     <th>Image</th>
+                   </tr>
+                 </thead>
+                 <tbody>`;
+      step3.installationProcess.forEach((step, idx) => {
+        html += `<tr>
+                   <td>${idx + 1}</td>
+                   <td>${step.description || ""}</td>
+                   <td>${step.installation_image ? renderImageField(step.installation_image) : "No image"}</td>
+                 </tr>`;
+      });
+      html += `</tbody></table>`;
+    } else {
+      html += `<p>No installation process specified.</p>`;
+    }
+    return html;
+  }
+  
+  function generateRollbackProcessSection(data, selections) {
+    const step3 = data["step-3"] || {};
+    let html = `<h2 class="section-title">Rollback Process</h2>`;
+    if (step3.rollbackProcess && step3.rollbackProcess.length) {
+      html += `<table class="table table-bordered">
+                 <thead>
+                   <tr>
+                     <th>Step #</th>
+                     <th>Description</th>
+                   </tr>
+                 </thead>
+                 <tbody>`;
+      step3.rollbackProcess.forEach((step, idx) => {
+        html += `<tr>
+                   <td>${idx + 1}</td>
+                   <td>${step.description || ""}</td>
+                 </tr>`;
+      });
+      html += `</tbody></table>`;
+    } else {
+      html += `<p>No rollback process specified.</p>`;
+    }
+    return html;
+  }
+
+  
+
   function setupFileInput() {
     const dropZone = document.querySelector(".file-input-section");
     const initialScreen = document.getElementById("initial-screen");
@@ -106,6 +161,10 @@ document.addEventListener("DOMContentLoaded", function () {
     docHTML += generateTOC(data) + insertPageBreak(selections);
     docHTML += generateUserStoriesFeaturesSection(data, selections) + insertPageBreak(selections);
     // Use configuration groups for multi-group configuration (Step 4)
+      // Include Installation and Rollback sections (previously step 3)
+ // docHTML += generateInstallationProcessSection(data, selections) + insertPageBreak(selections);
+ // docHTML += generateRollbackProcessSection(data, selections) + insertPageBreak(selections);
+  
     docHTML += generateConfigurationGroups(data) + insertPageBreak(selections);
     docHTML += generateDependenciesSection(data, selections) + insertPageBreak(selections);
     docHTML += generateScriptDetailsSection(data, selections) + insertPageBreak(selections);
@@ -307,13 +366,17 @@ document.addEventListener("DOMContentLoaded", function () {
   
   /* --- Step 4: Configuration Groups --- */
   function generateConfigurationGroups(data) {
+    // Retrieve step-4 (configuration/environment) and step-3 (installation/rollback) data
     const step4 = data["step-4"] || {};
-    let html = `<h2 class="section-title centered-heading">Playbook & Configuration</h2>`;
+    const step3 = data["step-3"] || {};
+    let html = `<h2 class="section-title centered-heading">Playbook &amp; Configuration</h2>`;
+    
+    // Render configuration groups if defined in step-4
     if (step4.configurationProcess && step4.configurationProcess.length) {
       html += `<div id="configuration-groups-container">`;
       step4.configurationProcess.forEach((group, i) => {
         html += `
-        <div class="page-break"></div>
+          <div class="page-break"></div>
           <div class="configuration-group-block mb-4">
             <h3 class="text-script">Configuration Group ${i + 1}: ${group.group_name || "Unnamed Group"}</h3>
             <p>${group.group_description || ""}</p>
@@ -325,15 +388,19 @@ document.addEventListener("DOMContentLoaded", function () {
                 </tr>
               </thead>
               <tbody>
-                ${group.steps && group.steps.length ? group.steps.map((step, idx) => `
-                  <tr>
-                    <td>${idx + 1}</td>
-                    <td>
-                      <div>${step.description || ""}</div>
-                      ${step.installation_image ? `<br>${renderImageField(step.installation_image)}` : ""}
-                    </td>
-                  </tr>
-                `).join("") : "<tr><td colspan='2'>No steps defined.</td></tr>"}
+                ${
+                  group.steps && group.steps.length
+                    ? group.steps.map((step, idx) => `
+                        <tr>
+                          <td>${idx + 1}</td>
+                          <td>
+                            <div>${step.description || ""}</div>
+                            ${step.installation_image ? `<br>${renderImageField(step.installation_image)}` : ""}
+                          </td>
+                        </tr>
+                      `).join("")
+                    : "<tr><td colspan='2'>No steps defined.</td></tr>"
+                }
               </tbody>
             </table>
           </div>
@@ -341,11 +408,60 @@ document.addEventListener("DOMContentLoaded", function () {
       });
       html += `</div>`;
     } else {
-      html += "<p>No configuration groups specified.</p>";
+    //  html += "<p>No configuration groups specified.</p>";
     }
+    
+    // Add Installation Process from step-3 under Playbook & Configuration
+    if (step3.installationProcess && step3.installationProcess.length) {
+      html += `<table class="table table-bordered">
+                 <thead>
+                   <tr>
+                     <th>Step #</th>
+                     <th>Description</th>
+                     <th>Image</th>
+                   </tr>
+                 </thead>
+                 <tbody>`;
+      step3.installationProcess.forEach((step, idx) => {
+        html += `<tr>
+                   <td>${idx + 1}</td>
+                   <td>${step.description || ""}</td>
+                   <td>${step.installation_image ? renderImageField(step.installation_image) : "No image"}</td>
+                 </tr>`;
+      });
+      html += `</tbody></table>`;
+    } else {
+      html += "<p>No installation process specified.</p>";
+    }
+    
+    // Add Rollback Process from step-3 under Playbook & Configuration
+    html += `<h3 class="section-title">Rollback Process</h3>`;
+    if (step3.rollbackProcess && step3.rollbackProcess.length) {
+      html += `<table class="table table-bordered">
+                 <thead>
+                   <tr>
+                     <th>Step #</th>
+                     <th>Description</th>
+                   </tr>
+                 </thead>
+                 <tbody>`;
+      step3.rollbackProcess.forEach((step, idx) => {
+        html += `<tr>
+                   <td>${idx + 1}</td>
+                   <td>${step.description || ""}</td>
+                 </tr>`;
+      });
+      html += `</tbody></table>`;
+    } else {
+      html += "<p>No rollback process specified.</p>";
+    }
+    
+    // Continue with environment-specific details from step-4
     html += generateEnvironmentIds(step4["environment-ids-body"]);
+    
     return html;
   }
+  
   
   // generateEnvironmentIds remains unchanged because it doesn't handle images
   function generateEnvironmentIds(envIds) {
