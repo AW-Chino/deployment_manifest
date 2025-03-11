@@ -413,6 +413,8 @@ document.addEventListener("DOMContentLoaded", function () {
     
     // Add Installation Process from step-3 under Playbook & Configuration
     if (step3.installationProcess && step3.installationProcess.length) {
+       
+    html += `<h3 class="section-title">Installation Process</h3>`;
       html += `<table class="table table-bordered">
                  <thead>
                    <tr>
