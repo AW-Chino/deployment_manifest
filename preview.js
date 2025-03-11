@@ -1015,8 +1015,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 <th>Issue</th>
                 <th>Cause</th>
                 <th>Resolution</th>
-                <th>Prevention</th>
-                <th>Impact</th>
               </tr>
             </thead>
             <tbody>
@@ -1025,8 +1023,6 @@ document.addEventListener("DOMContentLoaded", function () {
                   <td>${issue.error_issue || ""}</td>
                   <td>${issue.cause || ""}</td>
                   <td>${issue.resolution || ""}</td>
-                  <td>${issue.prevention || ""}</td>
-                  <td>${issue.impact || ""}</td>
                 </tr>
               `).join("")}
             </tbody>
@@ -1121,7 +1117,6 @@ document.addEventListener("DOMContentLoaded", function () {
               <th>Name</th>
               <th>Email</th>
               <th>Role</th>
-              <th>Note</th>
             </tr>
           </thead>
           <tbody>
@@ -1130,7 +1125,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 <td>${c.name}</td>
                 <td>${c.email}</td>
                 <td>${c.role}</td>
-                <td>${c.note}</td>
               </tr>
             `).join("")}
           </tbody>
