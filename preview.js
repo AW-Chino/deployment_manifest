@@ -1153,7 +1153,6 @@ document.addEventListener("DOMContentLoaded", function () {
               <th>Documentation Version</th>
               <th>Status</th>
               <th>Change Description</th>
-              <th>Installation Method</th>
             </tr>
           </thead>
           <tbody>
@@ -1165,7 +1164,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 <td>${comp.documentation_version || ""}</td>
                 <td>${comp.status || ""}</td>
                 <td>${comp.change_description || ""}</td>
-                <td>${comp.installation_method || ""}</td>
               </tr>
             `).join('')}
           </tbody>
