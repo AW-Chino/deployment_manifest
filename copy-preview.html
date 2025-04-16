@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Script Deployment Document</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: #fff;
+      color: #01395A;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .header img {
+      max-width: 150px;
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin-top: 20px;
+      color: #16A089;
+    }
+    h2, h3, h4, h5 {
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    .table-container {
+      margin-bottom: 40px;
+    }
+    .copy-btn {
+      margin-bottom: 10px;
+    }
+    .copied {
+      background-color: #d4edda !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header Section (same as preview.html header but simplified) -->
+    <div class="header">
+      <img src="https://appwrap.com/wp-content/uploads/2024/12/appwrap-logo.svg" alt="AppWrap Logo" class="img-fluid">
+      <h1>Script Deployment Document</h1>
+      <h2 id="clientTitle" class="mb-4"></h2>
+      <h3 id="projectTitle" class="mb-4"></h3>
+    </div>
+
+    <!-- File Input Section -->
+    <div class="mb-4 text-center">
+      <input type="file" id="jsonFileInput" accept="application/json" class="form-control w-50 mx-auto">
+      <p class="text-muted">Select your deployment manifest JSON file.</p>
+    </div>
+
+    <!-- Document Content: All sections will be rendered here -->
+    <div id="docContent"></div>
+  </div>
+
+  <script>
+    // Function to copy text to the clipboard and highlight the element briefly.
+    function copyText(text, element) {
+      navigator.clipboard.writeText(text).then(() => {
+        if (element) {
+          element.classList.add('copied');
+          setTimeout(() => element.classList.remove('copied'), 800);
+        }
+      }).catch(err => console.error('Error copying text:', err));
+    }
+    
+    // Create a "Copy Entire Table" button for a given table element.
+    function createCopyTableButton(table) {
+      const btn = document.createElement('button');
+      btn.textContent = 'Copy Entire Table';
+      btn.className = 'btn btn-sm btn-secondary copy-btn';
+      btn.addEventListener('click', () => {
+        let text = '';
+        const rows = table.querySelectorAll('tr');
+        rows.forEach(row => {
+          const cells = row.querySelectorAll('th, td');
+          let rowText = [];
+          cells.forEach(cell => { rowText.push(cell.textContent); });
+          text += rowText.join('\t') + '\n';
+        });
+        copyText(text);
+      });
+      return btn;
+    }
+    
+    // Generate a simple two-column table from an object.
+    // Each row has a key in the left cell and its value in the right cell.
+    function generateSimpleTable(obj) {
+      let html = '<table class="table table-bordered"><tbody>';
+      Object.keys(obj).forEach(key => {
+        let value = obj[key];
+        if (typeof value === 'object' && value !== null) {
+          // For nested objects or arrays, convert to a JSON string for simplicity.
+          value = JSON.stringify(value, null, 2);
+        }
+        html += `<tr>
+          <td style="cursor:pointer;" onclick="copyText('${escapeQuotes(key)}', this)">${key}</td>
+          <td style="cursor:pointer;" onclick="copyText('${escapeQuotes(value)}', this)">${value}</td>
+        </tr>`;
+      });
+      html += '</tbody></table>';
+      return html;
+    }
+    
+    // Generate a table from an array of objects. The headers are provided.
+    function generateTableFromArray(arr, headers) {
+      let html = '<table class="table table-bordered"><thead><tr>';
+      headers.forEach(header => {
+        html += `<th style="cursor:pointer;" onclick="copyText('${escapeQuotes(header)}', this)">${header}</th>`;
+      });
+      html += '</tr></thead><tbody>';
+      arr.forEach(item => {
+        html += '<tr>';
+        headers.forEach(header => {
+          let val = item[header] || '';
+          if (typeof val === 'object' && val !== null) { 
+            val = JSON.stringify(val, null, 2); 
+          }
+          html += `<td style="cursor:pointer;" onclick="copyText('${escapeQuotes(val)}', this)">${val}</td>`;
+        });
+        html += '</tr>';
+      });
+      html += '</tbody></table>';
+      return html;
+    }
+    
+    // Utility function to escape quotes in a string for onclick attributes.
+    function escapeQuotes(str) {
+      if (typeof str !== 'string') str = String(str);
+      return str.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+    }
+    
+    // Main function to build the document using the expected JSON structure.
+    function generateDocument(data) {
+      let html = '';
+      
+      // --- Step 1: Project Information (Header) ---
+      const step1 = data['step-1'] || {};
+      // Update the page header with client and project info.
+      document.getElementById('clientTitle').textContent = step1.client ? step1.client : 'Client Not Provided';
+      document.getElementById('projectTitle').textContent = step1.project_name ? step1.project_name : 'Project Name Not Provided';
+      
+      html += '<h2>Project Information (Step 1)</h2>';
+      html += generateSimpleTable(step1);
+      
+      // Version History (inside step-1)
+      if (step1['version-history-body'] && step1['version-history-body'].length) {
+        html += '<h3>Version History</h3>';
+        html += generateTableFromArray(step1['version-history-body'], ['version', 'date', 'change_summary']);
+      }
+      
+      // --- Step 2: User Stories, Features & Usage ---
+      const step2 = data['step-2'] || {};
+      html += '<h2>User Stories and Features (Step 2)</h2>';
+      if (step2['user-stories-body'] && step2['user-stories-body'].length) {
+        html += '<h3>User Stories</h3>';
+        html += generateTableFromArray(step2['user-stories-body'], ['story_id', 'story_description']);
+      }
+      if (step2['features-body'] && step2['features-body'].length) {
+        html += '<h3>Features</h3>';
+        html += generateTableFromArray(step2['features-body'], ['feature_title', 'feature_description']);
+      }
+      if (step2['usage-body'] && step2['usage-body'].length) {
+        html += '<h3>Usage</h3>';
+        html += generateTableFromArray(step2['usage-body'], ['usage_title', 'usage_description']);
+      }
+      
+      // --- Step 5: Dependencies ---
+      const step5 = data['step-5'] || {};
+      html += '<h2>Dependencies (Step 5)</h2>';
+      if (step5['deployment-dependencies-body'] && step5['deployment-dependencies-body'].length) {
+        html += '<h3>Deployment Dependencies</h3>';
+        html += generateTableFromArray(step5['deployment-dependencies-body'], ['dependency_name', 'dependency_version', 'dependency_license']);
+      }
+      if (step5['dev-dependencies-body'] && step5['dev-dependencies-body'].length) {
+        html += '<h3>Development Dependencies</h3>';
+        html += generateTableFromArray(step5['dev-dependencies-body'], ['dependency_name', 'dependency_version', 'dependency_license']);
+      }
+      
+      // --- Step 6: Script Details ---
+      const step6 = data['step-6'] || {};
+      html += '<h2>Script Details (Step 6)</h2>';
+      if (step6['scripts'] && step6['scripts'].length) {
+        step6['scripts'].forEach(script => {
+          html += `<h3>${script.name || 'Unnamed Script'}</h3>`;
+          html += '<h4>General Information</h4>';
+          html += generateSimpleTable(script.details || {});
+          if (script.parameters && script.parameters.length) {
+            html += '<h4>Parameters</h4>';
+            html += generateTableFromArray(script.parameters, ['parameter_name', 'parameter_id', 'parameter_type', 'parameter_description']);
+          }
+          if (script.entryPoints && script.entryPoints.length) {
+            html += '<h4>Entry Points</h4>';
+            html += generateTableFromArray(script.entryPoints, ['entry_point_name', 'function_name']);
+          }
+          if (script.deploymentRecords && script.deploymentRecords.length) {
+            html += '<h4>Deployment Records</h4>';
+            html += generateTableFromArray(script.deploymentRecords, ['applied_to', 'deployment_id', 'deployment_notes']);
+          }
+        });
+      }
+      
+      // --- Step 7: Custom Records ---
+      const step7 = data['step-7'] || {};
+      html += '<h2>Custom Records (Step 7)</h2>';
+      if (step7['customRecords'] && step7['customRecords'].length) {
+        step7['customRecords'].forEach(record => {
+          html += `<h3>${record.name || 'Unnamed Record'}</h3>`;
+          html += generateSimpleTable({Record_ID: record.id, Description: record.description});
+          if (record.fields && record.fields.length) {
+            html += '<h4>Fields</h4>';
+            html += generateTableFromArray(record.fields, ['field_name', 'field_id', 'field_type', 'field_description']);
+          }
+        });
+      }
+      
+      // --- Step 8: Workflows ---
+      const step8 = data['step-8'] || {};
+      html += '<h2>Workflows (Step 8)</h2>';
+      if (step8['workflows'] && step8['workflows'].length) {
+        step8['workflows'].forEach(wf => {
+          html += `<h3>${wf.workflow_name || 'Unnamed Workflow'}</h3>`;
+          html += generateSimpleTable({Workflow_ID: wf.workflow_id, Description: wf.workflow_description, Notes: wf.workflow_notes});
+          if (wf.states && wf.states.length) {
+            wf.states.forEach((state, idx) => {
+              html += `<h4>State ${idx+1}: ${state.state_name || ''}</h4>`;
+              html += generateSimpleTable({
+                State_ID: state.details && state.details.state_id ? state.details.state_id : '',
+                Description: state.details && state.details.state_description ? state.details.state_description : '',
+                Notes: state.details && state.details.state_notes ? state.details.state_notes : ''
+              });
+              if (state.transitions && state.transitions.length) {
+                html += '<h5>Transitions</h5>';
+                html += generateTableFromArray(state.transitions, ['transition_name', 'target_state', 'conditions', 'notes']);
+              }
+              if (state.actions && state.actions.length) {
+                html += '<h5>Actions</h5>';
+                html += generateTableFromArray(state.actions, ['action_name', 'trigger', 'details']);
+              }
+            });
+          }
+        });
+      }
+      
+      // --- Step 9: Custom Fields, Saved Searches & Templates ---
+      const step9 = data['step-9'] || {};
+      html += '<h2>Custom Fields (Step 9)</h2>';
+      if (step9['custom-fields-body'] && step9['custom-fields-body'].length) {
+        html += generateTableFromArray(step9['custom-fields-body'], ['field_name', 'field_id', 'field_type', 'field_description']);
+      }
+      html += '<h2>Saved Searches (Step 9)</h2>';
+      if (step9['saved-searches-body'] && step9['saved-searches-body'].length) {
+        html += generateTableFromArray(step9['saved-searches-body'], ['search_name', 'search_id', 'search_description', 'search_criteria']);
+      }
+      if (step9['templates-body'] && step9['templates-body'].length) {
+        html += '<h2>Templates (Step 9)</h2>';
+        html += generateTableFromArray(step9['templates-body'], ['template_name', 'template_id', 'template_description', 'template_type']);
+      }
+      
+      return html;
+    }
+    
+    // File input handler: parse the JSON file and render the document.
+    document.getElementById('jsonFileInput').addEventListener('change', function(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const jsonData = JSON.parse(e.target.result);
+          document.getElementById('docContent').innerHTML = generateDocument(jsonData);
+        } catch (err) {
+          console.error('Error parsing JSON:', err);
+          alert('Invalid JSON file. Please check the file and try again.');
+        }
+      };
+      reader.readAsText(file);
+    });
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
